@@ -3,3 +3,4 @@ env
 .idea
 controllers/__pycache__/
 views/__pycache__/
+models/__pycache__/
