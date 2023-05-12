@@ -6,7 +6,6 @@ class TournamentView:
         tournament_name = input("Nom du tournoi :")
         return tournament_name
 
-
     def tournament_place(self):
         place = input("Lieu :")
         return place
