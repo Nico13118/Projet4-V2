@@ -1,11 +1,15 @@
+from models import TournamentModel
 from datetime import datetime
 import os
 
 
 class TournamentController:
-    def __init__(self, view, controller):
+    def __init__(self, view, controller, database, directory):
         self.view = view
         self.controller = controller
+        self.db = database
+        self.dm = directory
+
 
     def control(self):
         """
@@ -23,54 +27,63 @@ class TournamentController:
         else:
             """Création d'un tournoi"""
             self.view.start_tournament()
-            self.tournament_name_controller()
-            self.tournament_place_controller()
-            self.tournament_start_date_controller()
-            self.tournament_end_date_controller()
-            self.tournament_directore_remark_controller()
-            self.controller.menu_controller.run()
 
-    def tournament_name_controller(self):
-        tournament_name = self.view.tournament_name()
-        if tournament_name == "":
-            self.view.tournament_error_message2()
-            self.tournament_name_controller()
-        else:
-            return tournament_name
 
-    def tournament_place_controller(self):
-        place = self.view.tournament_place()
-        if place == "":
-            self.view.tournament_error_message2()
-            self.tournament_place_controller()
-        else:
-            return place
+        def tournament_name_controller():
+            tournament_name = self.view.tournament_name()
+            if tournament_name == "":
+                self.view.tournament_error_message2()
+                tournament_name_controller()
+            else:
+                self.dm.make_directory_tournament(tournament_name)
+                return tournament_name
 
-    def tournament_start_date_controller(self):
-        start_date = self.view.tournament_start_date()
-        try :
-            start_date = datetime.strptime(start_date, "%d/%m/%Y").date()
-            return start_date
-        except ValueError:
-            self.view.date_error_message()
-            self.tournament_start_date_controller()
+        def tournament_place_controller():
+            place = self.view.tournament_place()
+            if place == "":
+                self.view.tournament_error_message2()
+                tournament_place_controller()
+            else:
+                return place
 
-    def tournament_end_date_controller(self):
-        end_date = self.view.tournament_end_date()
-        try:
-            end_date = datetime.strptime(end_date, "%d/%m/%Y").date()
-            return end_date
-        except ValueError:
-            self.view.date_error_message()
-            self.tournament_end_date_controller()
+        def tournament_start_date_controller():
+            try:
+                date_string = self.view.tournament_start_date()
+                date_object = datetime.strptime(date_string, "%d/%m/%Y").date()
+                start_date = date_object.strftime("%d/%m/%Y")
+                return str(start_date)
+            except ValueError:
+                self.view.date_error_message()
+                tournament_start_date_controller()
 
-    def tournament_directore_remark_controller(self):
-        directore_remark = self.view.tournament_directore_remark()
-        if directore_remark == "":
-            self.view.tournament_error_message2()
-            self.tournament_directore_remark_controller()
-        else:
-            return directore_remark
+        def tournament_end_date_controller():
+            try:
+                date_string = self.view.tournament_end_date()
+                date_object = datetime.strptime(date_string, "%d/%m/%Y").date()
+                end_date = date_object.strftime("%d/%m/%Y")
+                return str(end_date)
+            except ValueError:
+                self.view.date_error_message()
+                tournament_end_date_controller()
+
+        def tournament_directore_remark_controller():
+            directore_remark = self.view.tournament_directore_remark()
+            if directore_remark == "":
+                self.view.tournament_error_message2()
+                tournament_directore_remark_controller()
+            else:
+                return directore_remark
+
+        tournamentmodel = TournamentModel(
+            tournament_name_controller(),
+            tournament_place_controller(),
+            tournament_start_date_controller(),
+            tournament_end_date_controller(),
+            tournament_directore_remark_controller(),
+
+        )
+        self.db.add_tournament_in_json(tournamentmodel)
+        self.controller.menu_controller()
 
 
 
