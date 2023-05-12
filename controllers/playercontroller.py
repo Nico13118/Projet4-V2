@@ -17,11 +17,18 @@ class PlayerController:
 
         def player_chess_id():
             chess_id = self.view.player_chess_id_view()
+
             if chess_id == "":
                 self.view.player_error_message_view()
                 player_chess_id()
+
             else:
-                return chess_id
+                if not self.db.chess_id_controller(chess_id):
+                    self.view.player_error_chess_id_view()
+                    player_chess_id()
+
+                else:
+                    return chess_id
 
         def player_name():
             name = self.view.player_name_view()
