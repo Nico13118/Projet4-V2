@@ -8,7 +8,13 @@ class TournamentModel:
         self.tournament = []
 
     def tournament_registration(self):
-        pass
-
-
-
+        tournament_information = {
+            "nom": self.tournament_name,
+            "lieu": self.place,
+            "date1": self.start_date,
+            "date2": self.end_date,
+            "remarques": self.director_remark
+        }
+        self.tournament.append(tournament_information)
+        tournament = self.tournament
+        return tournament
