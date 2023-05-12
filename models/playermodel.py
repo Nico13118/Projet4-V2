@@ -7,10 +7,9 @@ class PlayerModel:
         self.number_player = number_player
         self.rounds = rounds
         self.score = score
-        self.player = []
 
     def player_registration(self):
-        player_information = {
+        player = {
             "identifiant": self.chess_id,
             "nom": self.name,
             "prenom": self.first_name,
@@ -19,7 +18,5 @@ class PlayerModel:
             "round": self.rounds,
             "score": self.score
         }
-        self.player.append(player_information)
-        player = self.player
         return player
 
