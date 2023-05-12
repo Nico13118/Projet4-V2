@@ -21,6 +21,7 @@ class DatabaseController:
             json.dump(tournament, f)
 
     def add_player_in_json(self, playermodel):
+        playerlist = []
         data = os.getcwd()
         path = f"{data}/data/tournament/players_list/"
         directory1 = os.listdir(path)
@@ -28,25 +29,33 @@ class DatabaseController:
         if not directory1:
             player_model = PlayerModel
             player = player_model.player_registration(playermodel)
+            playerlist.append(player)
             with open(f"{path}/List_Registered_Players.json", "w") as f:
-                json.dump(player, f)
+                json.dump(playerlist, f)
         # Sinon si le fichier existe, alors extraire les données puis enregistrer l'ensemble dans le même fichier
         else:
             player_model = PlayerModel
             player = player_model.player_registration(playermodel)
             with open(f"{path}/List_Registered_Players.json", "r") as f:
                 list_player = json.load(f)
-                for new_player_list in zip(player, list_player):
-                    with open(f"{path}/List_Registered_Players.json", "w") as g:
-                        json.dump(new_player_list, g)
+                playerlist.append(player)
+                for new_player_list in list_player:
+                    playerlist.append(new_player_list)
+                with open(f"{path}/List_Registered_Players.json", "w") as g:
+                    json.dump(playerlist, g)
 
     def chess_id_controller(self, chess_id):
         data = os.getcwd()
         path = f"{data}/data/tournament/players_list/"
-        with open(f"{path}/List_Registered_Players.json", "r") as f:
-            list_player = json.load(f)
-            for liste in list_player:
-                liste2 = liste["identifiant"]
-                if chess_id == liste2:
-                    return False
+        playerlist = os.listdir(path)
+        if not playerlist:
             return True
+        else:
+            with open(f"{path}/List_Registered_Players.json", "r") as f:
+                list_player = json.load(f)
+                for list1 in list_player:
+                    list2 = list1["identifiant"]
+                    if chess_id == list2:
+                        return False
+                    return True
+
