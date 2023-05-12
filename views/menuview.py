@@ -17,10 +17,13 @@ class MenuView:
                     """
             print("\n|================== MENU ==================|")
             print("|1 -Créer un tournoi.                      |")
-            print("|2 -Démarrer un tournoi.                   |")
-            print("|3 -Reprendre un tournoi.                  |")
-            print("|4 -Visualiser le rapport d'un tournoi.    |")
-            print("|5 -Quitter l'application.                 |")
+            print("|2 -Inscription des joueurs                |")
+            print("|3 -Démarrer un tournoi.                   |")
+            print("|4 -Reprendre un tournoi.                  |")
+            print("|5 -Visualiser le rapport d'un tournoi.    |")
+            print("|6 -Supprimer un tournoi.                  |")
+            print("|7 -Supprimer un joueur.                   |")
+            print("|8  -Quitter l'application.                 |")
             print("|==========================================|")
 
         print_menu()
@@ -28,4 +31,4 @@ class MenuView:
         if user_input > "5":
             print("Choix invalide !!!")
         else:
-            return user_input in ["1", "2", "3", "4", "5"]
+            return user_input
