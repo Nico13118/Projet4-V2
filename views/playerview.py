@@ -27,3 +27,6 @@ class PlayerView:
     def new_player_message_view(self):
         user_input = input("Souhaitez-vous inscrire un nouveau joueur ? (Y(es) / N(o) : ")
         return user_input
+
+    def player_error_chess_id_view(self):
+        print("Cet identifiant a déjà été enregistré. Veuillez saisir un autre identifiant. ")
