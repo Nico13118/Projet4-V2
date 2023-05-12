@@ -40,4 +40,13 @@ class DatabaseController:
                     with open(f"{path}/List_Registered_Players.json", "w") as g:
                         json.dump(new_player_list, g)
 
-
+    def chess_id_controller(self, chess_id):
+        data = os.getcwd()
+        path = f"{data}/data/tournament/players_list/"
+        with open(f"{path}/List_Registered_Players.json", "r") as f:
+            list_player = json.load(f)
+            for liste in list_player:
+                liste2 = liste["identifiant"]
+                if chess_id == liste2:
+                    return False
+            return True
