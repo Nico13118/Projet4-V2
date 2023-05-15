@@ -3,6 +3,11 @@ class MenuView:
     def club_name(self):
         print("\n******** Club Provence Échecs ********* ")
 
+    def error_message_menuview1(self):
+        print("Choix invalide !!!")
+
+    def error_message_menuview2(self):
+        print("La saisie ne peut pas être vide !!")
 
     def get_user_input(self):
         """
@@ -26,11 +31,7 @@ class MenuView:
 
         print_menu()
         user_input = input("Faite votre choix :")
-        if int(user_input) > 6:
-            print("Choix invalide !!!")
-        else:
-            return user_input
-
+        return user_input
 
     def get_user_input2(self):
 
@@ -43,27 +44,23 @@ class MenuView:
 
         print_menu_player()
         user_input = input("Faite votre choix :")
-        if int(user_input) > 3:
-            print("Choix invalide !!!")
-        else:
-            return user_input
+        return user_input
 
     def get_user_input3(self):
 
         def print_menu_tournament():
             print("\n|=========== Gérer les tournois ===========|")
-            print("| 1 -Démarrer un tournoi                    |")
-            print("| 2 -Reprendre un tournoi                   |")
-            print("| 3 -Supprimer un tournoi                   |")
-            print("| 4 -Retourner au menu principal            |")
+            print("| 1 -Ajouter des joueurs au tournoi         |")
+            print("| 2 -Supprimer des joueurs du tournoi       |")
+            print("| 3 -Lancer le tournoi                      |")
+            print("| 4 -Reprendre un tournoi                   |")
+            print("| 5 -Supprimer un tournoi                   |")
+            print("| 6 -Retourner au menu principal            |")
             print("|===========================================|")
 
         print_menu_tournament()
         user_input = input("Faite votre choix :")
-        if int(user_input) > 4:
-            print("Choix invalide !!!")
-        else:
-            return user_input
+        return user_input
 
     def get_user_input4(self):
 
@@ -76,7 +73,4 @@ class MenuView:
 
         print_menu_report()
         user_input = input("Faite votre choix :")
-        if int(user_input) > 3:
-            print("Choix invalide !!!")
-        else:
-            return user_input
+        return user_input
