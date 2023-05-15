@@ -11,7 +11,7 @@ class DirectoryModel:
         data_file1 = os.path.exists(f"{data}/data")
         data_file2 = os.path.exists(f"{data}/data/tournament/")
         data_file3 = os.path.exists(f"{data}/data/tournament_old")
-        data_file4 = os.path.exists(f"{data}/data/tournament/players_list")
+        data_file4 = os.path.exists(f"{data}/data/players_list")
         if not data_file1:
             os.mkdir(f"{data}/data")
         if not data_file2:
