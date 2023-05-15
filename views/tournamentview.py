@@ -31,3 +31,18 @@ class TournamentView:
     def date_error_message(self):
         print("Le format de la date est incorrect ! Veuillez réessayer")
 
+    def del_tournament_message_view1(self):
+        print("Attention !! Vous êtes sur le point de supprimer le dernier tournoi.")
+
+    def del_tournament_message_view2(self):
+        print("Saisie incorrect, veuillez réessayer !")
+
+    def del_tournament_message_view3(self):
+        print("Le tournoi a été supprimé avec succès.")
+
+    def del_tournament_message_view4(self):
+        print("Aucun tournoi n'a été crée.")
+
+    def del_tournament_view(self):
+        user_input = input("Souhaitez-vous continuer ? (Y(es), N(o) ")
+        return user_input
