@@ -1,5 +1,5 @@
-from controllers import MenuController, PlayerController, TournamentController, DatabaseController
-from views import MenuView, TournamentView, PlayerView
+from controllers import MenuController, PlayerController, TournamentController, DatabaseController, PlayerListController
+from views import MenuView, TournamentView, PlayerView, PlayerListView
 from models import DirectoryModel
 
 
@@ -10,7 +10,8 @@ class MainController:
         self.menu_controller = MenuController(MenuView(), self, self.db, self.dm)
         self.tournament_controller = TournamentController(TournamentView(), self, self.db, self.dm)
         self.player_controller = PlayerController(PlayerView(), self, self.db, self.dm)
+        self.player_list_controller = PlayerListController(PlayerListView(), self, self.db, self.dm)
 
     def run(self):
-        self.menu_controller.run()
+        self.menu_controller.run_menu()
 
