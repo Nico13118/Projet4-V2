@@ -9,10 +9,7 @@ class PlayerListView:
 
     def message_select_player2_view(self):
         user_input = input("Saisir le numéro du joueur à intégrer au tournoi (1, 2, 3 ...) :")
-        if user_input == "":
-            print("Choix invalide")
-        else:
-            return user_input
+        return user_input
 
     def message_error_list_view(self):
         print("Aucune liste à afficher")
