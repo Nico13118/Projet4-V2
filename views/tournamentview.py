@@ -32,7 +32,7 @@ class TournamentView:
         print("Le format de la date est incorrect ! Veuillez réessayer")
 
     def del_tournament_message_view1(self):
-        print("Attention !! Vous êtes sur le point de supprimer le dernier tournoi.")
+        print("Attention !! Vous êtes sur le point de supprimer un tournoi créé précédemment.")
 
     def del_tournament_message_view2(self):
         print("Saisie incorrect, veuillez réessayer !")
@@ -41,7 +41,13 @@ class TournamentView:
         print("Le tournoi a été supprimé avec succès.")
 
     def del_tournament_message_view4(self):
-        print("Aucun tournoi n'a été crée.")
+        print("Action impossible, aucun tournoi n'a été crée.")
+
+    def del_tournament_message_view5(self):
+        print("Action impossible, vous devez ajouter les joueurs dans le tournoi")
+
+    def del_tournament_message_view6(self):
+        print("Action impossible car aucun tournoi n'a été crée ")
 
     def del_tournament_view(self):
         user_input = input("Souhaitez-vous continuer ? (Y(es), N(o) ")
