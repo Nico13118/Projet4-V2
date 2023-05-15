@@ -12,7 +12,6 @@ class MenuController:
         if user_input == "1":
             """Vérifier si l'utilisateur peut créer un tournoi"""
             self.controller.tournament_controller.control()
-
         elif user_input == "2":
             self.controller.player_controller.player_message()
         elif user_input == "3":
@@ -20,11 +19,14 @@ class MenuController:
         elif user_input == "4":
             self.run_menu_tournament()
         elif user_input == "5":
-            print("Test4")
+            self.run_menu_report()
         elif user_input == "6":
             quit()
+        elif user_input > "6":
+            self.view.error_message_menuview1()
+            self.run_menu()
         else:
-            self.view.tournament_error_message2()
+            self.view.error_message_menuview2()
             self.run_menu()
 
     def run_menu_player(self):
@@ -36,9 +38,13 @@ class MenuController:
         elif user_input == "2":
             pass
         elif user_input == "3":
-            self.controller.menu_controller.run_menu()
-        else:
             self.run_menu()
+        elif user_input > "3":
+            self.view.error_message_menuview1()
+            self.run_menu_player()
+        else:
+            self.view.error_message_menuview2()
+            self.run_menu_player()
 
     def run_menu_tournament(self):
         self.view.club_name()
@@ -51,8 +57,16 @@ class MenuController:
             self.controller.tournament_controller.del_tournament_controller1()
         elif user_input == "4":
             self.run_menu()
-        else:
+        elif user_input == "5":
+            pass
+        elif user_input == "6":
             self.run_menu()
+        elif user_input > "6":
+            self.view.error_message_menuview1()
+            self.run_menu_tournament()
+        else:
+            self.view.error_message_menuview2()
+            self.run_menu_tournament()
 
     def run_menu_report(self):
         self.view.club_name()
@@ -63,5 +77,9 @@ class MenuController:
             pass
         elif user_input == "3":
             self.run_menu()
+        elif user_input > "3":
+            self.view.error_message_menuview1()
+            self.run_menu_report()
         else:
-            self.run_menu()
+            self.view.error_message_menuview2()
+            self.run_menu_report()
