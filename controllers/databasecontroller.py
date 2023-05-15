@@ -2,6 +2,7 @@ from models import TournamentModel, PlayerModel
 
 import os
 import json
+import shutil
 # Liste des joueurs inscrits : "List_Registered_Players.json" --data\tournament
 # Information d'un tournoi lors de sa création : "Tournament_Info.json" --data\tournament\nom_du_tournoi\
 # Liste des rencontres : "List_Match.json"
@@ -23,7 +24,7 @@ class DatabaseController:
     def add_player_in_json(self, playermodel):
         playerlist = []
         data = os.getcwd()
-        path = f"{data}/data/tournament/players_list/"
+        path = f"{data}/data/players_list/"
         directory1 = os.listdir(path)
         # Si le fichier json n'existe pas alors enregistre les données dans le fichier json
         if not directory1:
@@ -46,7 +47,7 @@ class DatabaseController:
 
     def chess_id_controller(self, chess_id):
         data = os.getcwd()
-        path = f"{data}/data/tournament/players_list/"
+        path = f"{data}/data/players_list/"
         playerlist = os.listdir(path)
         if not playerlist:
             return True
@@ -59,3 +60,21 @@ class DatabaseController:
                         return False
                     return True
 
+
+    def get_player_list(self):
+        data = os.getcwd()
+        path = f"{data}/data/players_list/"
+        playerlist = os.listdir(path)
+        if not playerlist:
+            return True
+        else:
+            with open(f"{path}/List_Registered_Players.json", "r") as f:
+                list_player = json.load(f)
+                return list_player
+
+    def del_tournament_db(self):
+        data = os.getcwd()
+        path = f"{data}/data/tournament/"
+        directory = os.listdir(path)
+        tournament_name = str(directory[0])
+        shutil.rmtree(f"{data}/data/tournament/{tournament_name}")
