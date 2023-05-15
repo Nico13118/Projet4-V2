@@ -73,7 +73,7 @@ class PlayerController:
             self.controller.player_controller.player_message()
 
         elif user_input == "n" or user_input == "no" or user_input == "non":
-            self.controller.menu_controller.run()
+            self.controller.menu_controller.run_menu()
         else:
             self.view.player_error_message_view()
             self.new_player_message_controller()
