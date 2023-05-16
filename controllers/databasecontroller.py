@@ -22,28 +22,30 @@ class DatabaseController:
             json.dump(tournament, f)
 
     def add_player_in_json(self, playermodel):
-        playerlist = []
+        temporarylist = []
         data = os.getcwd()
         path = f"{data}/data/players_list/"
         directory1 = os.listdir(path)
         # Si le fichier json n'existe pas alors enregistre les données dans le fichier json
         if not directory1:
             player_model = PlayerModel
-            player = player_model.player_registration(playermodel)
-            playerlist.append(player)
+            playerlist = player_model.player_registration(playermodel)
+            temporarylist.append(playerlist)
             with open(f"{path}/List_Registered_Players.json", "w") as f:
-                json.dump(playerlist, f)
+                json.dump(temporarylist, f)
         # Sinon si le fichier existe, alors extraire les données puis enregistrer l'ensemble dans le même fichier
         else:
             player_model = PlayerModel
             player = player_model.player_registration(playermodel)
             with open(f"{path}/List_Registered_Players.json", "r") as f:
                 list_player = json.load(f)
-                playerlist.append(player)
                 for new_player_list in list_player:
-                    playerlist.append(new_player_list)
-                with open(f"{path}/List_Registered_Players.json", "w") as g:
-                    json.dump(playerlist, g)
+                    temporarylist.append(new_player_list)
+                temporarylist.append(player)
+            with open(f"{path}/List_Registered_Players.json", "w") as g:
+                json.dump(temporarylist, g)
+
+
 
     def chess_id_controller(self, chess_id):
         data = os.getcwd()
@@ -72,9 +74,29 @@ class DatabaseController:
                 list_player = json.load(f)
                 return list_player
 
+    def sort_player_list_db(self, list_player):
+        player_sorted = sorted(list_player, key=lambda x: (x["nom"], x["prenom"]))
+        return player_sorted
+
     def del_tournament_db(self):
         data = os.getcwd()
         path = f"{data}/data/tournament/"
         directory = os.listdir(path)
         tournament_name = str(directory[0])
         shutil.rmtree(f"{data}/data/tournament/{tournament_name}")
+
+    def add_player_in_json2(self, list_player):
+        data = os.getcwd()
+        path = f"{data}/data/players_list/"
+        with open(f"{path}/List_Registered_Players.json", "w") as g:
+            json.dump(list_player, g)
+
+    def del_player_in_list_db(self, user_input):
+        """Supprimer le joueur dans la liste"""
+        user_input -= 1
+        list_player = self.get_player_list()
+        player_sorted = self.sort_player_list_db(list_player)
+        del player_sorted[user_input]
+        self.add_player_in_json2(player_sorted)
+
+
