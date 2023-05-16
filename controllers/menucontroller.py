@@ -13,6 +13,7 @@ class MenuController:
             """Vérifier si l'utilisateur peut créer un tournoi"""
             self.controller.tournament_controller.control()
         elif user_input == "2":
+            """Inscription des joueurs"""
             self.controller.player_controller.player_message()
         elif user_input == "3":
             self.run_menu_player()
@@ -36,7 +37,10 @@ class MenuController:
             self.controller.player_list_controller.print_player_list_controller()
             self.run_menu_player()
         elif user_input == "2":
-            pass
+            """Supprimer un joueur de la liste"""
+            self.controller.player_list_controller.del_player_in_list_controller()
+            self.run_menu_player()
+
         elif user_input == "3":
             self.run_menu()
         elif user_input > "3":
