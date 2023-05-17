@@ -1,5 +1,6 @@
 import os
 
+MAX_PLAYER = 8
 
 class PlayerListController:
     def __init__(self, view, controller, database, directory):
@@ -9,6 +10,7 @@ class PlayerListController:
         self.dm = directory
 
     def print_player_list_controller(self):
+        """Condition qui permet d'afficher la liste des joueurs par ordre alphabétique"""
         if self.control_player_list_controller(): # Si la présence du fichier est True
             list_player = self.db.get_player_list() # Extraire les données de la liste
             player_sorted = self.db.sort_player_list_db(list_player) # Tries la liste des joueurs par ordre alphabétique
@@ -16,6 +18,7 @@ class PlayerListController:
             self.view.print_player_list_view(player_sorted) # Affiche la liste des joueurs
 
     def del_player_in_list_controller(self):
+        """Méthode qui permet d'afficher la liste dans l'ordre et de supprimer un joueur de cette liste"""
         if self.control_player_list_controller(): # Si la présence du fichier est True
             user_input = self.view.message_del_player() # Demande à l'utilisateur s'il souhaite continuer
             if user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
@@ -33,13 +36,49 @@ class PlayerListController:
                 self.del_player_in_list_controller()
 
     def control_player_list_controller(self):
-        """Controle si le fichier existe"""
+        """Controle si le fichier List_Registered_Players.json existe"""
         data = os.getcwd()
-        path = f"{data}/data/players_list"
-        directory1 = os.listdir(path)
-        if not directory1:
+        path1 = f"{data}/data/players_list"
+        directory1 = os.listdir(path1)
+        if directory1:
+            return True
+        else:
             self.view.message_error_list_view()
-            self.controller.menu_controller.run_menu_player()
+            return False
+
+    def control_player_select_controller(self):
+        """Controle si le fichier List_Players_Select.json existe"""
+        data = os.getcwd()
+        path = f"{data}/data/tournament/"
+        directory = os.listdir(path)
+        tournament_name = str(directory[0])
+        path2 = (f"{data}/data/tournament/{tournament_name}/Player_Select")
+        directory_player_select = os.listdir(path2)
+        if directory_player_select:
+            return True
+        else:
+            return False
+
+    def control_number_player_in_list_players_select(self):
+        temporary_list = []
+        """Controle le nombre de joueurs inscrits dans List_Players_Select.json" """
+        list_player_select = self.db.get_list_player_select_db()
+        for list_player_select1 in list_player_select:
+            temporary_list.append(list_player_select1)
+        numbers_players = len(temporary_list)
+        if numbers_players == MAX_PLAYER:
+            return False
+
         else:
             return True
+
+    def control_number_player_in_temporary_list_players(self):
+        temporary_list = []
+        """Controle le nombre de joueurs inscrits dans Temporary_List_Players.json" """
+        list_player_select = self.db.get_temporary_list_player_db()
+        for list_player_select1 in list_player_select:
+            temporary_list.append(list_player_select1)
+        numbers = len(temporary_list)
+        return numbers
+
 
