@@ -28,6 +28,9 @@ class TournamentView:
     def tournament_error_message2(self):
         print("La saisie ne peut pas être vide !!")
 
+    def tournament_error_message3(self):
+        print("Saisie incorrect !! Veuillez réessayer.")
+
     def date_error_message(self):
         print("Le format de la date est incorrect ! Veuillez réessayer")
 
@@ -52,3 +55,24 @@ class TournamentView:
     def del_tournament_view(self):
         user_input = input("Souhaitez-vous continuer ? (Y(es), N(o) ")
         return user_input
+
+    def message_select_player1_tournamentview(self):
+        print("----Selection de joueurs pour le tournoi----")
+        print("----------Maximum 8 joueurs------------")
+
+    def message_select_player2_tournamentview(self):
+        user_input = input("Saisir le numéro du joueur à intégrer au tournoi (1, 2, 3 ...) :")
+        return user_input
+
+    def message_select_player3_tournamentview(self):
+        user_input = input("Souhaitez-vous continuer ? (Y(es) / N(o) :")
+        return user_input
+
+    def message_select_player4_tournamentview(self):
+        print("Vous avez atteint le nombre maximum de joueurs à inscrire.")
+
+    def print_player_list_tournamentview(self, list_player):
+        i = 0
+        for list_player1 in list_player:
+            i += 1
+            print(f"-{i}- ID :", list_player1["identifiant"], "Nom :", list_player1["nom"], list_player1["prenom"])
