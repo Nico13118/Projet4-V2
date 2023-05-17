@@ -26,3 +26,4 @@ class DirectoryModel:
         os.mkdir(f"{data}/data/tournament/{tournament_name}")
         os.mkdir(f"{data}/data/tournament/{tournament_name}/Rounds")
         os.mkdir(f"{data}/data/tournament/{tournament_name}/Scores")
+        os.mkdir(f"{data}/data/tournament/{tournament_name}/Player_Select")
