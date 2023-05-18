@@ -35,11 +35,11 @@ class MenuController:
         user_input = self.view.get_user_input_player_menu()
         if user_input == "1":
             """Inscription des joueurs"""
-            self.controller.player_list_controller.print_player_list_controller()
-        elif user_input == "2":
-            """Voir la liste des joueurs"""
             self.controller.player_controller.player_message()
             self.run_menu_player()
+        elif user_input == "2":
+            """Voir la liste des joueurs"""
+            self.controller.player_list_controller.print_player_list_controller()
         elif user_input == "3":
             """Supprimer un joueur de la liste"""
             self.controller.player_list_controller.del_player_in_list_controller()
@@ -73,7 +73,7 @@ class MenuController:
             self.controller.player_list_controller.del_player_in_list_player_select()
         elif user_input == "5":
             """Lancer le tournoi"""
-            pass
+            self.controller.tournament_controller.start_tournament()
         elif user_input == "6":
             """Reprendre un tournoi"""
             pass
