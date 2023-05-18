@@ -19,6 +19,7 @@ class PlayerListController:
 
     def print_list_player_select(self):
         list_player_select = self.db.get_list_player_select_db()
+        self.view.print_list_player_select()
         self.view.print_player_list_view(list_player_select)
 
 
