@@ -36,11 +36,12 @@ class MenuView:
 
         print("\n|=========== Gérer les tournois ===========|")
         print("| 1 -Ajouter des joueurs au tournoi         |")
-        print("| 2 -Supprimer des joueurs du tournoi       |")
-        print("| 3 -Lancer le tournoi                      |")
-        print("| 4 -Reprendre un tournoi                   |")
-        print("| 5 -Supprimer un tournoi                   |")
-        print("| 6 -Retourner au menu principal            |")
+        print("| 2 -liste des joueurs inscrits au tournoi  |")
+        print("| 3 -Supprimer des joueurs du tournoi       |")
+        print("| 4 -Lancer le tournoi                      |")
+        print("| 5 -Reprendre un tournoi                   |")
+        print("| 6 -Supprimer un tournoi                   |")
+        print("| 7 -Retourner au menu principal            |")
         print("|===========================================|")
 
         user_input = input("Faite votre choix :")
