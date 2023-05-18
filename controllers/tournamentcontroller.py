@@ -105,7 +105,7 @@ class TournamentController:
         elif user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o" or user_input == "oui":
             self.db.del_tournament_db()
             self.view.del_tournament_message_view3()
-            self.controller.menu_controller.run_menu_tournament()
+            self.controller.menu_controller.run_tournament_menu()
 
         elif user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no" or user_input == "non":
             self.controller.menu_controller.run_menu_tournament()
@@ -131,13 +131,13 @@ class TournamentController:
         if self.controller.player_list_controller.control_player_select_controller():
             """La condition qui controle combien de joueurs sont inscrits au tournoi"""
             if self.controller.player_list_controller.control_number_player_in_list_players_select():
-                temporary_list = self.db.get_temporary_list_player_db()  # Récupération des données de temporary_list
-                self.view.print_player_list_tournamentview(temporary_list) # Affichage de la liste temporary_list
+                list_registered_players = self.db.get_list_registered_players_and_players_select()
+                self.view.print_player_list_tournamentview(list_registered_players) # Affichage de la liste list_registered_players
                 user_input = self.view.message_select_player2_tournamentview() # Demande à l'utilisateur de saisir le joueur à ajouter au tournoi
                 if user_input == "":
                     self.view.del_tournament_message_view2()
                     self.add_player_in_tournament_controller()
-                numbers = self.controller.player_list_controller.control_number_player_in_temporary_list_players()
+                numbers = len(list_registered_players)
                 user_input = int(user_input)
                 if user_input > numbers:
                     self.view.del_tournament_message_view2()
@@ -155,27 +155,9 @@ class TournamentController:
             """ Condition qui controle si le fichier List_Registered_Players.json existe """
             if self.controller.player_list_controller.control_player_list_controller():
                 self.view.message_select_player1_tournamentview()
-                list_player = self.db.get_player_list()  # Extraire les données de la liste
+                list_player = self.db.get_player_list()  # Extraire les données de la liste List_Registered_Players.json
                 player_sorted = self.db.sort_player_list_db(list_player)  # Tries la liste des joueurs par ordre alphabétique
                 self.view.print_player_list_tournamentview(player_sorted)  # Affiche la liste des joueurs par ordre alphabétique
                 user_input = self.view.message_select_player2_tournamentview() # Demande à l'utilisateur de saisir le joueur à ajouter au tournoi
                 self.db.add_player_in_tournament_db(user_input)
                 self.input_control_player_in_tournament()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
