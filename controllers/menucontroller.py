@@ -7,27 +7,22 @@ class MenuController:
         self.dm = directory
 
     def run_menu(self):
+        """"MENU PRINCIPAL"""
         self.view.club_name()
         user_input = self.view.get_user_input_main_menu()
         if user_input == "1":
-            """Créer un tournoi"""
-            self.controller.tournament_controller.control_tournament_directory()
-        elif user_input == "2":
-            """Inscription des joueurs"""
-            self.controller.player_controller.player_message()
-        elif user_input == "3":
-            """Gérer les joueurs"""
+            """Gestionnaire des joueurs"""
             self.run_menu_player()
-        elif user_input == "4":
-            """Gérer les tournois"""
+        elif user_input == "2":
+            """Gestionnaire des tournois"""
             self.run_tournament_menu()
+        elif user_input == "3":
             """Rapport de tournoi"""
-        elif user_input == "5":
             self.run_menu_report()
-        elif user_input == "6":
+        elif user_input == "4":
             """Quitter l'application"""
             quit()
-        elif user_input > "6":
+        elif user_input > "4":
             self.view.error_message_menuview1()
             self.run_menu()
         else:
@@ -35,20 +30,24 @@ class MenuController:
             self.run_menu()
 
     def run_menu_player(self):
+        """Gestionnaire de joueurs"""
         self.view.club_name()
         user_input = self.view.get_user_input_player_menu()
-        """Voir la liste des joueurs"""
         if user_input == "1":
+            """Inscription des joueurs"""
             self.controller.player_list_controller.print_player_list_controller()
-            self.run_menu_player()
         elif user_input == "2":
+            """Voir la liste des joueurs"""
+            self.controller.player_controller.player_message()
+            self.run_menu_player()
+        elif user_input == "3":
             """Supprimer un joueur de la liste"""
             self.controller.player_list_controller.del_player_in_list_controller()
             self.run_menu_player()
-        elif user_input == "3":
+        elif user_input == "4":
             """Retourner au menu principal"""
             self.run_menu()
-        elif user_input > "3":
+        elif user_input > "4":
             self.view.error_message_menuview1()
             self.run_menu_player()
         else:
@@ -56,28 +55,32 @@ class MenuController:
             self.run_menu_player()
 
     def run_tournament_menu(self):
+        """Gestionnaire de tournoi"""
         self.view.club_name()
         user_input = self.view.get_user_input_tournament_menu()
         if user_input == "1":
+            """Créer un tournoi"""
+            self.controller.tournament_controller.control_tournament_directory()
+        elif user_input == "2":
             """Ajouter des joueurs dans le tournoi"""
             self.controller.tournament_controller.add_player_in_tournament_controller()
             self.run_tournament_menu()
-        elif user_input == "2":
+        elif user_input == "3":
             """liste des joueurs inscrits au tournoi"""
             self.controller.player_list_controller.print_list_player_select()
-        elif user_input == "3":
-            """Supprimer des joueurs du tournoi"""
-            pass
         elif user_input == "4":
+            """Supprimer des joueurs du tournoi"""
+            self.controller.player_list_controller.del_player_in_list_player_select()
+        elif user_input == "5":
             """Lancer le tournoi"""
             pass
-        elif user_input == "5":
+        elif user_input == "6":
             """Reprendre un tournoi"""
             pass
-        elif user_input == "6":
+        elif user_input == "7":
             """Supprimer un tournoi"""
             self.controller.tournament_controller.del_tournament_directory()
-        elif user_input == "7":
+        elif user_input == "8":
             """Retourner au menu principal"""
             self.run_menu()
         elif user_input > "7":
@@ -88,6 +91,7 @@ class MenuController:
             self.run_tournament_menu()
 
     def run_menu_report(self):
+        """Rapport de tournoi"""
         self.view.club_name()
         user_input = self.view.get_user_input4()
         if user_input == "1":
