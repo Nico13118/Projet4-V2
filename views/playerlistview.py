@@ -5,6 +5,7 @@ class PlayerListView:
 
     def print_list_player_select(self):
         print("Liste des joueurs inscrits au tournoi")
+
     def message_del_player(self):
         user_input = input("Supprimer un joueur de la liste, souhaitez-vous continuer ? (Y(es) / N(o) :")
         return user_input
@@ -22,6 +23,12 @@ class PlayerListView:
 
     def message_error_list_view2(self):
         print("Choix invalide !!!")
+
+    def message_error_list_view3(self):
+        print("La saisie ne peut pas être vide !!")
+
+    def message_error_list_view4(self):
+        print("Saisie incorrect, veuillez réessayer !")
 
     def print_player_list_view(self, list_player):
         i = 0
