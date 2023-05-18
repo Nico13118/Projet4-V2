@@ -3,19 +3,17 @@ class MenuView:
     def club_name(self):
         print("\n******** Club Provence Échecs ********* ")
 
-    def get_user_input_main_menu(self): # A modifier
+    def get_user_input_main_menu(self):
         """
         Affichage du menu
         Récupération de la saisie utilisateur
         :return: Retourne la saisie utilisateur
         """
-        print("\n|============ MENU PRINCIPAL =============|")
-        print("| 1 -Créer un tournoi.                      |")
-        print("| 2 -Inscription des joueurs                |")
-        print("| 3 -Gérer les joueurs                      |")
-        print("| 4 -Gérer les tournois                     |")
-        print("| 5 -Rapport de tournoi                     |")
-        print("| 6 -Quitter l'application.                 |")
+        print("\n|============= MENU PRINCIPAL ==============|")
+        print("| 1 -Gestionnaire de joueurs                |")
+        print("| 2 -Gestionnaire de tournoi                |")
+        print("| 3 -Rapport de tournoi                     |")
+        print("| 4 -Quitter l'application.                 |")
         print("|===========================================|")
 
         user_input = input("Faite votre choix :")
@@ -23,10 +21,11 @@ class MenuView:
 
     def get_user_input_player_menu(self):
 
-        print("\n|============ Gérer les joueurs ===========|")
-        print("| 1 -Voir la liste des joueurs              |")
-        print("| 2 -Supprimer un joueur de la liste        |")
-        print("| 3 -Retourner au menu principal            |")
+        print("\n|====== Gestionnaire des joueurs =========|")
+        print("| 1 -Inscription des joueurs                |")
+        print("| 2 -Voir la liste des joueurs              |")
+        print("| 3 -Supprimer un joueur de la liste        |")
+        print("| 4 -Retourner au menu principal            |")
         print("|===========================================|")
 
         user_input = input("Faite votre choix :")
@@ -34,14 +33,15 @@ class MenuView:
 
     def get_user_input_tournament_menu(self):
 
-        print("\n|=========== Gérer les tournois ===========|")
-        print("| 1 -Ajouter des joueurs au tournoi         |")
-        print("| 2 -liste des joueurs inscrits au tournoi  |")
-        print("| 3 -Supprimer des joueurs du tournoi       |")
-        print("| 4 -Lancer le tournoi                      |")
-        print("| 5 -Reprendre un tournoi                   |")
-        print("| 6 -Supprimer un tournoi                   |")
-        print("| 7 -Retourner au menu principal            |")
+        print("\n|======= Gestionnaire de tournoi =======|")
+        print("| 1 -Créer un tournoi.                      |")
+        print("| 2 -Ajouter des joueurs au tournoi         |")
+        print("| 3 -liste des joueurs inscrits au tournoi  |")
+        print("| 4 -Supprimer des joueurs du tournoi       |")
+        print("| 5 -Lancer le tournoi                      |")
+        print("| 6 -Reprendre un tournoi                   |")
+        print("| 7 -Supprimer un tournoi                   |")
+        print("| 8 -Retourner au menu principal            |")
         print("|===========================================|")
 
         user_input = input("Faite votre choix :")
