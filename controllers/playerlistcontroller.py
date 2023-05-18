@@ -2,6 +2,7 @@ import os
 
 MAX_PLAYER = 8
 
+
 class PlayerListController:
     def __init__(self, view, controller, database, directory):
         self.view = view
@@ -41,6 +42,31 @@ class PlayerListController:
                 self.view.message_error_list_view2()
                 self.del_player_in_list_controller()
 
+    def del_player_in_list_player_select(self):
+        if self.control_player_select_controller():
+            list_player_select = self.db.get_list_player_select_db() # Récupération de la liste des joueurs inscrits
+            player_sorted = self.db.sort_player_list_db(list_player_select)  # Tries la liste des joueurs par ordre alphabétique
+            self.view.print_list_player_select() # Affichage "Liste des joueurs inscrits au tournoi"
+            self.view.print_player_list_view(player_sorted) # Affiche la liste des joeuurs inscrits dans l'ordre alphabétique
+            user_input = self.view.message_del_player_in_list_view() # Demande à l'utilisateur de faire son choix
+            if user_input == "":
+                self.view.message_error_list_view3()
+                self.del_player_in_list_player_select()
+                """Controle combien de joueur sont inscrits dans la liste """
+            numbers = len(player_sorted)
+            user_input = int(user_input)
+            if user_input > numbers:
+                self.view.message_error_list_view4()
+                self.del_player_in_list_player_select()
+            elif user_input == 0:
+                self.view.message_error_list_view4()
+                self.del_player_in_list_player_select()
+            self.db.del_player_in_list_player_select_db(user_input)
+            self.view.message_del_player_in_list_view2()
+            self.controller.menu_controller.run_tournament_menu()
+
+
+
     def control_player_list_controller(self):
         """Controle si le fichier List_Registered_Players.json existe"""
         data = os.getcwd()
@@ -77,14 +103,4 @@ class PlayerListController:
 
         else:
             return True
-
-    def control_number_player_in_temporary_list_players(self):
-        temporary_list = []
-        """Controle le nombre de joueurs inscrits dans Temporary_List_Players.json" """
-        list_player_select = self.db.get_temporary_list_player_db()
-        for list_player_select1 in list_player_select:
-            temporary_list.append(list_player_select1)
-        numbers = len(temporary_list)
-        return numbers
-
 
