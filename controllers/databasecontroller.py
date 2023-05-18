@@ -22,7 +22,7 @@ class DatabaseController:
             json.dump(tournament, f)
 
     def add_player_in_json(self, playermodel):
-        """Méthode qui enregistre les joueurs dans la base de données, méthode qui peut ajouter des joueurs
+        """Méthode qui enregistre les joueurs dans la base de données List_Registered_Players.json, méthode qui peut ajouter des joueurs
         au fur et à mesure
         """
         temporarylist = []
@@ -47,8 +47,6 @@ class DatabaseController:
                 temporarylist.append(player)
             with open(f"{path}/List_Registered_Players.json", "w") as g:
                 json.dump(temporarylist, g)
-
-
 
     def chess_id_controller(self, chess_id):
         data = os.getcwd()
@@ -95,45 +93,54 @@ class DatabaseController:
             json.dump(list_player, g)
 
     def del_player_in_list_db(self, user_input):
-        """Supprimer le joueur dans la liste"""
+        """Supprimer le joueur dans la liste List_Registered_Players.json"""
         user_input -= 1
         list_player = self.get_player_list()
         player_sorted = self.sort_player_list_db(list_player)
         del player_sorted[user_input]
         self.add_player_in_json2(player_sorted)
 
+    def get_list_registered_players_and_players_select(self):
+        list_registered_players = self.get_player_list()
+        list_player_select = self.get_list_player_select_db()
+        for list_player_select1 in list_player_select:
+            if list_player_select1 in list_registered_players:
+                list_registered_players.remove(list_player_select1)
+        return list_registered_players
+
     def add_player_in_tournament_db(self, user_input):
         temporary_list = []
         user_input = int(user_input)
         user_input -= 1
-        list_player = self.get_player_list()  # Extraire les données de la liste
-        player_sorted = self.sort_player_list_db(list_player)  # Tries la liste des joueurs par ordre alphabétique
-        player_select = player_sorted[user_input]  # Selection du joueur
-        temporary_list.append(player_select)
+        list_registered_players = self.get_player_list()  # Extraire les données de la liste List_Registered_Players.json
+        player_sorted = self.sort_player_list_db(list_registered_players)  # Tries la liste des joueurs par ordre alphabétique
+        player_select = player_sorted[user_input]  # Selection du joueur de list_registered_players
+        temporary_list.append(player_select) # Le joueur selectionné est ajouté dans temporary_list
         self.add_player_select_in_json(temporary_list) # Enregistrement du joueur selectionné dans List_Players_Select.json
-        del player_sorted[user_input] # Supprime le joueur selectionner de la liste player_sorted
-        new_list_player = player_sorted
-        self.add_player_temporary_in_json(new_list_player) #Enregistrement des joueurs restant dans Temporary_List_Players.json
 
     def add_player_in_tournament_db2(self, user_input):
-        temporary_player_select = []
+        temporary_list = []
         user_input -= 1
-
-        list_player_select = self.get_list_player_select_db()  # Récupération des données de list_player_select
+        list_player_select = self.get_list_player_select_db()
         for list_player_select1 in list_player_select:
-            temporary_player_select.append(list_player_select1)
-        temporary_list = self.get_temporary_list_player_db()  # Récupération des données de temporary_list
-        player_select = temporary_list[user_input] # Selection du joueur à ajouter dans le tournoi
+            temporary_list.append(list_player_select1)
 
-        temporary_player_select.append(player_select)
+        list_registered_players = self.get_list_registered_players_and_players_select()
+        player_select = list_registered_players[user_input]
+        temporary_list.append(player_select)
+        self.add_player_select_in_json(temporary_list)
 
-        del temporary_list[user_input] # Suppression du joueur de cette liste
 
-        self.add_player_select_in_json(temporary_player_select) # Enregistrement de la liste dans List_Players_Select.json
-        self.add_player_temporary_in_json(temporary_list) # Enregistrement de la liste dans Temporary_List_Players.json
+    def del_player_in_list_player_select_db(self, user_input):
+        user_input -= 1
+        list_player_select = self.get_list_player_select_db()  # Récupération des données de list_player_select
+        player_sorted = self.sort_player_list_db(list_player_select)
+        del player_sorted[user_input]
+        self.add_player_select_in_json(player_sorted)
+
 
     def add_player_select_in_json(self, player_select):
-        """Enregistrement du joueur selectionné dans List_Players_Select.json"""
+        """Enregistrement du ou des joueurs selectionné dans List_Players_Select.json"""
 
         data = os.getcwd()
         path = f"{data}/data/tournament/"
@@ -143,16 +150,6 @@ class DatabaseController:
         path2 = (f"{data}/data/tournament/{tournament_name}/Player_Select")
         with open(f"{path2}/List_Players_Select.json", "w") as f:
             json.dump(player_select, f)
-
-    def add_player_temporary_in_json(self, new_list_player):
-        """Enregistrement de la nouvelle liste avec le joueur en moins dans Temporary_List_Players.json"""
-        data = os.getcwd()
-        path = f"{data}/data/tournament/"
-        directory = os.listdir(path)
-        tournament_name = str(directory[0])
-        path2 = (f"{data}/data/tournament/{tournament_name}/Player_Select")
-        with open(f"{path2}/Temporary_List_Players.json", "w") as f:
-            json.dump(new_list_player, f)
 
     def get_list_player_select_db(self):
         """Récupération des données du fichier List_Players_Select.json """
