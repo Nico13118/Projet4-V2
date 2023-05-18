@@ -79,6 +79,10 @@ class DatabaseController:
         player_sorted = sorted(list_player, key=lambda x: (x["nom"], x["prenom"]))
         return player_sorted
 
+    def sorted_by_player_order(self, temporary_list):
+        players_sorted = sorted(temporary_list, key=lambda x: (x["joueur"]))
+        return players_sorted
+
     def del_tournament_db(self):
         data = os.getcwd()
         path = f"{data}/data/tournament/"
@@ -147,7 +151,7 @@ class DatabaseController:
         directory = os.listdir(path)
         tournament_name = str(directory[0])
 
-        path2 = (f"{data}/data/tournament/{tournament_name}/Player_Select")
+        path2 = f"{data}/data/tournament/{tournament_name}/Player_Select"
         with open(f"{path2}/List_Players_Select.json", "w") as f:
             json.dump(player_select, f)
 
@@ -157,7 +161,7 @@ class DatabaseController:
         path = f"{data}/data/tournament/"
         directory = os.listdir(path)
         tournament_name = str(directory[0])
-        path2 = (f"{data}/data/tournament/{tournament_name}/Player_Select")
+        path2 = f"{data}/data/tournament/{tournament_name}/Player_Select"
         with open(f"{path2}/List_Players_Select.json", "r") as f:
             list_player_select = json.load(f)
             return list_player_select
@@ -168,7 +172,40 @@ class DatabaseController:
         path = f"{data}/data/tournament/"
         directory = os.listdir(path)
         tournament_name = str(directory[0])
-        path2 = (f"{data}/data/tournament/{tournament_name}/Player_Select")
+        path2 = f"{data}/data/tournament/{tournament_name}/Player_Select"
         with open(f"{path2}/Temporary_List_Players.json", "r") as f:
             temporary_list = json.load(f)
             return temporary_list
+
+    def add_player_shuffle_in_list_match_json(self, temporary_list):
+        number_files = self.number_files_in_list_match()
+        number_files += 1
+        data = os.getcwd()
+        path = f"{data}/data/tournament/"
+        directory = os.listdir(path)
+        tournament_name = str(directory[0])
+        path2 = f"{data}/data/tournament/{tournament_name}/Match"
+        with open(f"{path2}/List_Match{number_files}.json", "w") as f:
+            json.dump(temporary_list, f)
+
+    def get_player_list_match(self):
+        number_files = self.number_files_in_list_match()
+
+        data = os.getcwd()
+        path = f"{data}/data/tournament/"
+        directory = os.listdir(path)
+        tournament_name = str(directory[0])
+        path2 = f"{data}/data/tournament/{tournament_name}/Match"
+        with open(f"{path2}/List_Match{number_files}.json", "r") as f:
+            temporary_list = json.load(f)
+            return temporary_list
+
+    def number_files_in_list_match(self):
+        data = os.getcwd()
+        path1 = f"{data}/data/tournament/"
+        directory1 = os.listdir(path1)
+        tournament_name = str(directory1[0])
+        path2 = f"{data}/data/tournament/{tournament_name}/Match"
+        directory2 = os.listdir(path2)
+        number_files = len(directory2)
+        return number_files
