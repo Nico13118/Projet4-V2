@@ -17,6 +17,11 @@ class PlayerListController:
             self.view.message_list_view()
             self.view.print_player_list_view(player_sorted) # Affiche la liste des joueurs
 
+    def print_list_player_select(self):
+        list_player_select = self.db.get_list_player_select_db()
+        self.view.print_player_list_view(list_player_select)
+
+
     def del_player_in_list_controller(self):
         """Méthode qui permet d'afficher la liste dans l'ordre et de supprimer un joueur de cette liste"""
         if self.control_player_list_controller(): # Si la présence du fichier est True
