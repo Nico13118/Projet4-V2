@@ -21,7 +21,7 @@ class MenuView:
 
     def get_user_input_player_menu(self):
 
-        print("\n|====== Gestionnaire des joueurs =========|")
+        print("\n|====== GESTIONNAIRE DES JOUEURS =========|")
         print("| 1 -Inscription des joueurs                |")
         print("| 2 -Voir la liste des joueurs              |")
         print("| 3 -Supprimer un joueur de la liste        |")
@@ -33,7 +33,7 @@ class MenuView:
 
     def get_user_input_tournament_menu(self):
 
-        print("\n|======= Gestionnaire de tournoi =======|")
+        print("\n|======= GESTIONNAIRE DE TOURNOI =======|")
         print("| 1 -Créer un tournoi.                      |")
         print("| 2 -Ajouter des joueurs au tournoi         |")
         print("| 3 -liste des joueurs inscrits au tournoi  |")
@@ -50,7 +50,7 @@ class MenuView:
     def get_user_input4(self):
 
         def print_menu_report():
-            print("\n|=========== Rapport de tournoi ===========|")
+            print("\n|=========== RAPPORT DE TOURNOI ===========|")
             print("| 1 -Rapport du tournoi en cours            |")
             print("| 2 -Rapport des tournois précédents.       |")
             print("| 3 -Retourner au menu principal            |")
