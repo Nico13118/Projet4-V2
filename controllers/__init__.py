@@ -3,3 +3,4 @@ from .playercontroller import PlayerController
 from .tournamentcontroller import TournamentController
 from .databasecontroller import DatabaseController
 from .playerlistcontroller import PlayerListController
+from .starttournamentcontroller import StartTournamentController
