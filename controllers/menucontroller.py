@@ -73,7 +73,7 @@ class MenuController:
             self.controller.player_list_controller.del_player_in_list_player_select()
         elif user_input == "5":
             """Lancer le tournoi"""
-            self.controller.tournament_controller.start_tournament()
+            self.controller.start_tournament_controller.start_tournament()
         elif user_input == "6":
             """Reprendre un tournoi"""
             pass
