@@ -75,12 +75,15 @@ class MenuController:
             """Lancer le tournoi"""
             self.controller.start_tournament_controller.start_tournament()
         elif user_input == "6":
-            """Reprendre un tournoi"""
-            pass
+            """Saisir les scores"""
+            self.controller.start_tournament_controller.player_selection()
         elif user_input == "7":
+            """Tableau des équipes"""
+            self.controller.start_tournament_controller.show_team_table_controller()
+        elif user_input == "8":
             """Supprimer un tournoi"""
             self.controller.tournament_controller.del_tournament_directory()
-        elif user_input == "8":
+        elif user_input == "9":
             """Retourner au menu principal"""
             self.run_menu()
         elif user_input > "7":
