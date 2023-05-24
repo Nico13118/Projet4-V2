@@ -24,7 +24,6 @@ class PlayerListController:
         self.view.print_player_list_view(list_player_select)
         self.controller.menu_controller.run_tournament_menu()
 
-
     def del_player_in_list_controller(self):
         """Méthode qui permet d'afficher la liste dans l'ordre et de supprimer un joueur de cette liste"""
         if self.control_player_list_controller(): # Si la présence du fichier est True
@@ -66,8 +65,6 @@ class PlayerListController:
             self.view.message_del_player_in_list_view2()
             self.controller.menu_controller.run_tournament_menu()
 
-
-
     def control_player_list_controller(self):
         """Controle si le fichier List_Registered_Players.json existe"""
         data = os.getcwd()
@@ -105,7 +102,6 @@ class PlayerListController:
         else:
             return False
 
-
     def round_file_control(self):
         """Méthode qui controle la présence du fichier Round"""
         data = os.getcwd()
@@ -115,6 +111,16 @@ class PlayerListController:
         path2 = f"{data}/data/tournament/{tournament_name}/Rounds"
         directory_rounds = os.listdir(path2)
         if directory_rounds:
+            return True
+        else:
+            return False
+
+    def control_tournament_directory(self):
+        """Méthode qui controle la présence du répertoire portant le nom du tournoi"""
+        data = os.getcwd()
+        path = f"{data}/data/tournament/"
+        directory1 = os.listdir(path)
+        if directory1:
             return True
         else:
             return False
@@ -141,3 +147,36 @@ class PlayerListController:
             return True
         else:
             return False
+
+    def number_files_round(self):
+        """Méthode qui controle le nombre de fichiers qu'il y a dans le répertoire Rounds """
+        data = os.getcwd()
+        path1 = f"{data}/data/tournament/"
+        directory1 = os.listdir(path1)
+        tournament_name = str(directory1[0])
+        path2 = f"{data}/data/tournament/{tournament_name}/Rounds"
+        directory2 = os.listdir(path2)
+        number_files = len(directory2)
+        return number_files
+
+    def number_files_in_list_match(self):
+        """Méthode qui controle le nombre de fichiers qu'il y a dans le répertoire Match """
+        data = os.getcwd()
+        path1 = f"{data}/data/tournament/"
+        directory1 = os.listdir(path1)
+        tournament_name = str(directory1[0])
+        path2 = f"{data}/data/tournament/{tournament_name}/Match"
+        directory2 = os.listdir(path2)
+        number_files = len(directory2)
+        return number_files
+
+    def number_of_score_files(self):
+        """Méthode qui controle le nombre de fichiers qu'il y a dans le répertoire Scores """
+        data = os.getcwd()
+        path1 = f"{data}/data/tournament/"
+        directory1 = os.listdir(path1)
+        tournament_name = str(directory1[0])
+        path2 = f"{data}/data/tournament/{tournament_name}/Scores"
+        directory2 = os.listdir(path2)
+        number_files = len(directory2)
+        return number_files
