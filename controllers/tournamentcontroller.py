@@ -85,31 +85,31 @@ class TournamentController:
 
     def del_tournament_directory(self):
         """Suppression du répertoire portant le nom du tournoi"""
-        data = os.getcwd()
-        path = f"{data}/data/tournament/"
-        directory1 = os.listdir(path)
-        if directory1:
+        if self.controller.player_list_controller.control_tournament_directory():
             self.view.del_tournament_message_view1()
-            self.input_control_tournament()
-
+            user_input = self.view.del_tournament_view()
+            self.input_control_tournament(user_input)
         else:
             self.view.del_tournament_message_view4()
             self.controller.menu_controller.run_menu_tournament()
 
-    def input_control_tournament(self):
-        user_input = self.view.del_tournament_view()
-        if user_input == "":
-            self.view.tournament_error_message2()
-        elif user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o" or user_input == "oui":
-            self.db.del_tournament_db()
-            self.view.del_tournament_message_view3()
-            self.controller.menu_controller.run_tournament_menu()
+    def input_control_tournament(self, user_input):
+        user_input2 = True
+        while user_input2:
+            if user_input == "":
+                self.view.tournament_error_message2()
+            elif user_input == "Y" or user_input == "y" or user_input == "O" \
+                    or user_input == "o" or user_input == "oui":
+                self.dm.del_tournament_db()
+                self.view.del_tournament_message_view3()
+                self.controller.menu_controller.run_tournament_menu()
 
-        elif user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no" or user_input == "non":
-            self.controller.menu_controller.run_menu_tournament()
-        else:
-            self.view.del_tournament_message_view2()
-            self.input_control_tournament()
+            elif user_input == "N" or user_input == "n" or user_input == "No" \
+                    or user_input == "no" or user_input == "non":
+                self.controller.menu_controller.run_menu_tournament()
+            else:
+                self.view.del_tournament_message_view2()
+                user_input2 = True
 
     def input_control_player_in_tournament(self):
         user_input = self.view.message_select_player3_tournamentview()
@@ -128,7 +128,7 @@ class TournamentController:
         """Condition qui controle si le fichier List_Players_Select.json existe"""
         if self.controller.player_list_controller.control_player_select_controller():
             """La condition qui controle combien de joueurs sont inscrits au tournoi"""
-            if self.controller.player_list_controller.control_number_player_in_list_players_select():
+            if not self.controller.player_list_controller.control_number_player_in_list_players_select():
                 list_registered_players = self.db.get_list_registered_players_and_players_select()
                 self.view.print_player_list_tournamentview(list_registered_players) # Affichage de la liste list_registered_players
                 user_input = self.view.message_select_player2_tournamentview() # Demande à l'utilisateur de saisir le joueur à ajouter au tournoi
@@ -149,7 +149,7 @@ class TournamentController:
                 self.view.message_select_player4_tournamentview()
                 self.controller.menu_controller.run_tournament_menu()
         else:
-            """Ajouter un premier joueur dans dans le tournoi """
+            """Ajouter un premier joueur dans le tournoi """
             """ Condition qui controle si le fichier List_Registered_Players.json existe """
             if self.controller.player_list_controller.control_player_list_controller():
                 self.view.message_select_player1_tournamentview()
