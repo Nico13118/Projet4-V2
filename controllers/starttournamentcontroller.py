@@ -56,55 +56,108 @@ class StartTournamentController:
         self.controller.menu_controller.run_tournament_menu()
 
     def player_selection(self):
+        """Control que le tournoi a bien été lancé"""
+        if not self.controller.player_list_controller.list_match_file_control():
+            self.view.tournament_not_launched()
+            self.controller.menu_controller.run_tournament_menu()
         """Si le fichier Round1.json n'existe pas"""
         if not self.controller.player_list_controller.round_file_control():
             list_match = self.db.get_player_list_match() # Récupération des données de List_MatchX.json
             self.view.view_match_for_score_entry(list_match) # Affiche à l'utilisateur la liste des joueurs
-            user_input = self.view.get_user_input_match_for_score_entry() # Demande à l'utilisateur de saisir un joueur pour entrer le score
+            choice_player1 = self.view.get_user_input_match_for_score_entry() # Demande à l'utilisateur de choisir un joueur pour entrer le score
             """Control de la saisie utilisateur"""
-            self.user_input_control(user_input, list_match)
+            self.user_input_control(choice_player1, list_match)
             self.view.team_selection_view() # Affiche "Saisie des scores"
-            self.team_selection(user_input)
+            self.team_selection(choice_player1)
 
         """Si le fichier Round1.json existe"""
         list_match = self.db.get_list_match_and_round() # Récupération des joueurs n'ayant pas eu de score
         self.view.view_match_for_score_entry(list_match)  # Affiche à l'utilisateur la liste des joueurs
         """Control de la saisie utilisateur"""
-        """ Demande à l'utilisateur de saisir un joueur pour entrer le score"""
-        user_input2 = self.view.get_user_input_match_for_score_entry()
-        self.user_input_control(user_input2, list_match) # Controle de la saisie utilisateur
+        """ Demande à l'utilisateur de choisir un joueur pour entrer le score"""
+        choice_player1 = self.view.get_user_input_match_for_score_entry()
+        self.user_input_control(choice_player1, list_match) # Controle de la saisie utilisateur
         self.view.team_selection_view() # Affiche "Saisie des scores"
-        self.team_selection(user_input2) # Demande à l'utilisateur Match Nul ou Gagnant / Perdant
+        self.team_selection(choice_player1) # Demande à l'utilisateur Match Nul ou Gagnant / Perdant
 
-    def team_selection(self, user_input2):
+    def team_selection(self, choice_player1):
         """Si le fichier Round1.json n'existe pas"""
         if not self.controller.player_list_controller.round_file_control():
-            user_input = self.view.get_user_input_match_for_score_entry2() # Demande Match Nul ou Gagnant / Perdant
-            self.user_input_control2(user_input)
-            user_input = int(user_input)
-            user_input2 = int(user_input2)
-            self.db.add_score_to_players(user_input, user_input2)
-            self.input_control_player_selection()
+            choice_score1 = self.view.get_user_input_match_for_score_entry2() # Demande Match Nul ou Gagnant / Perdant
+            self.user_input_control2(choice_score1)
+            choice_score1 = int(choice_score1)
+            choice_player1 = int(choice_player1)
+            if choice_score1 == 1:
+                self.db.add_score_to_players(choice_score1, choice_player1, choice_player2=None)
+                self.input_control_player_selection()
+            if choice_score1 == 2:
+                """L'utilisateur a déjà selectionné un joueur"""
+                """Récupérer les noms des 2 joueurs"""
+                player_list = self.db.get_team(choice_player1)
+                """Afficher les joueurs à l'utilisateur"""
+                self.view.view_match_for_score_entry(player_list)
+                """Demander à l'utilisateur de choisir le joueur qui remporte le match"""
+                choice_player2 = self.view.winner_player_selection()
+                """Control de saisie utilisateur"""
+                self.user_input_control2(choice_player2)
+                """Envoyer les informations """
+                """(user_input, user_input2)"""
+                self.db.add_score_to_players(choice_score1, choice_player1, choice_player2)
+                self.input_control_player_selection()
 
         """Si le fichier Round1.json existe"""
-        user_input = self.view.get_user_input_match_for_score_entry2()  # Demande Match Nul ou Gagnant / Perdant
-        self.user_input_control2(user_input)
-        user_input = int(user_input)
-        user_input2 = int(user_input2)
-        self.db.add_score_to_players(user_input, user_input2)
-        """Fonctionnalité qui control le nombre de joueurs qui se trouve dans le fichier RoundX.json"""
-        numbers_players = self.controller.player_list_controller.control_number_player_in_list_round()
-        if numbers_players == 8:
-            self.view.end_of_game_message()
-            """Crer le fichier des scores"""
-            self.create_file_score_controller()
-            """Créer le fichier du match suivant"""
-            """Afficher Le match suivant"""
-            """Retour au menu GESTIONNAIRE DU TOURNOI"""
-            self.controller.menu_controller.run_tournament_menu()
+        choice_score1 = self.view.get_user_input_match_for_score_entry2()  # Demande Match Nul ou Gagnant / Perdant
+        self.user_input_control2(choice_score1)
+        choice_score1 = int(choice_score1)
+        choice_player1 = int(choice_player1)
+        if choice_score1 == 1:
+            self.db.add_score_to_players(choice_score1, choice_player1, choice_player2=None)
+            """Fonctionnalité qui control le nombre de joueurs qui se trouve dans le fichier RoundX.json"""
+            numbers_players = self.controller.player_list_controller.control_number_player_in_list_round()
+            if numbers_players == 8:
+                self.view.end_of_game_message()
+                """Crer le fichier des scores"""
+                self.create_file_score_controller()
+                """Récupération des données de ScoreX.json pour créer le match suivant"""
+                list_score = self.db.get_list_scores()
+                list_score_sorted = self.db.sort_player_list_score(list_score)
+                self.db.add_player_shuffle_in_list_match_json(list_score_sorted)
+                """Afficher Le match suivant"""
 
-        else:
-            self.input_control_player_selection()
+                """Retour au menu GESTIONNAIRE DU TOURNOI"""
+                self.controller.menu_controller.run_tournament_menu()
+
+            else:
+                self.input_control_player_selection()
+        if choice_score1 == 2:
+            """L'utilisateur a déjà selectionné un joueur"""
+            """Récupérer les noms des 2 joueurs"""
+            player_list = self.db.get_team(choice_player1)
+            """Afficher les joueurs à l'utilisateur"""
+            self.view.view_match_for_score_entry(player_list)
+            """Demander à l'utilisateur de choisir le joueur qui remporte le match"""
+            choice_player2 = self.view.winner_player_selection()
+            """Control de saisie utilisateur"""
+            self.user_input_control2(choice_player2)
+            """Envoyer les informations """
+            """(user_input, user_input2)"""
+            self.db.add_score_to_players(choice_score1, choice_player1, choice_player2)
+            """Fonctionnalité qui control le nombre de joueurs qui se trouve dans le fichier RoundX.json"""
+            numbers_players = self.controller.player_list_controller.control_number_player_in_list_round()
+            if numbers_players == 8:
+                self.view.end_of_game_message()
+                """Créer le fichier des scores"""
+                self.create_file_score_controller()
+                """Récupération des données de ScoreX.json pour créer le match suivant"""
+                list_score = self.db.get_list_scores()
+                list_score_sorted = self.db.sort_player_list_score(list_score)
+                self.db.add_player_shuffle_in_list_match_json(list_score_sorted)
+                """Afficher Le match suivant"""
+
+                """Retour au menu GESTIONNAIRE DU TOURNOI"""
+                self.controller.menu_controller.run_tournament_menu()
+            else:
+                self.input_control_player_selection()
 
     def user_input_control2(self, user_input):
         user_input2 = True
@@ -119,7 +172,6 @@ class StartTournamentController:
                     user_input2 = True
                 elif user_input <= 2:
                     user_input2 = False
-
 
     def user_input_control(self, user_input, list_match):
         """Control de la saisie utilisateur
@@ -143,7 +195,6 @@ class StartTournamentController:
                 elif user_input <= numbers:
                     user_input2 = False
 
-
     def input_control_player_selection(self):
         """Control de la saisie utilisateur"""
         user_input2 = True
@@ -166,7 +217,6 @@ class StartTournamentController:
         list_match = self.db.get_player_list_match()
         self.view.print_start_match(list_match)
         self.controller.menu_controller.run_tournament_menu()
-
 
     def create_file_score_controller(self):
         """Récupérer les données du fichier RoundX.json"""
