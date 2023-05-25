@@ -3,6 +3,9 @@ class StartTournamentView:
         print("============Lancement du tournoi====================")
         print("============Affichage des équipes===================")
 
+    def message_end_tournament(self):
+        print("============ Tournois terminé ======================")
+
     def message_tournament_launched(self):
         print("Le tournoi a déja été lancé, vous pouvez saisir les scores des joueurs.")
 
@@ -69,3 +72,9 @@ class StartTournamentView:
         for list_match1 in list_match:
             i += 1
             print(f"-{i}-", "Nom :", list_match1["nom"], list_match1["prenom"])
+
+    def tournament_winner(self):
+        print("===============Vainqueur du tournoi====================")
+
+    def two_winners_ex_aequo(self):
+        print("Vainqueurs du tournoi par ex-aequo :")
