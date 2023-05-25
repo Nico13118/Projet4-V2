@@ -180,3 +180,12 @@ class PlayerListController:
         directory2 = os.listdir(path2)
         number_files = len(directory2)
         return number_files
+
+    def get_score_file_names(self):
+        data = os.getcwd()
+        path1 = f"{data}/data/tournament/"
+        directory1 = os.listdir(path1)
+        tournament_name = str(directory1[0])
+        path2 = f"{data}/data/tournament/{tournament_name}/Scores"
+        score_files = os.listdir(path2)
+        return score_files
