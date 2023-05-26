@@ -28,19 +28,30 @@ class PlayerListController:
         """Méthode qui permet d'afficher la liste dans l'ordre et de supprimer un joueur de cette liste"""
         if self.control_player_list_controller(): # Si la présence du fichier est True
             user_input = self.view.message_del_player() # Demande à l'utilisateur s'il souhaite continuer
+            if self.control_user_input_del_player_in_list_controller(user_input):
+                list_player = self.db.get_player_list()  # Extraire les données de la liste
+                player_sorted = self.db.sort_player_list_db(list_player)  # Tries la liste des joueurs par ordre alphabétique
+                self.view.message_list_view()  # Affiche le message - Liste des joueurs enregistrés -
+                self.view.print_player_list_view(player_sorted)  # Affiche la liste des joueurs triés par ordre alphabétique
+                user_input = self.view.message_del_player_in_list_view()  # Demander à l'utilisateur le joueur à supprimer
+                if self.control_user_input_del_player_list_player_select(user_input, player_sorted):
+                    self.db.del_player_in_list_db(user_input)  # Envoie le choix de l'utilisateur
+                    self.view.message_del_player_in_list_view2()  # Message qui confirme la suppression
+
+    def control_user_input_del_player_in_list_controller(self, user_input):
+        user_input2 = True
+        while user_input2:
+            if user_input == "":
+                self.view.message_error_list_view3()
             if user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
-                list_player = self.db.get_player_list() # Extraire les données de la liste
-                player_sorted = self.db.sort_player_list_db(list_player)  # Tries la liste des joueur par ordre alphabétique
-                self.view.message_list_view() # Affiche le message - Liste des joueurs enregistrés -
-                self.view.print_player_list_view(player_sorted) # Affiche la liste des joueurs triés par ordre alphabétique
-                user_input = self.view.message_del_player_in_list_view() # Demander à l'utilisateur le joueur à supprimer
-                self.db.del_player_in_list_db(user_input) # Envoie le choix de l'utilisateur
-                self.view.message_del_player_in_list_view2() # Message qui confirme la suppression
-            elif user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
+                user_input2 = False
+            if user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
                 self.controller.menu_controller.run_menu_player()
-            else:
+            if user_input.isdigit():
                 self.view.message_error_list_view2()
-                self.del_player_in_list_controller()
+            else:
+                user_input2 = False
+        return True
 
     def del_player_in_list_player_select(self):
         if self.control_player_select_controller():
@@ -49,21 +60,29 @@ class PlayerListController:
             self.view.print_list_player_select() # Affiche "Liste des joueurs inscrits au tournoi"
             self.view.print_player_list_view(player_sorted) # Affiche la liste des joeuurs inscrits dans l'ordre alphabétique
             user_input = self.view.message_del_player_in_list_view() # Demande à l'utilisateur de faire son choix
+            if self.control_user_input_del_player_list_player_select(user_input, player_sorted):
+                self.db.del_player_in_list_player_select_db(user_input)
+                self.view.message_del_player_in_list_view2()
+                self.controller.menu_controller.run_tournament_menu()
+
+    def control_user_input_del_player_list_player_select(self, user_input, player_sorted):
+        user_input2 = True
+        while user_input2:
             if user_input == "":
                 self.view.message_error_list_view3()
-                self.del_player_in_list_player_select()
+            if user_input.isalpha():
+                self.view.message_error_list_view4()
                 """Controle combien de joueur sont inscrits dans la liste """
             numbers = len(player_sorted)
             user_input = int(user_input)
             if user_input > numbers:
                 self.view.message_error_list_view4()
-                self.del_player_in_list_player_select()
             elif user_input == 0:
                 self.view.message_error_list_view4()
-                self.del_player_in_list_player_select()
-            self.db.del_player_in_list_player_select_db(user_input)
-            self.view.message_del_player_in_list_view2()
-            self.controller.menu_controller.run_tournament_menu()
+            else:
+                user_input2 = False
+        return True
+
 
     def control_player_list_controller(self):
         """Controle si le fichier List_Registered_Players.json existe"""
