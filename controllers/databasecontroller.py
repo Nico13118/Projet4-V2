@@ -1,5 +1,5 @@
 from models import TournamentModel, PlayerModel
-
+import time
 import os
 import json
 
@@ -148,7 +148,8 @@ class DatabaseController:
                     "naissance": list1["naissance"],
                     "joueur": list1["joueur"],
                     "round": list1["round"],
-                    "score": score}
+                    "score": score,
+                    "Date et heure de fin": list1["Date et heure de fin"]}
                 temporary_list.append(player)
             with open(f"{data}/data/tournament/{tournament_name}/Final_Scores/Final_Scores.json", "w") as file:
                 json.dump(temporary_list, file)
@@ -171,6 +172,7 @@ class DatabaseController:
         """Méthode qui ajoute les scores aux joueurs
             Si fichier RoundX.json n'existe pas
         """
+        dateiso = time.strftime('%d/%m/%Y - %H:%M')
         number_files_round = self.controller.player_list_controller.number_files_round()
         number_files_match = self.controller.player_list_controller.number_files_in_list_match()
         if number_files_match > number_files_round:
@@ -190,8 +192,8 @@ class DatabaseController:
                         "naissance": list_team1["naissance"],
                         "joueur": list_team1["joueur"],
                         "round": rounds,
-                        "score": SCORE1
-                    }
+                        "score": SCORE1,
+                        "Date et heure de fin": dateiso}
 
                     temporary_list.append(player)
 
@@ -211,8 +213,8 @@ class DatabaseController:
                         "naissance": player_wins2["naissance"],
                         "joueur": player_wins2["joueur"],
                         "round": rounds,
-                        "score": SCORE2
-                    }
+                        "score": SCORE2,
+                        "Date et heure de fin": dateiso}
 
                     temporary_list.append(player)
                 select_player2 = list_team2[1]
@@ -227,8 +229,8 @@ class DatabaseController:
                         "naissance": player_loses1["naissance"],
                         "joueur": player_loses1["joueur"],
                         "round": rounds,
-                        "score": SCORE3
-                    }
+                        "score": SCORE3,
+                        "Date et heure de fin": dateiso}
 
                     temporary_list.append(player)
                 self.add_players_to_file_round(temporary_list)
@@ -241,6 +243,7 @@ class DatabaseController:
             rounds = self.controller.player_list_controller.number_files_in_list_match()
 
             if choice_score1 == 1:  # Choix 1 = Match Nul
+                dateiso = time.strftime('%d/%m/%Y - %H:%M')
                 list_team = self.get_team(choice_player1)  # Récupération de la liste des joueurs de list_match
                 for list_team1 in list_team:
                     player = {
@@ -252,8 +255,8 @@ class DatabaseController:
                         "naissance": list_team1["naissance"],
                         "joueur": list_team1["joueur"],
                         "round": rounds,
-                        "score": SCORE1
-                    }
+                        "score": SCORE1,
+                        "Date et heure de fin": dateiso}
 
                     temporary_list.append(player)
                 for list_round1 in list_round:
@@ -274,8 +277,8 @@ class DatabaseController:
                         "naissance": player_wins1["naissance"],
                         "joueur": player_wins1["joueur"],
                         "round": rounds,
-                        "score": SCORE2
-                    }
+                        "score": SCORE2,
+                        "Date et heure de fin": dateiso}
 
                     temporary_list.append(player)
                 select_player2 = list_team[1]
@@ -290,8 +293,8 @@ class DatabaseController:
                         "naissance": player_loses1["naissance"],
                         "joueur": player_loses1["joueur"],
                         "round": rounds,
-                        "score": SCORE3
-                    }
+                        "score": SCORE3,
+                        "Date et heure de fin": dateiso}
 
                     temporary_list.append(player)
                 for list_round1 in list_round:
