@@ -1,7 +1,7 @@
 class MenuView:
 
     def club_name(self):
-        print("\n******** Club Provence Échecs ********* ")
+        print("\n*************** Club Provence Échecs *************** ")
 
     def get_user_input_main_menu(self):
         """
