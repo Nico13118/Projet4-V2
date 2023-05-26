@@ -21,8 +21,7 @@ class TournamentController:
         directory1 = os.listdir(path)
         if directory1:
             self.view.tournament_error_message1()
-            self.controller.menu_controller.run_menu()
-
+            self.controller.menu_controller.run_tournament_menu()
         else:
             """Création d'un tournoi"""
             self.view.start_tournament()
@@ -96,6 +95,8 @@ class TournamentController:
     def input_control_tournament(self, user_input):
         user_input2 = True
         while user_input2:
+            if user_input.isdigit():
+                self.view.tournament_error_message3()
             if user_input == "":
                 self.view.tournament_error_message2()
             elif user_input == "Y" or user_input == "y" or user_input == "O" \
@@ -109,19 +110,21 @@ class TournamentController:
                 self.controller.menu_controller.run_menu_tournament()
             else:
                 self.view.del_tournament_message_view2()
-                user_input2 = True
 
     def input_control_player_in_tournament(self):
         user_input = self.view.message_select_player3_tournamentview()
-        if user_input == "":
-            self.view.tournament_error_message2()
-        elif user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
-            self.add_player_in_tournament_controller()
-        elif user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
-            self.controller.menu_controller.run_tournament_menu()
-        else:
-            self.view.tournament_error_message3()
-            self.input_control_player_in_tournament()
+        user_input2 = True
+        while user_input2:
+            if user_input.isdigit():
+                self.view.tournament_error_message3()
+            if user_input == "":
+                self.view.tournament_error_message2()
+            elif user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
+                self.add_player_in_tournament_controller()
+            elif user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
+                self.controller.menu_controller.run_tournament_menu()
+            else:
+                self.view.tournament_error_message3()
 
     def add_player_in_tournament_controller(self):
         """Ajouter un joueur supplémentaire dans le tournoi """
