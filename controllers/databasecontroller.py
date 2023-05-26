@@ -31,14 +31,14 @@ class DatabaseController:
         data = os.getcwd()
         path = f"{data}/data/players_list/"
         directory1 = os.listdir(path)
-        # Si le fichier json n'existe pas alors enregistre les données dans le fichier json
+        """Si le fichier json n'existe pas alors enregistre les données dans le fichier json"""
         player_model = PlayerModel
         playerlist = player_model.player_registration(playermodel)
         if not directory1:
             temporarylist.append(playerlist)
             with open(f"{path}/List_Registered_Players.json", "w") as f:
                 json.dump(temporarylist, f)
-        # Sinon si le fichier existe, alors extraire les données puis enregistrer l'ensemble dans le même fichier
+            """Sinon si le fichier existe, alors extraire les données puis enregistrer l'ensemble dans le même fichier"""
         else:
             player = player_model.player_registration(playermodel)
             with open(f"{path}/List_Registered_Players.json", "r") as f:
@@ -150,7 +150,7 @@ class DatabaseController:
                     "round": list1["round"],
                     "score": score}
                 temporary_list.append(player)
-            with open(f"{data}/Final_Scores/Final_Scores.json", "w") as file:
+            with open(f"{data}/data/tournament/{tournament_name}/Final_Scores/Final_Scores.json", "w") as file:
                 json.dump(temporary_list, file)
 
 
@@ -174,8 +174,6 @@ class DatabaseController:
         number_files_round = self.controller.player_list_controller.number_files_round()
         number_files_match = self.controller.player_list_controller.number_files_in_list_match()
         if number_files_match > number_files_round:
-        #if not self.controller.player_list_controller.round_file_control():
-
             temporary_list = []
             player_wins = []
             player_loses = []
@@ -413,18 +411,15 @@ class DatabaseController:
             temporary_list = json.load(f)
             return temporary_list
 
-    def get_all_score_files(self):
-        temporary_list = []
-        name_score_files = self.controller.player_list_controller.get_score_file_name()
-        for name_score_files1 in name_score_files:
-            data = os.getcwd()
-            path = f"{data}/data/tournament/"
-            directory = os.listdir(path)
-            tournament_name = str(directory[0])
-            path2 = f"{data}/data/tournament/{tournament_name}/Scores"
-            with open(f"{path2}/{name_score_files1}", "r") as f:
-                list1 = json.load(f)
-                temporary_list.append(list1)
+    def get_final_score_files(self):
+        """Méthode qui permet de récupérer les informations du fichier Final_Scores.json"""
+        data = os.getcwd()
+        path = f"{data}/data/tournament/"
+        directory = os.listdir(path)
+        tournament_name = str(directory[0])
+        with open(f"{data}/data/tournament/{tournament_name}/Final_Scores/Final_Scores.json", "r") as f:
+            final_scores = json.load(f)
+            return final_scores
 
 
     def get_winner_player(self, choice_player1, choice_player2):
@@ -447,6 +442,40 @@ class DatabaseController:
             temporary_list.append(select_player2)
             return temporary_list
 
+    def get_winner_tournament(self, sort_final_scores):
+        list_winner1 = []
+        list_winner2 = []
+        list_winner3 = []
+        list_winner4 = []
+        list_winner5 = []
+        for sort_final_scores1 in sort_final_scores:
+            select_score = sort_final_scores1["score"]
+            if select_score == 4.0:
+                list_winner1.append(sort_final_scores1)
+            if select_score == 3.5:
+                list_winner2.append(sort_final_scores1)
+            if select_score == 3.0:
+                list_winner3.append(sort_final_scores1)
+            if select_score == 2.5:
+                list_winner4.append(sort_final_scores1)
+            if select_score == 2.0:
+                list_winner5.append(sort_final_scores1)
+        info_winner1 = len(list_winner1)
+        info_winner2 = len(list_winner2)
+        info_winner3 = len(list_winner3)
+        info_winner4 = len(list_winner4)
+        info_winner5 = len(list_winner5)
+        if info_winner1 == 1 or info_winner1 == 2:
+            return list_winner1
+        if info_winner2 == 1 or info_winner2 == 2:
+            return list_winner2
+        if info_winner3 == 1 or info_winner3 == 2:
+            return list_winner3
+        if info_winner4 == 1 or info_winner4 == 2:
+            return list_winner4
+        if info_winner5 == 1 or info_winner5 == 2:
+            return list_winner5
+
     def get_team(self, user_input2):
         """Permet de selectionner les 2 joueurs dans list_Match (Option Match nul)"""
         temporary_list = []
@@ -457,7 +486,6 @@ class DatabaseController:
             number_files_round = self.controller.player_list_controller.number_files_round()
             number_files_match = self.controller.player_list_controller.number_files_in_list_match()
             if number_files_match > number_files_round:
-            #if not self.controller.player_list_controller.round_file_control():
                 select_player1 = list_match[0]
                 temporary_list.append(select_player1)
                 select_player2 = list_match[1]
@@ -476,13 +504,13 @@ class DatabaseController:
             number_files_round = self.controller.player_list_controller.number_files_round()
             number_files_match = self.controller.player_list_controller.number_files_in_list_match()
             if number_files_match > number_files_round:
-            #if not self.controller.player_list_controller.round_file_control():
                 select_player1 = list_match[2]
                 temporary_list.append(select_player1)
                 select_player2 = list_match[3]
                 temporary_list.append(select_player2)
                 return temporary_list
-            else: # Si mon fichier Round existe
+            else:
+                """ Si mon fichier Round existe"""
                 remaining_player_liste = self.get_list_match_and_round()  # Récupération des joueurs restants
                 select_player1 = remaining_player_liste[2]
                 temporary_list.append(select_player1)
@@ -494,7 +522,6 @@ class DatabaseController:
             number_files_round = self.controller.player_list_controller.number_files_round()
             number_files_match = self.controller.player_list_controller.number_files_in_list_match()
             if number_files_match > number_files_round:
-            #if not self.controller.player_list_controller.round_file_control():
                 select_player1 = list_match[4]
                 temporary_list.append(select_player1)
                 select_player2 = list_match[5]
@@ -513,13 +540,13 @@ class DatabaseController:
             number_files_round = self.controller.player_list_controller.number_files_round()
             number_files_match = self.controller.player_list_controller.number_files_in_list_match()
             if number_files_match > number_files_round:
-            #if not self.controller.player_list_controller.round_file_control():
                 select_player1 = list_match[6]
                 temporary_list.append(select_player1)
                 select_player2 = list_match[7]
                 temporary_list.append(select_player2)
                 return temporary_list
-            else:  # Si mon fichier Round existe
+            else:
+                """ Si mon fichier Round existe"""
                 remaining_player_liste = self.get_list_match_and_round()  # Récupération des joueurs restants
                 select_player1 = remaining_player_liste[6]
                 temporary_list.append(select_player1)
