@@ -33,8 +33,8 @@ class StartTournamentView:
         print("======================== Saisie des scores =========================")
 
     def winner_player_selection(self):
-        user_input = input("Saisir le numéro du joueur qui remporte le match ( 1 ou 2):")
-        return user_input
+        print("Saisir le numéro du joueur qui remporte le match ( 1 ou 2):")
+
     def get_user_input_match_for_score_entry(self):
         print("Saisir le numéro du joueur pour la saisie du score (1, 2, 3 ...): ")
 
@@ -45,8 +45,7 @@ class StartTournamentView:
     def get_user_input_match_for_score_entry2(self):
         print("1 = Match Nul")
         print("2 = Gagnant / Perdant ")
-        user_input = input("Quel est le résultat ? (1 ou 2) :")
-        return user_input
+        print("Quel est le résultat ? (1 ou 2) :")
 
     def end_of_game_message(self):
         print("=====================Match terminé====================.")
