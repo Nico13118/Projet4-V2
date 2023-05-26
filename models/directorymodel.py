@@ -1,5 +1,7 @@
 import os
 import shutil
+import time
+
 
 class DirectoryModel:
     def make_directory1(self):
@@ -44,6 +46,10 @@ class DirectoryModel:
     def make_directory_tournament(self, tournament_name):
         data = os.getcwd()
         os.mkdir(f"{data}/data/tournament/{tournament_name}")
+        os.mkdir(f"{data}/data/tournament/{tournament_name}/Rounds")
+        os.mkdir(f"{data}/data/tournament/{tournament_name}/Scores")
+        os.mkdir(f"{data}/data/tournament/{tournament_name}/Player_Select")
+        os.mkdir(f"{data}/data/tournament/{tournament_name}/Match")
 
     def del_tournament_db(self):
         """Méthode qui permet de supprimer le répertoire tournament """
@@ -52,3 +58,14 @@ class DirectoryModel:
         directory = os.listdir(path)
         tournament_name = str(directory[0])
         shutil.rmtree(f"{data}/data/tournament/{tournament_name}")
+
+    def move_tournament_directory(self):
+        dateiso = time.strftime("%Y_%m_%d_%H_%M")
+        data = os.getcwd()
+        path = f"{data}/data/tournament/"
+        directory = os.listdir(path)
+        tournament_name = str(directory[0])
+        original_path = f"{data}/data/tournament/{tournament_name}"
+        destination_path = f"{data}/data/tournament_old/{dateiso}"
+        shutil.move(original_path, destination_path)
+
