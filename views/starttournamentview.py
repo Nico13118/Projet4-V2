@@ -25,6 +25,10 @@ class StartTournamentView:
     def incorrect_entry(self):
         print("Saisie incorrect !! Veuillez réessayer.")
 
+    def repeat_message(self):
+        user_input = input("Quel est votre choix ?:")
+        return user_input
+
     def team_selection_view(self):
         print("======================== Saisie des scores =========================")
 
@@ -32,8 +36,8 @@ class StartTournamentView:
         user_input = input("Saisir le numéro du joueur qui remporte le match ( 1 ou 2):")
         return user_input
     def get_user_input_match_for_score_entry(self):
-        user_input = input("Saisir le numéro du joueur pour la saisie du score (1, 2, 3 ...): ")
-        return user_input
+        print("Saisir le numéro du joueur pour la saisie du score (1, 2, 3 ...): ")
+
     def ask_to_continue(self):
         user_input = input("Souhaitez vous enregistrer un autre score ? Y(es) / N(o): ")
         return user_input
