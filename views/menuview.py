@@ -37,7 +37,7 @@ class MenuView:
         print("| 1 -Créer un tournoi.                      |")
         print("| 2 -Ajouter des joueurs au tournoi         |")
         print("| 3 -liste des joueurs inscrits au tournoi  |")
-        print("| 4 -Supprimer des joueurs du tournoi       |")
+        print("| 4 -Retirer un joueurs du tournoi          |")
         print("| 5 -Lancer le tournoi                      |")
         print("| 6 -Saisir les scores                      |")
         print("| 7 -Tableau des équipes                    |")
