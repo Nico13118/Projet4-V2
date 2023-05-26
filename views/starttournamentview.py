@@ -1,19 +1,23 @@
 class StartTournamentView:
     def message_start_tournament(self):
-        print("============Lancement du tournoi====================")
-        print("============Affichage des équipes===================")
+        print("==================Lancement du tournoi=========================")
+        print("==================Affichage des équipes=========================")
+
+    def message_next_match(self):
+        print("=====================Match suivant============================")
+        print("==================Affichage des équipes=======================")
 
     def message_end_tournament(self):
-        print("============ Tournois terminé ======================")
+        print("========================= Tournoi terminé ===========================")
 
     def message_tournament_launched(self):
         print("Le tournoi a déja été lancé, vous pouvez saisir les scores des joueurs.")
 
     def tournament_not_launched(self):
-        print("Vous devez lancer le tournoi avant de saisir les scores")
+        print("Vous devez lancer le tournoi avant de saisir les scores.")
 
     def message_start_tournament_missing_player(self):
-        print("Action impossible, vous devez ajouter des joueurs dans le tournoi")
+        print("Action impossible, vous devez ajouter des joueurs dans le tournoi.")
 
     def empty_user_input(self):
         print("La saisie ne peut pas être vide !!")
@@ -22,13 +26,13 @@ class StartTournamentView:
         print("Saisie incorrect !! Veuillez réessayer.")
 
     def team_selection_view(self):
-        print("============ Saisie des scores ===========")
+        print("======================== Saisie des scores =========================")
 
     def winner_player_selection(self):
         user_input = input("Saisir le numéro du joueur qui remporte le match ( 1 ou 2):")
         return user_input
     def get_user_input_match_for_score_entry(self):
-        user_input = input("Saisir le numéro du joueur pour la saisie du score (1, 2, 3 ...) ")
+        user_input = input("Saisir le numéro du joueur pour la saisie du score (1, 2, 3 ...): ")
         return user_input
     def ask_to_continue(self):
         user_input = input("Souhaitez vous enregistrer un autre score ? Y(es) / N(o): ")
@@ -41,7 +45,7 @@ class StartTournamentView:
         return user_input
 
     def end_of_game_message(self):
-        print("Match terminé.")
+        print("=====================Match terminé====================.")
 
     def print_message_team_table(self):
         print("\n===============Tableau des équipes===============")
@@ -73,8 +77,14 @@ class StartTournamentView:
             i += 1
             print(f"-{i}-", "Nom :", list_match1["nom"], list_match1["prenom"])
 
-    def tournament_winner(self):
-        print("===============Vainqueur du tournoi====================")
+    def tournament_winner(self, list_winner):
+        print("======================Vainqueur du tournoi=========================")
+        for list_winner1 in list_winner:
+            print("Nom :", list_winner1["nom"], list_winner1["prenom"], "avec un score de :", list_winner1["score"])
+            print("====================== Félicitations !===========================")
 
-    def two_winners_ex_aequo(self):
-        print("Vainqueurs du tournoi par ex-aequo :")
+    def two_winners_ex_aequo(self, list_winner):
+        print("=======================Vainqueurs du tournoi par ex-aequo=========================")
+        for list_winner1 in list_winner:
+            print("Nom :", list_winner1["nom"], list_winner1["prenom"], "avec un score de :", list_winner1["score"])
+        print("======================== Félicitations !=============================")
