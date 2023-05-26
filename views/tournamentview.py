@@ -69,7 +69,7 @@ class TournamentView:
         return user_input
 
     def message_select_player4_tournamentview(self):
-        print("Vous avez atteint le nombre maximum de joueurs à inscrire.")
+        print("Vous avez atteint le nombre maximum de joueurs à inscrire, vous pouvez lancer le tournoi.")
 
     def print_player_list_tournamentview(self, list_player):
         i = 0
