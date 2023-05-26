@@ -7,12 +7,13 @@ class PlayerListView:
         print("Liste des joueurs inscrits au tournoi")
 
     def message_del_player(self):
-        user_input = input("Supprimer un joueur de la liste, souhaitez-vous continuer ? (Y(es) / N(o) :")
-        return user_input
+        print("Supprimer un joueur de la liste, souhaitez-vous continuer ? (Y(es) / N(o) :")
 
     def message_del_player_in_list_view(self):
-        user_input = input("Saisir le numéro du joueur à supprimer de la liste (1, 2, 3 ...) :")
-        user_input = int(user_input)
+        print("Saisir le numéro du joueur à supprimer de la liste (1, 2, 3 ...) :")
+
+    def repeat_message(self):
+        user_input = input("Quel est votre choix ?:")
         return user_input
 
     def message_del_player_in_list_view2(self):
