@@ -11,7 +11,6 @@ class DirectoryModel:
         data = os.getcwd()
         path = f"{data}/data/tournament/"
         directory = os.listdir(path)
-        tournament_name = str(directory[0])
         info_tournament = len(directory)
         data_file1 = os.path.exists(f"{data}/data")
         data_file2 = os.path.exists(f"{data}/data/tournament/")
@@ -26,7 +25,8 @@ class DirectoryModel:
         if not data_file4:
             os.mkdir(f"{data}/data/tournament/players_list")
 
-        if info_tournament >= 1:
+        if info_tournament > 0:
+            tournament_name = str(directory[0])
             data_file5 = os.path.exists(f"{data}/data/tournament/{tournament_name}/Match")
             data_file6 = os.path.exists(f"{data}/data/tournament/{tournament_name}/Player_select")
             data_file7 = os.path.exists(f"{data}/data/tournament/{tournament_name}/Rounds")
@@ -51,8 +51,8 @@ class DirectoryModel:
         os.mkdir(f"{data}/data/tournament/{tournament_name}/Player_Select")
         os.mkdir(f"{data}/data/tournament/{tournament_name}/Match")
 
-    def del_tournament_db(self):
-        """Méthode qui permet de supprimer le répertoire tournament """
+    def del_tournament(self):
+        """Méthode qui permet de supprimer le répertoire portant le nom du tournoi """
         data = os.getcwd()
         path = f"{data}/data/tournament/"
         directory = os.listdir(path)
@@ -69,3 +69,12 @@ class DirectoryModel:
         destination_path = f"{data}/data/tournament_old/{dateiso}"
         shutil.move(original_path, destination_path)
 
+    def control_tournament_directory(self):
+        """Méthode qui controle la présence du répertoire portant le nom du tournoi"""
+        data = os.getcwd()
+        path = f"{data}/data/tournament/"
+        directory1 = os.listdir(path)
+        if directory1:
+            return True
+        else:
+            return False
