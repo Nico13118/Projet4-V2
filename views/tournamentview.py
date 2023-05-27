@@ -37,9 +37,6 @@ class TournamentView:
     def del_tournament_message_view1(self):
         print("Attention !! Vous êtes sur le point de supprimer un tournoi créé précédemment.")
 
-    def del_tournament_message_view2(self):
-        print("Saisie incorrect, veuillez réessayer !")
-
     def del_tournament_message_view3(self):
         print("Le tournoi a été supprimé avec succès.")
 
@@ -53,7 +50,7 @@ class TournamentView:
         print("Action impossible car aucun tournoi n'a été crée ")
 
     def del_tournament_view(self):
-        user_input = input("Souhaitez-vous continuer ? (Y(es), N(o) ")
+        user_input = input("Souhaitez-vous continuer ? (Y(es), N(o): ")
         return user_input
 
     def message_select_player1_tournamentview(self):
@@ -61,8 +58,7 @@ class TournamentView:
         print("----------Maximum 8 joueurs------------")
 
     def message_select_player2_tournamentview(self):
-        user_input = input("Saisir le numéro du joueur à intégrer au tournoi (1, 2, 3 ...) :")
-        return user_input
+        print("Saisir le numéro du joueur à intégrer au tournoi (1, 2, 3 ...) :")
 
     def message_select_player3_tournamentview(self):
         user_input = input("Souhaitez-vous continuer ? (Y(es) / N(o) :")
@@ -76,3 +72,11 @@ class TournamentView:
         for list_player1 in list_player:
             i += 1
             print(f"-{i}- ID :", list_player1["identifiant"], "Nom :", list_player1["nom"], list_player1["prenom"])
+
+    def repeat_message(self):
+        user_input = input("Quel est votre choix ?:")
+        return user_input
+
+    def message_list_registered_player(self):
+        print("Liste de joueurs manquante !!! Vous devez enregistrer des joueurs depuis le menu principal "
+              "-> Gestionnaire des joueurs -> Inscription des joueurs .")
