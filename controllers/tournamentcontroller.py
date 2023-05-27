@@ -10,106 +10,92 @@ class TournamentController:
         self.db = database
         self.dm = directory
 
-    def control_tournament_directory(self):
-        """
-        Méthode qui contrôle si le répertoire tournament est vide ou non
-        Si directory1 = True, alors il affiche un message d'erreur
-        Sinon il procède à l'enregistrement du tournoi
-        """
-        data = os.getcwd()
-        path = f"{data}/data/tournament/"
-        directory1 = os.listdir(path)
-        if directory1:
+    def tournament_registration(self):
+        if self.dm.control_tournament_directory():
             self.view.tournament_error_message1()
             self.controller.menu_controller.run_tournament_menu()
         else:
-            """Création d'un tournoi"""
             self.view.start_tournament()
 
-        def tournament_name_controller():
-            tournament_name = self.view.tournament_name()
-            if tournament_name == "":
-                self.view.tournament_error_message2()
-                tournament_name_controller()
-            else:
-                self.dm.make_directory_tournament(tournament_name)
-                return tournament_name
+            tournamentmodel = TournamentModel(
+                self.tournament_name_controller(),
+                self.tournament_place_controller(),
+                self.tournament_start_date_controller(),
+                self.tournament_end_date_controller(),
+                self.tournament_directore_remark_controller(),
 
-        def tournament_place_controller():
-            place = self.view.tournament_place()
-            if place == "":
-                self.view.tournament_error_message2()
-                tournament_place_controller()
-            else:
-                return place
+            )
+            self.db.add_tournament_in_json(tournamentmodel)
+            self.controller.menu_controller.run_menu()
 
-        def tournament_start_date_controller():
-            try:
-                date_string = self.view.tournament_start_date()
-                date_object = datetime.strptime(date_string, "%d/%m/%Y").date()
-                start_date = date_object.strftime("%d/%m/%Y")
-                return str(start_date)
-            except ValueError:
-                self.view.date_error_message()
-                tournament_start_date_controller()
+    def tournament_name_controller(self):
+        tournament_name = self.view.tournament_name()
+        if tournament_name == "":
+            self.view.tournament_error_message2()
+            self.tournament_name_controller()
+        else:
+            self.dm.make_directory_tournament(tournament_name)
+            return tournament_name
 
-        def tournament_end_date_controller():
-            try:
-                date_string = self.view.tournament_end_date()
-                date_object = datetime.strptime(date_string, "%d/%m/%Y").date()
-                end_date = date_object.strftime("%d/%m/%Y")
-                return str(end_date)
-            except ValueError:
-                self.view.date_error_message()
-                tournament_end_date_controller()
+    def tournament_place_controller(self):
+        place = self.view.tournament_place()
+        if place == "":
+            self.view.tournament_error_message2()
+            self.tournament_place_controller()
+        else:
+            return place
 
-        def tournament_directore_remark_controller():
-            directore_remark = self.view.tournament_directore_remark()
-            if directore_remark == "":
-                self.view.tournament_error_message2()
-                tournament_directore_remark_controller()
-            else:
-                return directore_remark
+    def tournament_start_date_controller(self):
+        try:
+            date_string = self.view.tournament_start_date()
+            date_object = datetime.strptime(date_string, "%d/%m/%Y").date()
+            start_date = date_object.strftime("%d/%m/%Y")
+            return str(start_date)
+        except ValueError:
+            self.view.date_error_message()
+            self.tournament_start_date_controller()
 
-        tournamentmodel = TournamentModel(
-            tournament_name_controller(),
-            tournament_place_controller(),
-            tournament_start_date_controller(),
-            tournament_end_date_controller(),
-            tournament_directore_remark_controller(),
+    def tournament_end_date_controller(self):
+        try:
+            date_string = self.view.tournament_end_date()
+            date_object = datetime.strptime(date_string, "%d/%m/%Y").date()
+            end_date = date_object.strftime("%d/%m/%Y")
+            return str(end_date)
+        except ValueError:
+            self.view.date_error_message()
+            self.tournament_end_date_controller()
 
-        )
-        self.db.add_tournament_in_json(tournamentmodel)
-        self.controller.menu_controller.run_menu()
+    def tournament_directore_remark_controller(self):
+        directore_remark = self.view.tournament_directore_remark()
+        if directore_remark == "":
+            self.view.tournament_error_message2()
+            self.tournament_directore_remark_controller()
+        else:
+            return directore_remark
 
     def del_tournament_directory(self):
         """Suppression du répertoire portant le nom du tournoi"""
-        if self.controller.player_list_controller.control_tournament_directory():
+        if self.dm.control_tournament_directory():
             self.view.del_tournament_message_view1()
-            user_input = self.view.del_tournament_view()
-            self.input_control_tournament(user_input)
-        else:
-            self.view.del_tournament_message_view4()
-            self.controller.menu_controller.run_menu_tournament()
+            if self.input_control_tournament():
+                self.dm.del_tournament()
+                self.view.del_tournament_message_view3()
+                self.controller.menu_controller.run_tournament_menu()
 
-    def input_control_tournament(self, user_input):
+    def input_control_tournament(self):
         user_input2 = True
         while user_input2:
+            user_input = self.view.del_tournament_view()
             if user_input.isdigit():
                 self.view.tournament_error_message3()
             if user_input == "":
                 self.view.tournament_error_message2()
             elif user_input == "Y" or user_input == "y" or user_input == "O" \
                     or user_input == "o" or user_input == "oui":
-                self.dm.del_tournament_db()
-                self.view.del_tournament_message_view3()
-                self.controller.menu_controller.run_tournament_menu()
-
+                return True
             elif user_input == "N" or user_input == "n" or user_input == "No" \
                     or user_input == "no" or user_input == "non":
                 self.controller.menu_controller.run_menu_tournament()
-            else:
-                self.view.del_tournament_message_view2()
 
     def input_control_player_in_tournament(self):
         user_input = self.view.message_select_player3_tournamentview()
@@ -128,40 +114,49 @@ class TournamentController:
 
     def add_player_in_tournament_controller(self):
         """Ajouter un joueur supplémentaire dans le tournoi """
-        """Condition qui controle si le fichier List_Players_Select.json existe"""
+        """ Si le fichier List_Players_Select.json existe"""
         if self.controller.player_list_controller.control_player_select_controller():
             """La condition qui controle combien de joueurs sont inscrits au tournoi"""
             if not self.controller.player_list_controller.control_number_player_in_list_players_select():
                 list_registered_players = self.db.get_list_registered_players_and_players_select()
-                self.view.print_player_list_tournamentview(list_registered_players) # Affichage de la liste list_registered_players
-                user_input = self.view.message_select_player2_tournamentview() # Demande à l'utilisateur de saisir le joueur à ajouter au tournoi
-                if user_input == "":
-                    self.view.del_tournament_message_view2()
-                    self.add_player_in_tournament_controller()
-                numbers = len(list_registered_players)
-                user_input = int(user_input)
-                if user_input > numbers:
-                    self.view.del_tournament_message_view2()
-                    self.add_player_in_tournament_controller()
-                elif user_input == 0:
-                    self.view.del_tournament_message_view2()
-                    self.add_player_in_tournament_controller()
+                """ Affichage de la liste list_registered_players"""
+                self.view.print_player_list_tournamentview(list_registered_players)
+                """ Demande à l'utilisateur de saisir le joueur à ajouter au tournoi"""
+                self.view.message_select_player2_tournamentview()
+                user_input = self.user_input_control(list_registered_players)
                 self.db.add_player_in_tournament_db2(user_input)
                 self.input_control_player_in_tournament()
-            else:
-                self.view.message_select_player4_tournamentview()
-                self.controller.menu_controller.run_tournament_menu()
+
         else:
             """Ajouter un premier joueur dans le tournoi """
-            """ Condition qui controle si le fichier List_Registered_Players.json existe """
+            """ Si le fichier List_Registered_Players.json existe """
             if self.controller.player_list_controller.control_player_list_controller():
                 self.view.message_select_player1_tournamentview()
                 list_player = self.db.get_player_list()  # Extraire les données de la liste List_Registered_Players.json
                 player_sorted = self.db.sort_player_list_db(list_player)  # Tries la liste des joueurs par ordre alphabétique
                 self.view.print_player_list_tournamentview(player_sorted)  # Affiche la liste des joueurs par ordre alphabétique
-                user_input = self.view.message_select_player2_tournamentview() # Demande à l'utilisateur de saisir le joueur à ajouter au tournoi
+                self.view.message_select_player2_tournamentview() # Demande à l'utilisateur de saisir le joueur à ajouter au tournoi
+                user_input = self.user_input_control(player_sorted)
                 self.db.add_player_in_tournament_db(user_input)
                 self.input_control_player_in_tournament()
 
-
-
+    def user_input_control(self, list_match):
+        """Controle de la saisie utilisateur
+            Controle que la saisie correspond au nombre de joueurs dans la liste
+        """
+        user_input2 = True
+        while user_input2:
+            user_input = self.view.repeat_message()
+            if user_input == "":
+                self.view.empty_user_input()
+            if str(user_input).isalpha():
+                self.view.incorrect_entry()
+            if user_input != "" and not str(user_input).isalpha():
+                numbers = len(list_match)
+                user_input = int(user_input)
+                if user_input == 0:
+                    self.view.incorrect_entry()
+                elif user_input > numbers:
+                    self.view.incorrect_entry()
+                elif user_input <= numbers:
+                    return user_input
