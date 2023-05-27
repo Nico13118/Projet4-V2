@@ -2,6 +2,10 @@ class PlayerView:
     def player_message_view(self):
         print("\n|================== Inscription des joueurs ==================|")
 
+    def confirmation_message(self):
+        user_input = input("Souhaitez-vous continuer ? (Y(es) / N(o) :")
+        return user_input
+
     def player_chess_id_view(self):
         chess_id = input("Identifiant national d'échecs :")
         return chess_id
@@ -30,3 +34,6 @@ class PlayerView:
 
     def player_error_chess_id_view(self):
         print("Cet identifiant a déjà été enregistré. Veuillez saisir un autre identifiant. ")
+
+    def message_error(self):
+        print("Saisie incorrect, veuillez réessayer !")
