@@ -1,6 +1,6 @@
 from models import TournamentModel
 from datetime import datetime
-import os
+import re
 
 
 class TournamentController:
@@ -26,7 +26,7 @@ class TournamentController:
 
             )
             self.db.add_tournament_in_json(tournamentmodel)
-            self.controller.menu_controller.run_menu()
+            self.controller.menu_controller.run_tournament_menu()
 
     def tournament_name_controller(self):
         tournament_name = self.view.tournament_name()
@@ -75,57 +75,72 @@ class TournamentController:
 
     def del_tournament_directory(self):
         """Suppression du répertoire portant le nom du tournoi"""
-        if self.dm.control_tournament_directory():
-            self.view.del_tournament_message_view1()
-            if self.input_control_tournament():
-                self.dm.del_tournament()
-                self.view.del_tournament_message_view3()
-                self.controller.menu_controller.run_tournament_menu()
+        if not self.dm.control_tournament_directory():
+            self.view.del_tournament_message_view4()
+            self.controller.menu_controller.run_tournament_menu()
+
+        self.view.del_tournament_message_view1()
+        if self.input_control_tournament():
+            self.dm.del_tournament()
+            self.view.del_tournament_message_view3()
+            self.controller.menu_controller.run_tournament_menu()
 
     def input_control_tournament(self):
         user_input2 = True
         while user_input2:
             user_input = self.view.del_tournament_view()
-            if user_input.isdigit():
-                self.view.tournament_error_message3()
-            if user_input == "":
-                self.view.tournament_error_message2()
-            elif user_input == "Y" or user_input == "y" or user_input == "O" \
-                    or user_input == "o" or user_input == "oui":
-                return True
-            elif user_input == "N" or user_input == "n" or user_input == "No" \
-                    or user_input == "no" or user_input == "non":
-                self.controller.menu_controller.run_menu_tournament()
-
+            if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                if user_input.isdigit():
+                    self.view.tournament_error_message3()
+                if not user_input.isdigit():
+                    if user_input != "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
+                        self.view.incorrect_entry()
+                    if user_input == "Y" or user_input == "y" or user_input == "O" \
+                            or user_input == "o" or user_input == "oui":
+                        return True
+                    elif user_input == "N" or user_input == "n" or user_input == "No" \
+                            or user_input == "no" or user_input == "non":
+                        self.controller.menu_controller.run_menu_tournament()
+            else:
+                self.view.incorrect_entry()
     def input_control_player_in_tournament(self):
-        user_input = self.view.message_select_player3_tournamentview()
         user_input2 = True
         while user_input2:
-            if user_input.isdigit():
-                self.view.tournament_error_message3()
-            if user_input == "":
-                self.view.tournament_error_message2()
-            elif user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
-                self.add_player_in_tournament_controller()
-            elif user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
-                self.controller.menu_controller.run_tournament_menu()
+            user_input = self.view.message_select_player3_tournamentview()
+            if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                if user_input.isdigit():
+                    self.view.incorrect_entry()
+                if not user_input.isdigit():
+                    if user_input != "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
+                        self.view.incorrect_entry()
+                    if user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
+                        self.add_player_in_tournament_controller()
+                    elif user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
+                        self.controller.menu_controller.run_tournament_menu()
             else:
-                self.view.tournament_error_message3()
+                self.view.incorrect_entry()
 
     def add_player_in_tournament_controller(self):
+        if not self.dm.control_tournament_directory():
+            self.view.del_tournament_message_view4()
+            self.controller.menu_controller.run_tournament_menu()
         """Ajouter un joueur supplémentaire dans le tournoi """
         """ Si le fichier List_Players_Select.json existe"""
         if self.controller.player_list_controller.control_player_select_controller():
-            """La condition qui controle combien de joueurs sont inscrits au tournoi"""
-            if not self.controller.player_list_controller.control_number_player_in_list_players_select():
-                list_registered_players = self.db.get_list_registered_players_and_players_select()
-                """ Affichage de la liste list_registered_players"""
-                self.view.print_player_list_tournamentview(list_registered_players)
-                """ Demande à l'utilisateur de saisir le joueur à ajouter au tournoi"""
-                self.view.message_select_player2_tournamentview()
-                user_input = self.user_input_control(list_registered_players)
-                self.db.add_player_in_tournament_db2(user_input)
-                self.input_control_player_in_tournament()
+            """ Si le fichier List_Players_Select contient 8 joueurs"""
+            if self.controller.player_list_controller.control_number_player_in_list_players_select():
+                self.view.message_select_player4_tournamentview()
+                self.controller.menu_controller.run_tournament_menu()
+
+            """ Si le fichier List_Players_Select ne contient pas 8 joueurs"""
+            list_registered_players = self.db.get_list_registered_players_and_players_select()
+            """ Affichage de la liste list_registered_players"""
+            self.view.print_player_list_tournamentview(list_registered_players)
+            """ Demande à l'utilisateur de saisir le joueur à ajouter au tournoi"""
+            self.view.message_select_player2_tournamentview()
+            user_input = self.user_input_control(list_registered_players)
+            self.db.add_player_in_tournament_db2(user_input)
+            self.input_control_player_in_tournament()
 
         else:
             """Ajouter un premier joueur dans le tournoi """
@@ -147,16 +162,17 @@ class TournamentController:
         user_input2 = True
         while user_input2:
             user_input = self.view.repeat_message()
-            if user_input == "":
-                self.view.empty_user_input()
-            if str(user_input).isalpha():
+            if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                if str(user_input).isalpha():
+                    self.view.incorrect_entry()
+                if not str(user_input).isalpha():
+                    numbers = len(list_match)
+                    user_input = int(user_input)
+                    if user_input == 0:
+                        self.view.incorrect_entry()
+                    elif user_input <= numbers:
+                        return user_input
+                    elif user_input > numbers:
+                        self.view.incorrect_entry()
+            else:
                 self.view.incorrect_entry()
-            if user_input != "" and not str(user_input).isalpha():
-                numbers = len(list_match)
-                user_input = int(user_input)
-                if user_input == 0:
-                    self.view.incorrect_entry()
-                elif user_input > numbers:
-                    self.view.incorrect_entry()
-                elif user_input <= numbers:
-                    return user_input
