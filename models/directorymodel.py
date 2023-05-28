@@ -9,21 +9,22 @@ class DirectoryModel:
             Méthode qui recherche l'existance de plusieurs répertoires et procède à leurs créations si manquant
         """
         data = os.getcwd()
-        path = f"{data}/data/tournament/"
-        directory = os.listdir(path)
-        info_tournament = len(directory)
+
         data_file1 = os.path.exists(f"{data}/data")
-        data_file2 = os.path.exists(f"{data}/data/tournament/")
-        data_file3 = os.path.exists(f"{data}/data/tournament_old")
-        data_file4 = os.path.exists(f"{data}/data/players_list")
         if not data_file1:
             os.mkdir(f"{data}/data")
+        path = f"{data}/data/tournament/"
+        data_file2 = os.path.exists(f"{data}/data/tournament/")
         if not data_file2:
             os.mkdir(f"{data}/data/tournament")
+        directory = os.listdir(path)
+        info_tournament = len(directory)
+        data_file3 = os.path.exists(f"{data}/data/tournament_old")
+        data_file4 = os.path.exists(f"{data}/data/players_list")
         if not data_file3:
             os.mkdir(f"{data}/data/tournament_old")
         if not data_file4:
-            os.mkdir(f"{data}/data/tournament/players_list")
+            os.mkdir(f"{data}/data/players_list")
 
         if info_tournament > 0:
             tournament_name = str(directory[0])
