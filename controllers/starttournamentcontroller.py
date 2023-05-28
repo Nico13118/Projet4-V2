@@ -1,5 +1,6 @@
 import random
 import time
+import re
 
 
 class StartTournamentController:
@@ -11,16 +12,24 @@ class StartTournamentController:
         self.mc = match
 
     def start_tournament(self):
-        if self.controller.player_list_controller.list_match_file_control():
-            self.view.message_tournament_launched()
+        if not self.dm.control_tournament_directory():
+            self.view.message_no_tournament_directory()
             self.controller.menu_controller.run_tournament_menu()
+        """Si le fichier List_Players_Select n'existe pas"""
+        if not self.controller.player_list_controller.control_player_select_controller():
+            self.view.message_start_tournament_missing_player()
+            self.controller.menu_controller.run_tournament_menu()
+        """Si le fichier List_Players_Select existe mais ne contient pas 8 joueurs"""
+        if not self.controller.player_list_controller.control_number_player_in_list_players_select():
+            self.view.message_start_tournament_missing_player()
+            self.controller.menu_controller.run_tournament_menu()
+        """Si le fichier List_Players_Select existe et que le fichier list_match existe"""
         if self.controller.player_list_controller.control_player_select_controller():
-            if self.controller.player_list_controller.control_number_player_in_list_players_select():
-                self.shuffle_players()
+            if self.controller.player_list_controller.list_match_file_control():
+                self.view.message_tournament_launched()
+                self.controller.menu_controller.run_tournament_menu()
             else:
-                self.view.message_message_start_tournament_missing_player()
-        else:
-            self.view.message_message_start_tournament_missing_player()
+                self.shuffle_players()
 
     def shuffle_players(self):
         """Mélanger les joueurs inscrits"""
@@ -88,6 +97,9 @@ class StartTournamentController:
         self.controller.menu_controller.run_tournament_menu()
 
     def player_selection(self):
+        if not self.dm.control_tournament_directory():
+            self.view.message_no_tournament_directory()
+            self.controller.menu_controller.run_tournament_menu()
         """Controle que le tournoi a bien été lancé"""
         if not self.controller.player_list_controller.list_match_file_control():
             self.view.tournament_not_launched()
@@ -143,7 +155,7 @@ class StartTournamentController:
 
         """Si le fichier RoundX.json existe"""
         self.view.get_user_input_match_for_score_entry2()  # Demande Match Nul ou Gagnant / Perdant
-        choice_score1 =self.user_input_control2()
+        choice_score1 = self.user_input_control2()
         choice_score1 = int(choice_score1)
         choice_player1 = int(choice_player1)
         if choice_score1 == 1:
@@ -159,6 +171,7 @@ class StartTournamentController:
                     """Créer un fichier final_score qui reprend tous les fichiers scores afin de comptabilisé 
                         les scores des joueurs 
                     """
+                    self.dm.make_directory1()
                     self.db.add_scores_to_final_score_file()
                     """Afficher un message indiquant la fin du tournoi"""
                     self.view.message_end_tournament()
@@ -227,6 +240,7 @@ class StartTournamentController:
                     """Créer un fichier final_score qui reprend tous les fichiers scores afin de comptabilisé 
                         les scores des joueurs 
                     """
+                    self.dm.make_directory1()
                     self.db.add_scores_to_final_score_file()
                     """Afficher un message indiquant la fin du tournoi"""
                     self.view.message_end_tournament()
@@ -277,16 +291,17 @@ class StartTournamentController:
         user_input2 = True
         while user_input2:
             user_input = self.view.repeat_message()
-            if user_input == "":
-                self.view.empty_user_input()
-            if str(user_input).isalpha():
-                self.view.incorrect_entry()
-            if user_input != "" and not str(user_input).isalpha():
-                user_input = int(user_input)
-                if user_input > 2:
+            if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                if str(user_input).isalpha():
                     self.view.incorrect_entry()
-                elif user_input <= 2:
-                    return user_input
+                if not str(user_input).isalpha():
+                    user_input = int(user_input)
+                    if user_input > 2:
+                        self.view.incorrect_entry()
+                    elif user_input <= 2:
+                        return user_input
+            else:
+                self.view.incorrect_entry()
 
     def user_input_control(self, list_match):
         """Controle de la saisie utilisateur
@@ -295,42 +310,50 @@ class StartTournamentController:
         user_input2 = True
         while user_input2:
             user_input = self.view.repeat_message()
-            if user_input == "":
-                self.view.empty_user_input()
-            if str(user_input).isalpha():
+            if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                if str(user_input).isalpha():
+                    self.view.incorrect_entry()
+                if not str(user_input).isalpha():
+                    numbers = len(list_match)
+                    user_input = int(user_input)
+                    if user_input == 0:
+                        self.view.incorrect_entry()
+                    elif user_input > numbers:
+                        self.view.incorrect_entry()
+                    elif user_input <= numbers:
+                        return user_input
+            else:
                 self.view.incorrect_entry()
-            if user_input != "" and not str(user_input).isalpha():
-                numbers = len(list_match)
-                user_input = int(user_input)
-                if user_input == 0:
-                    self.view.incorrect_entry()
-                elif user_input > numbers:
-                    self.view.incorrect_entry()
-                elif user_input <= numbers:
-                    return user_input
-
     def input_control_player_selection(self):
         """Control de la saisie utilisateur"""
         user_input2 = True
         while user_input2:
             user_input = self.view.ask_to_continue()  # Demander à l'utilisateur s'il souhaite enregistrer un autre score
-            if user_input.isdigit():
+            if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                if user_input.isdigit():
+                    self.view.incorrect_entry()
+                if not user_input.isdigit():
+                    if user_input != "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
+                        self.view.incorrect_entry()
+                    if user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
+                        self.player_selection()
+                    elif user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
+                        self.controller.menu_controller.run_tournament_menu()
+            else:
                 self.view.incorrect_entry()
-            if user_input == "":
-                self.view.empty_user_input()
-            elif user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
-                self.player_selection()
-            elif user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
-                self.controller.menu_controller.run_tournament_menu()
-            elif user_input != "" and not str(user_input).isalpha():
-                self.view.incorrect_entry()
-
     def show_team_table_controller(self):
         """Méthode qui permet d'afficher les équipes"""
-        self.view.print_message_team_table()
-        list_match = self.db.get_player_list_match()
-        self.view.print_start_match(list_match)
-        self.controller.menu_controller.run_tournament_menu()
+        if not self.dm.control_tournament_directory():
+            self.view.message_no_tournament_directory()
+            self.controller.menu_controller.run_tournament_menu()
+        if self.controller.player_list_controller.list_match_file_control():
+            self.view.print_message_team_table()
+            list_match = self.db.get_player_list_match()
+            self.view.print_start_match(list_match)
+            self.controller.menu_controller.run_tournament_menu()
+        else:
+            self.view.message_show_team_table()
+            self.controller.menu_controller.run_tournament_menu()
 
     def create_file_score_controller(self):
         """Récupérer les données du fichier RoundX.json"""
