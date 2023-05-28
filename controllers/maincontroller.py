@@ -1,6 +1,6 @@
 from controllers import MenuController, PlayerController, TournamentController, DatabaseController, \
-    PlayerListController, StartTournamentController, MatchController
-from views import MenuView, TournamentView, PlayerView, PlayerListView, StartTournamentView
+    PlayerListController, StartTournamentController, MatchController, ReportController
+from views import MenuView, TournamentView, PlayerView, PlayerListView, StartTournamentView, ReportView
 from models import DirectoryModel
 
 
@@ -13,6 +13,7 @@ class MainController:
         self.tournament_controller = TournamentController(TournamentView(), self, self.db, self.dm)
         self.player_controller = PlayerController(PlayerView(), self, self.db, self.dm)
         self.player_list_controller = PlayerListController(PlayerListView(), self, self.db, self.dm)
+        self.report_controller = ReportController(ReportView(), self, self.db, self.dm)
         self.start_tournament_controller = StartTournamentController(StartTournamentView(), self, self.db, self.dm,
                                                                      self.mc)
 
