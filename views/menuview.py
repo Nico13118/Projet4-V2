@@ -55,3 +55,6 @@ class MenuView:
     def repeat_message(self):
         user_input = input("Faite votre choix :")
         return user_input
+
+    def incorrect_entry(self):
+        print("Saisie incorrect !! Veuillez réessayer.")
