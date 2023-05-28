@@ -23,12 +23,15 @@ class TournamentView:
         return directore_remark
 
     def tournament_error_message1(self):
-        print("Vous ne pouvez pas créer d'autre tournoi !!")
+        print("Action impossible !! Vous ne pouvez pas créer d'autre tournoi !!")
 
     def tournament_error_message2(self):
         print("La saisie ne peut pas être vide !!")
 
     def tournament_error_message3(self):
+        print("Saisie incorrect !! Veuillez réessayer.")
+
+    def incorrect_entry(self):
         print("Saisie incorrect !! Veuillez réessayer.")
 
     def date_error_message(self):
@@ -41,13 +44,10 @@ class TournamentView:
         print("Le tournoi a été supprimé avec succès.")
 
     def del_tournament_message_view4(self):
-        print("Action impossible, aucun tournoi n'a été crée.")
+        print("Action impossible !! Aucun tournoi n'a été crée.")
 
     def del_tournament_message_view5(self):
-        print("Action impossible, vous devez ajouter des joueurs dans le tournoi")
-
-    def del_tournament_message_view6(self):
-        print("Action impossible car aucun tournoi n'a été crée ")
+        print("Action impossible !! Vous devez ajouter des joueurs dans le tournoi")
 
     def del_tournament_view(self):
         user_input = input("Souhaitez-vous continuer ? (Y(es), N(o): ")
@@ -74,7 +74,7 @@ class TournamentView:
             print(f"-{i}- ID :", list_player1["identifiant"], "Nom :", list_player1["nom"], list_player1["prenom"])
 
     def repeat_message(self):
-        user_input = input("Quel est votre choix ?:")
+        user_input = input("Faite votre choix :")
         return user_input
 
     def message_list_registered_player(self):
