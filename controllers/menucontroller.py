@@ -1,3 +1,5 @@
+import re
+
 
 class MenuController:
     def __init__(self, view, controller, database, directory):
@@ -56,7 +58,7 @@ class MenuController:
             """Créer un tournoi"""
             self.controller.tournament_controller.tournament_registration()
         elif user_input == 2:
-            """Ajouter des joueurs dans le tournoi"""
+            """Ajouter des joueurs au tournoi"""
             self.controller.tournament_controller.add_player_in_tournament_controller()
             self.run_tournament_menu()
         elif user_input == 3:
@@ -101,20 +103,16 @@ class MenuController:
         user_input2 = True
         while user_input2:
             user_input = self.view.repeat_message()
-            if user_input == "":
-                self.view.error_message_menuview2()
-            if str(user_input).isalpha():
-                self.view.error_message_menuview1()
-            if user_input != "" and not str(user_input).isalpha():
-                user_input = int(user_input)
-                if user_input == 0:
+            if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                if str(user_input).isalpha():
                     self.view.error_message_menuview1()
-                if user_input > number:
-                    self.view.error_message_menuview1()
-                if user_input <= number:
-                    return user_input
-
-
-
-
-
+                if not str(user_input).isalpha():
+                    user_input = int(user_input)
+                    if user_input == 0:
+                        self.view.error_message_menuview1()
+                    if user_input > number:
+                        self.view.error_message_menuview1()
+                    if user_input <= number:
+                        return user_input
+            else:
+                self.view.incorrect_entry()
