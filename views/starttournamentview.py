@@ -14,10 +14,16 @@ class StartTournamentView:
         print("Le tournoi a déja été lancé, vous pouvez saisir les scores des joueurs.")
 
     def tournament_not_launched(self):
-        print("Vous devez lancer le tournoi avant de saisir les scores.")
+        print("Action impossible !! Vous devez lancer le tournoi avant de saisir les scores.")
+
+    def message_show_team_table(self):
+        print("Action impossible !! Pour visualiser les équipes vous devez lancer le tournoi.")
 
     def message_start_tournament_missing_player(self):
-        print("Action impossible, vous devez ajouter des joueurs dans le tournoi.")
+        print("Action impossible !! Vous devez ajouter des joueurs au tournoi.")
+
+    def message_no_tournament_directory(self):
+        print("Action impossible !! Aucun tournoi n'a été crée.")
 
     def empty_user_input(self):
         print("La saisie ne peut pas être vide !!")
@@ -26,7 +32,7 @@ class StartTournamentView:
         print("Saisie incorrect !! Veuillez réessayer.")
 
     def repeat_message(self):
-        user_input = input("Quel est votre choix ?:")
+        user_input = input("Faite votre choix :")
         return user_input
 
     def team_selection_view(self):
