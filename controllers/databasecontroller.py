@@ -38,7 +38,10 @@ class DatabaseController:
             temporarylist.append(playerlist)
             with open(f"{path}/List_Registered_Players.json", "w") as f:
                 json.dump(temporarylist, f)
-            """Sinon si le fichier existe, alors extraire les données puis enregistrer l'ensemble dans le même fichier"""
+
+            """Sinon si le fichier existe, alors extraire les données puis enregistrer 
+                l'ensemble dans le même fichier
+            """
         else:
             player = player_model.player_registration(playermodel)
             with open(f"{path}/List_Registered_Players.json", "r") as f:
@@ -180,7 +183,7 @@ class DatabaseController:
             player_wins = []
             player_loses = []
             rounds = self.controller.player_list_controller.number_files_in_list_match()
-            if choice_score1 == 1: # Choix 1 = Match Nul
+            if choice_score1 == 1:  # Choix 1 = Match Nul
                 list_team = self.get_team(choice_player1)
                 for list_team1 in list_team:
                     player = {
@@ -390,6 +393,16 @@ class DatabaseController:
             temporary_list = json.load(f)
             return temporary_list
 
+    def get_match_list_for_report(self, number_files1):
+        data = os.getcwd()
+        path = f"{data}/data/tournament/"
+        directory = os.listdir(path)
+        tournament_name = str(directory[0])
+        path2 = f"{data}/data/tournament/{tournament_name}/Match"
+        with open(f"{path2}/List_Match{number_files1}.json", "r") as f:
+            match_list = json.load(f)
+            return match_list
+
     def get_list_round(self):
         """Méthode qui retourne les informations du fichier RoundX.json"""
         number_files = self.controller.player_list_controller.number_files_in_list_match()
@@ -401,6 +414,16 @@ class DatabaseController:
         with open(f"{path2}/Round{number_files}.json", "r") as f:
             temporary_list = json.load(f)
             return temporary_list
+
+    def get_round_list_for_report(self, number_files1):
+        data = os.getcwd()
+        path = f"{data}/data/tournament/"
+        directory = os.listdir(path)
+        tournament_name = str(directory[0])
+        path2 = f"{data}/data/tournament/{tournament_name}/Rounds"
+        with open(f"{path2}/Round{number_files1}.json", "r") as f:
+            round_list = json.load(f)
+            return round_list
 
     def get_list_scores(self):
         """Méthode qui retourne les informations du fichier ScoreX.json"""
@@ -557,6 +580,16 @@ class DatabaseController:
                 temporary_list.append(select_player2)
                 return temporary_list
 
+    def get_tournament_information(self):
+        data = os.getcwd()
+        path = f"{data}/data/tournament/"
+        directory = os.listdir(path)
+        tournament_name = str(directory[0])
+        with open(f"{data}/data/tournament/{tournament_name}/Tournament_Info.json", "r") as f:
+            tournament_info = json.load(f)
+            return tournament_info
+
+
     def sort_player_list_db(self, list_player):
         """Méthode qui trie la liste par ordre alphabétique"""
         player_sorted = sorted(list_player, key=lambda x: (x["nom"], x["prenom"]))
@@ -571,3 +604,4 @@ class DatabaseController:
         """Méthode qui trie par ordre de score"""
         list_score_sorted = sorted(list_score, key=lambda x: (x["score"]))
         return list_score_sorted
+
