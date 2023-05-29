@@ -91,7 +91,7 @@ class MenuController:
         user_input = self.control_user_input(number)
         if user_input == 1:
             """Rapport du tournoi en cours"""
-            pass
+            self.controller.report_controller.current_tournament_report()
         elif user_input == 2:
             """Rapport des tournois précédents"""
             pass
