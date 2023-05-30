@@ -23,32 +23,36 @@ class PlayerController:
             self.new_player_message_controller()
 
     def player_chess_id(self):
-        chess_id = self.view.player_chess_id_view()
-        if chess_id == "":
-            self.view.player_error_message_view()
-            self.player_chess_id()
-        else:
-            if not self.db.chess_id_controller(chess_id):
-                self.view.player_error_chess_id_view()
-                self.player_chess_id()
-            else:
-                return chess_id
+        user_input2 = True
+        while user_input2:
+            chess_id = self.view.player_chess_id_view()
+            if chess_id == "":
+                self.view.player_error_message_view()
+
+            elif chess_id != "":
+                if self.db.chess_id_controller(chess_id):
+                    return chess_id
+
+                else:
+                    self.view.player_error_chess_id_view()
 
     def player_name(self):
-        name = self.view.player_name_view()
-        if name == "":
-            self.view.player_error_message_view()
-            self.player_name()
-        else:
-            return name
+        user_input2 = True
+        while user_input2:
+            name = self.view.player_name_view()
+            if name != "":
+                return name
+            else:
+                self.view.player_error_message_view()
 
     def player_first_name(self):
-        first_name = self.view.player_first_name_view()
-        if first_name == "":
-            self.view.player_error_message_view()
-            self.player_first_name()
-        else:
-            return first_name
+        user_input2 = True
+        while user_input2:
+            first_name = self.view.player_first_name_view()
+            if first_name != "":
+                return first_name
+            else:
+                self.view.player_error_message_view()
 
     def player_birthday(self):
         try:
@@ -67,12 +71,12 @@ class PlayerController:
                 if user_input.isdigit():
                     self.view.message_error()
                 if not user_input.isdigit():
-                    if user_input != "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
-                        self.view.message_error()
                     if user_input == "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
                         self.controller.player_controller.player_message()
                     elif user_input == "n" or user_input == "no" or user_input == "non":
                         self.controller.menu_controller.run_menu_player()
+                    else:
+                        self.view.message_error()
             else:
                 self.view.message_error()
 
@@ -84,11 +88,11 @@ class PlayerController:
                 if user_input.isdigit():
                     self.view.message_error()
                 if not user_input.isdigit():
-                    if user_input != "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
-                        self.view.message_error()
                     if user_input == "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
                         return True
                     elif user_input == "n" or user_input == "no" or user_input == "non":
                         self.controller.menu_controller.run_menu_player()
+                    else:
+                        self.view.message_error()
             else:
                 self.view.message_error()
