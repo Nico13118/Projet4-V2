@@ -1,6 +1,7 @@
 from models import TournamentModel
 from datetime import datetime
 import re
+DEFAULT_NUMBER_OF_ROUNDS = 4
 
 
 class TournamentController:
@@ -23,8 +24,7 @@ class TournamentController:
                 self.tournament_start_date_controller(),
                 self.tournament_end_date_controller(),
                 self.tournament_directore_remark_controller(),
-
-            )
+                self.number_rounds_controller())
             self.db.add_tournament_in_json(tournamentmodel)
             self.controller.menu_controller.run_tournament_menu()
 
@@ -73,6 +73,14 @@ class TournamentController:
         else:
             return directore_remark
 
+    def number_rounds_controller(self):
+        number_rounds = self.view.tournament_number_rounds()
+        if number_rounds == "":
+            number_rounds = DEFAULT_NUMBER_OF_ROUNDS
+            return number_rounds
+        else:
+            return number_rounds
+
     def del_tournament_directory(self):
         """Suppression du répertoire portant le nom du tournoi"""
         if not self.dm.control_tournament_directory():
@@ -88,36 +96,43 @@ class TournamentController:
     def input_control_tournament(self):
         user_input2 = True
         while user_input2:
-            user_input = self.view.del_tournament_view()
-            if re.match(r'^[a-zA-Z0-9]+$', user_input):
-                if user_input.isdigit():
-                    self.view.tournament_error_message3()
-                if not user_input.isdigit():
-                    if user_input != "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
-                        self.view.incorrect_entry()
-                    if user_input == "Y" or user_input == "y" or user_input == "O" \
-                            or user_input == "o" or user_input == "oui":
-                        return True
-                    elif user_input == "N" or user_input == "n" or user_input == "No" \
-                            or user_input == "no" or user_input == "non":
-                        self.controller.menu_controller.run_menu_tournament()
-            else:
+            try:
+                user_input = self.view.del_tournament_view()
+                if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                    if user_input.isdigit():
+                        self.view.tournament_error_message3()
+                    if not user_input.isdigit():
+                        if user_input == "Y" or user_input == "y" or user_input == "O" \
+                                or user_input == "o" or user_input == "oui":
+                            return True
+                        elif user_input == "N" or user_input == "n" or user_input == "No" \
+                                or user_input == "no" or user_input == "non":
+                            self.controller.menu_controller.run_menu_tournament()
+                        else:
+                            self.view.incorrect_entry()
+                else:
+                    self.view.incorrect_entry()
+            except:
                 self.view.incorrect_entry()
+
     def input_control_player_in_tournament(self):
         user_input2 = True
         while user_input2:
-            user_input = self.view.message_select_player3_tournamentview()
-            if re.match(r'^[a-zA-Z0-9]+$', user_input):
-                if user_input.isdigit():
-                    self.view.incorrect_entry()
-                if not user_input.isdigit():
-                    if user_input != "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
+            try:
+                user_input = self.view.message_select_player3_tournamentview()
+                if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                    if user_input.isdigit():
                         self.view.incorrect_entry()
-                    if user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
-                        self.add_player_in_tournament_controller()
-                    elif user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
-                        self.controller.menu_controller.run_tournament_menu()
-            else:
+                    if not user_input.isdigit():
+                        if user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
+                            self.add_player_in_tournament_controller()
+                        elif user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
+                            self.controller.menu_controller.run_tournament_menu()
+                        else:
+                            self.view.incorrect_entry()
+                else:
+                    self.view.incorrect_entry()
+            except:
                 self.view.incorrect_entry()
 
     def add_player_in_tournament_controller(self):
@@ -161,18 +176,21 @@ class TournamentController:
         """
         user_input2 = True
         while user_input2:
-            user_input = self.view.repeat_message()
-            if re.match(r'^[a-zA-Z0-9]+$', user_input):
-                if str(user_input).isalpha():
+            try:
+                user_input = self.view.repeat_message()
+                if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                    if str(user_input).isalpha():
+                        self.view.incorrect_entry()
+                    if not str(user_input).isalpha():
+                        numbers = len(list_match)
+                        user_input = int(user_input)
+                        if user_input == 0:
+                            self.view.incorrect_entry()
+                        elif user_input <= numbers:
+                            return user_input
+                        elif user_input > numbers:
+                            self.view.incorrect_entry()
+                else:
                     self.view.incorrect_entry()
-                if not str(user_input).isalpha():
-                    numbers = len(list_match)
-                    user_input = int(user_input)
-                    if user_input == 0:
-                        self.view.incorrect_entry()
-                    elif user_input <= numbers:
-                        return user_input
-                    elif user_input > numbers:
-                        self.view.incorrect_entry()
-            else:
+            except:
                 self.view.incorrect_entry()
