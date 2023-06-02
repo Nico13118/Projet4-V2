@@ -68,32 +68,32 @@ class StartTournamentView:
         select6 = temporary_list[5]
         select7 = temporary_list[6]
         select8 = temporary_list[7]
-        print(f"Équipe 1 :", select1["nom"], select1["prenom"], "(", select1["couleur"], ")", "-VS-",
-              select2["nom"], select2["prenom"], "(", select2["couleur"], ")")
+        print(f"Équipe 1 : {select1['nom']:<9} {select1['prenom']:<9} -{select1['couleur']:<9}"
+              f"-VS-\t {select2['nom']:<9} {select2['prenom']:<9} -{select2['couleur']}")
 
-        print(f"Équipe 2 :", select3["nom"], select3["prenom"], "(", select3["couleur"], ")", "-VS-",
-              select4["nom"], select4["prenom"], "(", select4["couleur"], ")")
+        print(f"Équipe 2 : {select3['nom']:<9} {select3['prenom']:<9} -{select3['couleur']:<9}"
+              f"-VS-\t {select4['nom']:<9} {select4['prenom']:<9} -{select4['couleur']}")
 
-        print(f"Équipe 3 :", select5["nom"], select5["prenom"], "(", select5["couleur"], ")", "-VS-",
-              select6["nom"], select6["prenom"], "(", select6["couleur"], ")")
+        print(f"Équipe 3 : {select5['nom']:<9} {select5['prenom']:<9} -{select5['couleur']:<9}"
+              f"-VS-\t {select6['nom']:<9} {select6['prenom']:<9} -{select6['couleur']}")
 
-        print(f"Équipe 4 :", select7["nom"], select7["prenom"], "(", select7["couleur"], ")", "-VS-",
-              select8["nom"], select8["prenom"], "(", select8["couleur"], ")")
+        print(f"Équipe 4 : {select7['nom']:<9} {select7['prenom']:<9} -{select7['couleur']:<9}"
+              f"-VS-\t {select8['nom']:<9} {select8['prenom']:<9} -{select8['couleur']}")
 
     def view_match_for_score_entry(self, list_match):
         i = 0
         for list_match1 in list_match:
             i += 1
-            print(f"-{i}-", "Nom :", list_match1["nom"], list_match1["prenom"])
+            print(f"-{i}-Nom : {list_match1['nom']} {list_match1['prenom']}")
 
     def tournament_winner(self, list_winner):
         print("======================Vainqueur du tournoi=========================")
         for list_winner1 in list_winner:
-            print("Nom :", list_winner1["nom"], list_winner1["prenom"], "avec un score de :", list_winner1["score"])
+            print(f"Nom : {list_winner1['nom']} {list_winner1['prenom']} avec un score de : {list_winner1['score']}")
             print("====================== Félicitations !===========================")
 
     def two_winners_ex_aequo(self, list_winner):
         print("=======================Vainqueurs du tournoi par ex-aequo=========================")
         for list_winner1 in list_winner:
-            print("Nom :", list_winner1["nom"], list_winner1["prenom"], "avec un score de :", list_winner1["score"])
+            print(f"Nom : {list_winner1['nom']} {list_winner1['prenom']} avec un score de : {list_winner1['score']}")
         print("======================== Félicitations !=============================")
