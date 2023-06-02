@@ -58,6 +58,7 @@ class PlayerListController:
             return_user_input = self.control_user_input_del_player_list_player_select(player_sorted)
             self.db.del_player_in_list_db(return_user_input)  # Envoie le choix de l'utilisateur
             self.view.message_del_player_in_list_view2()  # Message qui confirme la suppression
+            self.controller.menu_controller.run_menu_player()
         else:
             self.view.message_no_list()
             self.controller.menu_controller.run_menu_player()
@@ -96,39 +97,44 @@ class PlayerListController:
     def control_user_input_del_player_in_list_controller(self):
         user_input2 = True
         while user_input2:
-            user_input = self.view.repeat_message()
-            if re.match(r'^[a-zA-Z0-9]+$', user_input):
-                if user_input.isdigit():
-                    self.view.message_error_list_view2()
-                if not user_input.isdigit():
-                    if user_input != "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
-                        self.view.message_error_list_view4()
-                    if user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
-                        user_input2 = False
-                    if user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
-                        self.controller.menu_controller.run_menu_player()
-            else:
+            try:
+                user_input = self.view.repeat_message()
+                if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                    if user_input.isdigit():
+                        self.view.message_error_list_view2()
+                    if not user_input.isdigit():
+                        if user_input != "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
+                            self.view.message_error_list_view4()
+                        if user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
+                            user_input2 = False
+                        if user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
+                            self.controller.menu_controller.run_menu_player()
+                else:
+                    self.view.message_error_list_view4()
+            except:
                 self.view.message_error_list_view4()
-
 
     def control_user_input_del_player_list_player_select(self, player_sorted):
         user_input2 = True
         while user_input2:
-            user_input = self.view.repeat_message()
-            if re.match(r'^[a-zA-Z0-9]+$', user_input):
-                if str(user_input).isalpha():
+            try:
+                user_input = self.view.repeat_message()
+                if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                    if str(user_input).isalpha():
+                        self.view.message_error_list_view4()
+                    """Controle combien de joueur sont inscrits dans la liste """
+                    if not str(user_input).isalpha():
+                        numbers = len(player_sorted)
+                        user_input = int(user_input)
+                        if user_input > numbers:
+                            self.view.message_error_list_view4()
+                        elif user_input == 0:
+                            self.view.message_error_list_view4()
+                        else:
+                            return user_input
+                else:
                     self.view.message_error_list_view4()
-                """Controle combien de joueur sont inscrits dans la liste """
-                if not str(user_input).isalpha():
-                    numbers = len(player_sorted)
-                    user_input = int(user_input)
-                    if user_input > numbers:
-                        self.view.message_error_list_view4()
-                    elif user_input == 0:
-                        self.view.message_error_list_view4()
-                    else:
-                        return user_input
-            else:
+            except:
                 self.view.message_error_list_view4()
 
     def control_player_list_controller(self):
@@ -148,8 +154,8 @@ class PlayerListController:
         directory = os.listdir(path)
         tournament_name = str(directory[0])
         path2 = f"{data}/data/tournament/{tournament_name}/Player_Select"
-        directory_player_select = os.listdir(path2)
-        if directory_player_select:
+        list_player_select_file_in_directory = os.listdir(path2)
+        if list_player_select_file_in_directory:
             return True
         else:
             return False
@@ -171,7 +177,7 @@ class PlayerListController:
         return numbers_players
 
     def round_file_control(self):
-        """Méthode qui controle la présence du fichier Round"""
+        """Méthode qui controle la présence du fichier RoundX.json"""
         data = os.getcwd()
         path = f"{data}/data/tournament/"
         directory = os.listdir(path)
@@ -188,6 +194,19 @@ class PlayerListController:
         list_round = self.db.get_list_round()
         numbers_players = len(list_round)
         return numbers_players
+
+    def list_scoreboard_file_control(self):
+        """Méthode qui controle l'existance du fichier ScoreBoard.json"""
+        data = os.getcwd()
+        path = f"{data}/data/tournament/"
+        directory = os.listdir(path)
+        tournament_name = str(directory[0])
+        path2 = f"{data}/data/tournament/{tournament_name}/ScoreBoard"
+        file_scoreboard = os.listdir(path2)
+        if file_scoreboard:
+            return True
+        else:
+            return False
 
     def list_match_file_control(self):
         """Méthode qui permet de controler l'existance du fichier List_MatchX.json"""
