@@ -70,8 +70,8 @@ class ReportView:
         print("===============================Classement des joueurs==========================================")
         for list_scoreboard1 in list_scoreboard:
             #player1 = list_scoreboard1[0]
-            print(f"Joueur {list_scoreboard1['joueur']:<2}: {list_scoreboard1['nom']} {list_scoreboard1['prenom']} "
-                  f"Score :{list_scoreboard1['score']}  ")
+            print(f"Joueur {list_scoreboard1['joueur']}: {list_scoreboard1['nom']:<9} "
+                  f"{list_scoreboard1['prenom']:<9} Score :{list_scoreboard1['score']}")
 
     def no_scoreboard_view(self):
         print("====================================================================================")
