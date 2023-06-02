@@ -22,6 +22,11 @@ class TournamentView:
         directore_remark = input("Remarques :")
         return directore_remark
 
+    def tournament_number_rounds(self):
+        print("Saisissez le nombre de rounds ou laissez le champ vide, le champ vide correspond à 4 rounds par défaut.")
+        number_rounds = input("Quel est votre choix ?")
+        return number_rounds
+
     def tournament_error_message1(self):
         print("Action impossible !! Vous ne pouvez pas créer d'autre tournoi !!")
 
@@ -71,7 +76,7 @@ class TournamentView:
         i = 0
         for list_player1 in list_player:
             i += 1
-            print(f"-{i}- ID :", list_player1["identifiant"], "Nom :", list_player1["nom"], list_player1["prenom"])
+            print(f"-{i}- ID : {list_player1['identifiant']} Nom : {list_player1['nom']} {list_player1['prenom']}")
 
     def repeat_message(self):
         user_input = input("Faite votre choix :")
