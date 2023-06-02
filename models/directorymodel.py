@@ -32,7 +32,7 @@ class DirectoryModel:
             data_file6 = os.path.exists(f"{data}/data/tournament/{tournament_name}/Player_select")
             data_file7 = os.path.exists(f"{data}/data/tournament/{tournament_name}/Rounds")
             data_file8 = os.path.exists(f"{data}/data/tournament/{tournament_name}/Scores")
-            data_file9 = os.path.exists(f"{data}/data/tournament/{tournament_name}/Final_Scores")
+            data_file9 = os.path.exists(f"{data}/data/tournament/{tournament_name}/ScoreBoard")
             if not data_file5:
                 os.mkdir(f"{data}/data/tournament/{tournament_name}/Match")
             if not data_file6:
@@ -42,7 +42,7 @@ class DirectoryModel:
             if not data_file8:
                 os.mkdir(f"{data}/data/tournament/{tournament_name}/Scores")
             if not data_file9:
-                os.mkdir(f"{data}/data/tournament/{tournament_name}/Final_Scores")
+                os.mkdir(f"{data}/data/tournament/{tournament_name}/ScoreBoard")
 
     def make_directory_tournament(self, tournament_name):
         data = os.getcwd()
@@ -51,6 +51,7 @@ class DirectoryModel:
         os.mkdir(f"{data}/data/tournament/{tournament_name}/Scores")
         os.mkdir(f"{data}/data/tournament/{tournament_name}/Player_Select")
         os.mkdir(f"{data}/data/tournament/{tournament_name}/Match")
+        os.mkdir(f"{data}/data/tournament/{tournament_name}/ScoreBoard")
 
     def del_tournament(self):
         """Méthode qui permet de supprimer le répertoire portant le nom du tournoi """
