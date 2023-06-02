@@ -66,33 +66,39 @@ class PlayerController:
     def new_player_message_controller(self):
         user_input2 = True
         while user_input2:
-            user_input = self.view.new_player_message_view()
-            if re.match(r'^[a-zA-Z0-9]+$', user_input):
-                if user_input.isdigit():
-                    self.view.message_error()
-                if not user_input.isdigit():
-                    if user_input == "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
-                        self.controller.player_controller.player_message()
-                    elif user_input == "n" or user_input == "no" or user_input == "non":
-                        self.controller.menu_controller.run_menu_player()
-                    else:
+            try:
+                user_input = self.view.new_player_message_view()
+                if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                    if user_input.isdigit():
                         self.view.message_error()
-            else:
+                    if not user_input.isdigit():
+                        if user_input == "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
+                            self.controller.player_controller.player_message()
+                        elif user_input == "n" or user_input == "no" or user_input == "non":
+                            self.controller.menu_controller.run_menu_player()
+                        else:
+                            self.view.message_error()
+                else:
+                    self.view.message_error()
+            except:
                 self.view.message_error()
 
     def control_confirmation_message(self):
         user_input2 = True
         while user_input2:
-            user_input = self.view.confirmation_message()
-            if re.match(r'^[a-zA-Z0-9]+$', user_input):
-                if user_input.isdigit():
-                    self.view.message_error()
-                if not user_input.isdigit():
-                    if user_input == "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
-                        return True
-                    elif user_input == "n" or user_input == "no" or user_input == "non":
-                        self.controller.menu_controller.run_menu_player()
-                    else:
+            try:
+                user_input = self.view.confirmation_message()
+                if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                    if user_input.isdigit():
                         self.view.message_error()
-            else:
+                    if not user_input.isdigit():
+                        if user_input == "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
+                            return True
+                        elif user_input == "n" or user_input == "no" or user_input == "non":
+                            self.controller.menu_controller.run_menu_player()
+                        else:
+                            self.view.message_error()
+                else:
+                    self.view.message_error()
+            except:
                 self.view.message_error()
