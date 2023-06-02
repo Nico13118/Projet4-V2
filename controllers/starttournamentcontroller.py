@@ -59,7 +59,6 @@ class StartTournamentController:
             temporary_list.append(player)
 
         self.db.add_player_shuffle_in_list_match_json(temporary_list)
-        self.view.message_start_tournament()
         self.create_teams()
 
     def next_match(self, new_list_match):
@@ -93,6 +92,10 @@ class StartTournamentController:
 
     def create_teams(self):
         temporary_list = self.db.get_player_list_match()
+        select1 = temporary_list[0]
+        rounds_info = select1["round"]
+        """Message -Affichage des équipes- et le numéro du rounds"""
+        self.view.display_of_teams(rounds_info)
         self.view.print_start_match(temporary_list)
         self.controller.menu_controller.run_tournament_menu()
 
@@ -252,7 +255,7 @@ class StartTournamentController:
                     final_list = self.mc.sorted_match_list_and_round(numbers_player_match, number_player_round)
                     new_list_match = self.mc.player_selection_from_list_match(final_list)
                     """Afficher Le match suivant"""
-                    self.view.message_next_match()
+                    #self.view.message_next_match()
                     self.next_match(new_list_match)
 
             else:
@@ -322,7 +325,7 @@ class StartTournamentController:
                     final_list = self.mc.sorted_match_list_and_round(numbers_player_match, number_player_round)
                     new_list_match = self.mc.player_selection_from_list_match(final_list)
                     """Afficher Le match suivant"""
-                    self.view.message_next_match()
+                    # self.view.message_next_match()
                     self.next_match(new_list_match)
 
             else:
