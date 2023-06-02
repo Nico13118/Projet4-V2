@@ -581,7 +581,7 @@ class DatabaseController:
 
         if user_input2 == 7 or user_input2 == 8:
             """ Récupération des joueurs restants"""
-            remaining_player_liste = self.get_list_match_and_round()  
+            remaining_player_liste = self.get_list_match_and_round()
             select_player1 = remaining_player_liste[6]
             temporary_list.append(select_player1)
             select_player2 = remaining_player_liste[7]
