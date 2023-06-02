@@ -102,17 +102,26 @@ class MenuController:
     def control_user_input(self, number):
         user_input2 = True
         while user_input2:
-            user_input = self.view.repeat_message()
-            if re.match(r'^[a-zA-Z0-9]+$', user_input):
-                if str(user_input).isalpha():
-                    self.view.error_message_menuview1()
-                if not str(user_input).isalpha():
-                    user_input = int(user_input)
-                    if user_input == 0:
+            try:
+                user_input = self.view.repeat_message()
+                if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                    if str(user_input).isalpha():
                         self.view.error_message_menuview1()
-                    if user_input > number:
-                        self.view.error_message_menuview1()
-                    if user_input <= number:
-                        return user_input
-            else:
+                    if not str(user_input).isalpha():
+                        user_input = int(user_input)
+                        if user_input == 0:
+                            self.view.error_message_menuview1()
+                        if user_input > number:
+                            self.view.error_message_menuview1()
+                        if user_input <= number:
+                            return user_input
+                        else:
+                            self.view.incorrect_entry()
+                    else:
+                        self.view.incorrect_entry()
+
+                else:
+                    self.view.incorrect_entry()
+            except:
                 self.view.incorrect_entry()
+
