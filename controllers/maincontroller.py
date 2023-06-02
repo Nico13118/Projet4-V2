@@ -19,4 +19,3 @@ class MainController:
 
     def run(self):
         self.menu_controller.run_menu()
-
