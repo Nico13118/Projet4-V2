@@ -44,4 +44,4 @@ class PlayerListView:
         i = 0
         for list_player1 in list_player:
             i += 1
-            print(f"-{i}- ID :", list_player1["identifiant"], "Nom :", list_player1["nom"], list_player1["prenom"])
+            print(f"-{i}- ID : {list_player1['identifiant']} Nom : {list_player1['nom']} {list_player1['prenom']}")
