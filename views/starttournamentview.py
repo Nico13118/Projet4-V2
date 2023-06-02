@@ -1,11 +1,7 @@
 class StartTournamentView:
-    def message_start_tournament(self):
-        print("==================Lancement du tournoi=========================")
+    def display_of_teams(self, rounds_info):
         print("==================Affichage des équipes=========================")
-
-    def message_next_match(self):
-        print("=====================Match suivant============================")
-        print("==================Affichage des équipes=======================")
+        print(f"==================Rounds {rounds_info} =========================")
 
     def message_end_tournament(self):
         print("========================= Tournoi terminé ===========================")
