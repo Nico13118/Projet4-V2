@@ -74,6 +74,9 @@ class TournamentController:
             return directore_remark
 
     def number_rounds_controller(self):
+        """Méthode qui permet d'ajouter par défaut le nombre de Rounds si l'utilisateur ne saisit rien
+            Retourne par défaut 4 ou le choix de l'utilisateur
+        """
         number_rounds = self.view.tournament_number_rounds()
         if number_rounds == "":
             number_rounds = DEFAULT_NUMBER_OF_ROUNDS
@@ -162,10 +165,14 @@ class TournamentController:
             """ Si le fichier List_Registered_Players.json existe """
             if self.controller.player_list_controller.control_player_list_controller():
                 self.view.message_select_player1_tournamentview()
-                list_player = self.db.get_player_list()  # Extraire les données de la liste List_Registered_Players.json
-                player_sorted = self.db.sort_player_list_db(list_player)  # Tries la liste des joueurs par ordre alphabétique
-                self.view.print_player_list_tournamentview(player_sorted)  # Affiche la liste des joueurs par ordre alphabétique
-                self.view.message_select_player2_tournamentview() # Demande à l'utilisateur de saisir le joueur à ajouter au tournoi
+                """ Extraire les données de la liste List_Registered_Players.json"""
+                list_player = self.db.get_player_list()
+                """ Tries la liste des joueurs par ordre alphabétique"""
+                player_sorted = self.db.sort_player_list_db(list_player)
+                """ Affiche la liste des joueurs par ordre alphabétique"""
+                self.view.print_player_list_tournamentview(player_sorted)
+                """ Demande à l'utilisateur de saisir le joueur à ajouter au tournoi"""
+                self.view.message_select_player2_tournamentview()
                 user_input = self.user_input_control(player_sorted)
                 self.db.add_player_in_tournament_db(user_input)
                 self.input_control_player_in_tournament()
