@@ -1,7 +1,7 @@
 class StartTournamentView:
     def display_of_teams(self, rounds_info):
         print("==================Affichage des équipes=========================")
-        print(f"==================Rounds {rounds_info} =========================")
+        print(f"====================== Rounds {rounds_info} ============================")
 
     def message_end_tournament(self):
         print("========================= Tournoi terminé ===========================")
@@ -50,10 +50,7 @@ class StartTournamentView:
         print("Quel est le résultat ? (1 ou 2) :")
 
     def end_of_game_message(self):
-        print("=====================Match terminé====================.")
-
-    def print_message_team_table(self):
-        print("\n===============Tableau des équipes===============")
+        print("=====================Round terminé====================.")
 
     def print_start_match(self, temporary_list):
         select1 = temporary_list[0]
@@ -93,3 +90,6 @@ class StartTournamentView:
         for list_winner1 in list_winner:
             print(f"Nom : {list_winner1['nom']} {list_winner1['prenom']} avec un score de : {list_winner1['score']}")
         print("======================== Félicitations !=============================")
+
+    def no_winner(self):
+        print("===================Plusieurs participants sont à égalité en tête du classement======================")
