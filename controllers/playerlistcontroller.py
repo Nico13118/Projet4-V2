@@ -47,17 +47,26 @@ class PlayerListController:
         """Méthode qui permet d'afficher la liste List_Registered_Players.json
             dans l'ordre et de supprimer un joueur de cette liste
             """
-        if self.control_player_list_controller(): # Si la présence du fichier est True
-            self.view.message_del_player() # Demande à l'utilisateur s'il souhaite continuer
+        """# Si la présence du fichier est True"""
+        if self.control_player_list_controller():
+            """Demande à l'utilisateur s'il souhaite continuer"""
+            self.view.message_del_player()
             self.control_user_input_del_player_in_list_controller()
-            list_player = self.db.get_player_list()  # Extraire les données de la liste
-            player_sorted = self.db.sort_player_list_db(list_player)  # Tries la liste des joueurs par ordre alphabétique
-            self.view.message_list_view()  # Affiche le message - Liste des joueurs enregistrés -
-            self.view.print_player_list_view(player_sorted)  # Affiche la liste des joueurs triés par ordre alphabétique
-            self.view.message_del_player_in_list_view()  # Demander à l'utilisateur le joueur à supprimer
+            """ Extraire les données de la liste"""
+            list_player = self.db.get_player_list()
+            """ Tries la liste des joueurs par ordre alphabétique"""
+            player_sorted = self.db.sort_player_list_db(list_player)
+            """# Affiche le message - Liste des joueurs enregistrés -"""
+            self.view.message_list_view()
+            """ Affiche la liste des joueurs triés par ordre alphabétique"""
+            self.view.print_player_list_view(player_sorted)
+            """ Demander à l'utilisateur le joueur à supprimer"""
+            self.view.message_del_player_in_list_view()
             return_user_input = self.control_user_input_del_player_list_player_select(player_sorted)
-            self.db.del_player_in_list_db(return_user_input)  # Envoie le choix de l'utilisateur
-            self.view.message_del_player_in_list_view2()  # Message qui confirme la suppression
+            """ Envoie le choix de l'utilisateur"""
+            self.db.del_player_in_list_db(return_user_input)
+            """ Message qui confirme la suppression"""
+            self.view.message_del_player_in_list_view2()
             self.controller.menu_controller.run_menu_player()
         else:
             self.view.message_no_list()
@@ -75,11 +84,16 @@ class PlayerListController:
             if self.control_player_select_controller():
                 number = self.control_number_player_in_list_players_select2()
                 if number >= 1:
-                    list_player_select = self.db.get_list_player_select_db() # Récupération de la liste des joueurs inscrits
-                    player_sorted = self.db.sort_player_list_db(list_player_select)  # Tries la liste des joueurs par ordre alphabétique
-                    self.view.print_list_player_select() # Affiche "Liste des joueurs inscrits au tournoi"
-                    self.view.print_player_list_view(player_sorted) # Affiche la liste des joueurs inscrits dans l'ordre alphabétique
-                    self.view.message_del_player_in_list_view()  # Demande à l'utilisateur de faire son choix
+                    """ Récupération de la liste des joueurs inscrits"""
+                    list_player_select = self.db.get_list_player_select_db()
+                    """ Tries la liste des joueurs par ordre alphabétique"""
+                    player_sorted = self.db.sort_player_list_db(list_player_select)
+                    """ Affiche "Liste des joueurs inscrits au tournoi"""
+                    self.view.print_list_player_select()
+                    """ Affiche la liste des joueurs inscrits dans l'ordre alphabétique"""
+                    self.view.print_player_list_view(player_sorted)
+                    """ Demande à l'utilisateur de faire son choix"""
+                    self.view.message_del_player_in_list_view()
                     return_user_input = self.control_user_input_del_player_list_player_select(player_sorted)
                     self.db.del_player_in_list_player_select_db(return_user_input)
                     self.view.message_del_player_in_list_view2()
@@ -243,22 +257,3 @@ class PlayerListController:
         number_files = len(directory2)
         return number_files
 
-    def number_of_score_files(self):
-        """Méthode qui controle le nombre de fichiers qu'il y a dans le répertoire Scores """
-        data = os.getcwd()
-        path1 = f"{data}/data/tournament/"
-        directory1 = os.listdir(path1)
-        tournament_name = str(directory1[0])
-        path2 = f"{data}/data/tournament/{tournament_name}/Scores"
-        directory2 = os.listdir(path2)
-        number_files = len(directory2)
-        return number_files
-
-    def get_score_file_names(self):
-        data = os.getcwd()
-        path1 = f"{data}/data/tournament/"
-        directory1 = os.listdir(path1)
-        tournament_name = str(directory1[0])
-        path2 = f"{data}/data/tournament/{tournament_name}/Scores"
-        score_files = os.listdir(path2)
-        return score_files
