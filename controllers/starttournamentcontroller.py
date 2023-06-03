@@ -95,9 +95,15 @@ class StartTournamentController:
         select1 = temporary_list[0]
         rounds_info = select1["round"]
         """Message -Affichage des équipes- et le numéro du rounds"""
-        self.view.display_of_teams(rounds_info)
-        self.view.print_start_match(temporary_list)
-        self.controller.menu_controller.run_tournament_menu()
+        if rounds_info == 0:
+            rounds_info += 1
+            self.view.display_of_teams(rounds_info)
+            self.view.print_start_match(temporary_list)
+            self.controller.menu_controller.run_tournament_menu()
+        else:
+            self.view.display_of_teams(rounds_info)
+            self.view.print_start_match(temporary_list)
+            self.controller.menu_controller.run_tournament_menu()
 
     def player_selection(self):
         """Controle que le fichier portant le nom du tournoi existe"""
@@ -129,7 +135,7 @@ class StartTournamentController:
 
         else:
             """
-                Si le fichier RoundX.json existe mais que le fichier contient moins de 8 joueurs
+                Si le fichier RoundX.json existe et ne contient pas 8 joueurs
             """
             numbers_players = self.controller.player_list_controller.control_number_player_in_list_round()
             if numbers_players < 8:
@@ -147,7 +153,7 @@ class StartTournamentController:
                 self.team_selection_file_round_exist(choice_player1)
 
             """
-               Si le fichier RoundX.json existe mais que le fichier contient plus de 8 joueurs
+               Si le fichier RoundX.json existe et contient 8 joueurs
             """
             if numbers_players >= 8:
                 """Récupère les informations du fichier List_Match, il commence par le premier puis les suivants"""
@@ -208,18 +214,16 @@ class StartTournamentController:
             numbers_players_in_list_round = self.controller.player_list_controller.control_number_player_in_list_round()
             if numbers_players_in_list_round == 8:
                 self.view.end_of_game_message()
-                """Créer le fichier des scores"""
-                self.create_file_score_controller()
 
-                number_files_score = self.controller.player_list_controller.number_of_score_files()
+                number_files_rounds = self.controller.player_list_controller.number_files_round()
                 tournament_info = self.db.get_tournament_information()
                 number_rounds = self.db.number_rounds_in_tournament_file(tournament_info)
                 number_rounds = int(number_rounds)
-                if number_files_score == number_rounds:
-                    """Lorsque le nombre de fichier ScoreX.json est égal au nombre de fichier RoundX.json"""
+                if number_files_rounds == number_rounds:
+                    """Lorsque le nombre de fichier RoundX.json est égal au nombre de Rounds"""
                     """Afficher un message indiquant la fin du tournoi"""
                     self.view.message_end_tournament()
-                    final_scores = self.db.get_final_score_files()
+                    final_scores = self.controller.report_controller.get_scoreboard()
                     sort_final_scores = self.db.sort_player_list_score(final_scores)
                     list_winner = self.db.get_winner_tournament(sort_final_scores)
                     """Afficher le joueur qui remporte le tournoi """
@@ -235,6 +239,9 @@ class StartTournamentController:
                     if info_list_winner == 3:
                         self.view.two_winners_ex_aequo(list_winner)
                         self.dm.move_tournament_directory()
+                        self.controller.menu_controller.run_tournament_menu()
+                    elif info_list_winner > 3:
+                        self.view.no_winner()
                         self.controller.menu_controller.run_tournament_menu()
                 else:
                     """Créer le match suivant"""
@@ -255,7 +262,6 @@ class StartTournamentController:
                     final_list = self.mc.sorted_match_list_and_round(numbers_player_match, number_player_round)
                     new_list_match = self.mc.player_selection_from_list_match(final_list)
                     """Afficher Le match suivant"""
-                    #self.view.message_next_match()
                     self.next_match(new_list_match)
 
             else:
@@ -279,16 +285,16 @@ class StartTournamentController:
             numbers_players_in_list_round = self.controller.player_list_controller.control_number_player_in_list_round()
             if numbers_players_in_list_round == 8:
                 self.view.end_of_game_message()
-                """Créer le fichier des scores"""
-                self.create_file_score_controller()
 
-                number_files_score = self.controller.player_list_controller.number_of_score_files()
+                number_files_rounds = self.controller.player_list_controller.number_files_round()
                 tournament_info = self.db.get_tournament_information()
                 info_rounds = self.db.number_rounds_in_tournament_file(tournament_info)
-                if number_files_score == info_rounds:
+                info_rounds = int(info_rounds)
+                if number_files_rounds == info_rounds:
+                    """Lorsque le nombre de fichier RoundX.json est égal au nombre de Rounds"""
                     """Afficher un message indiquant la fin du tournoi"""
                     self.view.message_end_tournament()
-                    final_scores = self.db.get_final_score_files()
+                    final_scores = self.controller.report_controller.get_scoreboard()
                     sort_final_scores = self.db.sort_player_list_score(final_scores)
                     list_winner = self.db.get_winner_tournament(sort_final_scores)
                     """Afficher le joueur qui remporte le tournoi, """
@@ -325,7 +331,6 @@ class StartTournamentController:
                     final_list = self.mc.sorted_match_list_and_round(numbers_player_match, number_player_round)
                     new_list_match = self.mc.player_selection_from_list_match(final_list)
                     """Afficher Le match suivant"""
-                    # self.view.message_next_match()
                     self.next_match(new_list_match)
 
             else:
@@ -404,7 +409,10 @@ class StartTournamentController:
             self.view.message_no_tournament_directory()
             self.controller.menu_controller.run_tournament_menu()
         if self.controller.player_list_controller.list_match_file_control():
-            self.view.print_message_team_table()
+            temporary_list = self.db.get_player_list_match()
+            select1 = temporary_list[0]
+            rounds_info = select1["round"]
+            self.view.display_of_teams(rounds_info)
             list_match = self.db.get_player_list_match()
             self.view.print_start_match(list_match)
             self.controller.menu_controller.run_tournament_menu()
@@ -412,14 +420,6 @@ class StartTournamentController:
             self.view.message_show_team_table()
             self.controller.menu_controller.run_tournament_menu()
 
-    def create_file_score_controller(self):
-        """Méthode qui permet de créer le fichier ScoreX.json"""
-        """Récupérer les données du fichier RoundX.json"""
-        list_round = self.db.get_list_round()
-        """Trie des joueurs par ordre de joueurs"""
-        player_sorted = self.db.sorted_by_player_order(list_round)
-        """Ajouter les joueurs avec leurs score dans un fichier json"""
-        self.db.add_scores_to_players_in_file_score(player_sorted)
 
 
 
