@@ -25,7 +25,7 @@ class DatabaseController:
 
     def add_player_in_json(self, playermodel):
         """Méthode qui enregistre les joueurs dans la base de données List_Registered_Players.json,
-            méthode qui peut ajouter des joueurs au fur et à mesure
+            La méthode peut ajouter des joueurs au fur et à mesure
         """
         temporarylist = []
         data = os.getcwd()
@@ -116,17 +116,6 @@ class DatabaseController:
         tournament_name = str(directory[0])
         path2 = f"{data}/data/tournament/{tournament_name}/Match"
         with open(f"{path2}/List_Match{number_files}.json", "w") as f:
-            json.dump(temporary_list, f)
-
-    def add_scores_to_players_in_file_score(self, temporary_list):
-        """Méthode qui permet d'enregistrer les scores de chaques Rounds dans ScoreX.json """
-        number_files = self.controller.player_list_controller.number_files_in_list_match()
-        data = os.getcwd()
-        path = f"{data}/data/tournament/"
-        directory = os.listdir(path)
-        tournament_name = str(directory[0])
-        path2 = f"{data}/data/tournament/{tournament_name}/Scores"
-        with open(f"{path2}/Score{number_files}.json", "w") as f:
             json.dump(temporary_list, f)
 
     def add_players_to_file_round(self, temporary_list):
@@ -381,6 +370,7 @@ class DatabaseController:
             return temporary_list
 
     def get_match_list_for_report(self, number_files1):
+        """Méthode qui permet de retourner les données de List_MatchX.json selon le nombre de fichiers demandés"""
         data = os.getcwd()
         path = f"{data}/data/tournament/"
         directory = os.listdir(path)
@@ -403,7 +393,7 @@ class DatabaseController:
             return temporary_list
 
     def get_round_list_for_report(self, number_files1):
-        """Méthode qui permet de récupérer tous les fichiers RoundsX.json"""
+        """Méthode qui permet de retourner les données de RoundsX.json selon le nombre de fichiers demandés"""
         data = os.getcwd()
         path = f"{data}/data/tournament/"
         directory = os.listdir(path)
@@ -412,28 +402,6 @@ class DatabaseController:
         with open(f"{path2}/Round{number_files1}.json", "r") as f:
             round_list = json.load(f)
             return round_list
-
-    def get_list_scores(self):
-        """Méthode qui retourne les informations du fichier ScoreX.json"""
-        number_files = self.controller.player_list_controller.number_of_score_files()
-        data = os.getcwd()
-        path = f"{data}/data/tournament/"
-        directory = os.listdir(path)
-        tournament_name = str(directory[0])
-        path2 = f"{data}/data/tournament/{tournament_name}/Scores"
-        with open(f"{path2}/Score{number_files}.json", "r") as f:
-            list_score = json.load(f)
-            return list_score
-
-    def get_final_score_files(self):
-        """Méthode qui permet de récupérer les informations du fichier Final_Scores.json"""
-        data = os.getcwd()
-        path = f"{data}/data/tournament/"
-        directory = os.listdir(path)
-        tournament_name = str(directory[0])
-        with open(f"{data}/data/tournament/{tournament_name}/Final_Scores/Final_Scores.json", "r") as f:
-            final_scores = json.load(f)
-            return final_scores
 
     def get_winner_player(self, choice_player1, choice_player2):
         """Méthode qui permet de selectionner le joueur qui gagne (Option Gagnant / Perdant)
@@ -478,38 +446,56 @@ class DatabaseController:
                 return temporary_list
 
     def get_winner_tournament(self, sort_final_scores):
+        """Méthode qui permet de selectionner le joueur qui remporte le tournoi, mais peut selectionner
+            2 à 3 joueurs si ex-eaquo.
+         """
+
         list_winner1 = []
         list_winner2 = []
         list_winner3 = []
         list_winner4 = []
         list_winner5 = []
+        list_winner6 = []
         for sort_final_scores1 in sort_final_scores:
-            select_score = sort_final_scores1["score"]
-            if select_score == 4.0:
+            tournament_info = self.get_tournament_information()
+            number_rounds = self.number_rounds_in_tournament_file(tournament_info)
+            number_rounds = float(number_rounds)
+            player_score = sort_final_scores1["score"]
+            if player_score == number_rounds:
                 list_winner1.append(sort_final_scores1)
-            if select_score == 3.5:
+            number_rounds -= 0.5
+            if player_score == number_rounds:
                 list_winner2.append(sort_final_scores1)
-            if select_score == 3.0:
+            number_rounds -= 0.5
+            if player_score == number_rounds:
                 list_winner3.append(sort_final_scores1)
-            if select_score == 2.5:
+            number_rounds -= 0.5
+            if player_score == number_rounds:
                 list_winner4.append(sort_final_scores1)
-            if select_score == 2.0:
+            number_rounds -= 0.5
+            if player_score == number_rounds:
                 list_winner5.append(sort_final_scores1)
+            number_rounds -= 0.5
+            if player_score == number_rounds:
+                list_winner6.append(sort_final_scores1)
         info_winner1 = len(list_winner1)
         info_winner2 = len(list_winner2)
         info_winner3 = len(list_winner3)
         info_winner4 = len(list_winner4)
         info_winner5 = len(list_winner5)
-        if info_winner1 == 1 or info_winner1 == 2:
+        info_winner6 = len(list_winner6)
+        if info_winner1 == 1 or info_winner1 == 2 or info_winner1 == 3:
             return list_winner1
-        if info_winner2 == 1 or info_winner2 == 2:
+        if info_winner2 == 1 or info_winner2 == 2 or info_winner2 == 3:
             return list_winner2
-        if info_winner3 == 1 or info_winner3 == 2:
+        if info_winner3 == 1 or info_winner3 == 2 or info_winner3 == 3:
             return list_winner3
-        if info_winner4 == 1 or info_winner4 == 2:
+        if info_winner4 == 1 or info_winner4 == 2 or info_winner4 == 3:
             return list_winner4
-        if info_winner5 == 1 or info_winner5 == 2:
+        if info_winner5 == 1 or info_winner5 == 2 or info_winner5 == 3:
             return list_winner5
+        if info_winner6 == 1 or info_winner6 == 2 or info_winner6 == 3:
+            return list_winner6
 
     def get_team_file_round_does_not_exist(self, user_input2):
         """Permet de selectionner les 2 joueurs dans list_Match
@@ -618,4 +604,3 @@ class DatabaseController:
         """Méthode qui trie par ordre de score"""
         list_score_sorted = sorted(list_score, key=lambda x: (x["score"]), reverse=True)
         return list_score_sorted
-
