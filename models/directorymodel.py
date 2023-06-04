@@ -58,6 +58,9 @@ class DirectoryModel:
         shutil.rmtree(f"{data}/data/tournament/{tournament_name}")
 
     def move_tournament_directory(self):
+        """Méthode qui permet de déplacer le répertoire concernant le tournoi et de le renommer
+            sous le format d'une date
+        """
         dateiso = time.strftime("%Y_%m_%d_%H_%M")
         data = os.getcwd()
         path = f"{data}/data/tournament/"
@@ -76,3 +79,10 @@ class DirectoryModel:
             return True
         else:
             return False
+
+    def get_old_tournaments(self):
+        """Méthode qui permet de retourner le ou les noms des répertoires des anciens tournois"""
+        data = os.getcwd()
+        path = f"{data}/data/tournament_old"
+        old_tournament = os.listdir(path)
+        return old_tournament
