@@ -257,3 +257,16 @@ class PlayerListController:
         number_files = len(directory2)
         return number_files
 
+    def nbr_files_in_list_match_old(self, tournament_name):
+        """Méthode qui controle le nombre de fichiers qu'il y a dans le répertoire Match de tournament_old """
+        data = os.getcwd()
+        path1 = f"{data}/data/tournament_old/{tournament_name}/Match"
+        directory2 = os.listdir(path1)
+        number_files = len(directory2)
+        return number_files
+
+    def returns_filenames_list_match(self, tournament_name):
+        data = os.getcwd()
+        path = f"{data}/data/tournament/tournament_old/{tournament_name}/Match"
+        names_list_match = os.listdir(path)
+        return names_list_match
