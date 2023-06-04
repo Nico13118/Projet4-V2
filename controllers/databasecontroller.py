@@ -390,6 +390,7 @@ class DatabaseController:
             return match_list
 
     def get_match_list_old_tournament(self, tournament_name, number_files1):
+        """Méthode qui permet de retourner les données de List_MatchX.json pour le rapport des tournois précédents"""
         data = os.getcwd()
         path = f"{data}/data/tournament_old/"
         with open(f"{path}/{tournament_name}/Match/List_Match{number_files1}.json", "r") as f:
@@ -420,6 +421,7 @@ class DatabaseController:
             return round_list
 
     def get_round_list_old_tournament(self, tournament_name, number_files1):
+        """Méthode qui permet de retourner les informations du fichier RoundX.json pour le rapport des tournois précédents"""
         data = os.getcwd()
         path = f"{data}/data/tournament_old"
         with open(f"{path}/{tournament_name}/Rounds/Round{number_files1}.json", "r") as f:
