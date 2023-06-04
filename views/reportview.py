@@ -20,6 +20,11 @@ class ReportView:
         print("===================Rapport du tournoi en cours========================")
         print("=====================================================================")
 
+    def report_old_tournament(self):
+        print("=====================================================================")
+        print("===================Rapport des tournois précedents========================")
+        print("=====================================================================")
+
     def print_tournament_info(self, tournament_info):
         for tournament_info1 in tournament_info:
             name = tournament_info1["nom"]
@@ -69,7 +74,6 @@ class ReportView:
         print("====================================================================================")
         print("===============================Classement des joueurs==========================================")
         for list_scoreboard1 in list_scoreboard:
-            #player1 = list_scoreboard1[0]
             print(f"Joueur {list_scoreboard1['joueur']}: {list_scoreboard1['nom']:<9} "
                   f"{list_scoreboard1['prenom']:<9} Score :{list_scoreboard1['score']}")
 
