@@ -357,6 +357,15 @@ class DatabaseController:
             list_player_select = json.load(f)
             return list_player_select
 
+    def get_list_player_select_report(self, tournament_name):
+        """Méthode qui retourne les informations du fichier List_Players_Select.json
+            pour le rapport des tournois précédents
+        """
+        data = os.getcwd()
+        with open(f"{data}/data/tournament_old/{tournament_name}/Player_Select/List_Players_Select.json", "r") as f:
+            list_player_select = json.load(f)
+            return list_player_select
+
     def get_player_list_match(self):
         """Méthode qui retourne les informations du fichier List_MatchX.json"""
         number_files = self.controller.player_list_controller.number_files_in_list_match()
@@ -380,6 +389,13 @@ class DatabaseController:
             match_list = json.load(f)
             return match_list
 
+    def get_match_list_old_tournament(self, tournament_name, number_files1):
+        data = os.getcwd()
+        path = f"{data}/data/tournament_old/"
+        with open(f"{path}/{tournament_name}/Match/List_Match{number_files1}.json", "r") as f:
+            infos_match_list = json.load(f)
+            return infos_match_list
+
     def get_list_round(self):
         """Méthode qui retourne les informations du fichier RoundX.json"""
         number_files = self.controller.player_list_controller.number_files_round()
@@ -400,6 +416,13 @@ class DatabaseController:
         tournament_name = str(directory[0])
         path2 = f"{data}/data/tournament/{tournament_name}/Rounds"
         with open(f"{path2}/Round{number_files1}.json", "r") as f:
+            round_list = json.load(f)
+            return round_list
+
+    def get_round_list_old_tournament(self, tournament_name, number_files1):
+        data = os.getcwd()
+        path = f"{data}/data/tournament_old"
+        with open(f"{path}/{tournament_name}/Rounds/Round{number_files1}.json", "r") as f:
             round_list = json.load(f)
             return round_list
 
@@ -445,11 +468,10 @@ class DatabaseController:
                 temporary_list.append(select_player2)
                 return temporary_list
 
-    def get_winner_tournament(self, sort_final_scores):
+    def get_winner_tournament(self, sort_final_scores, tournament_info):
         """Méthode qui permet de selectionner le joueur qui remporte le tournoi, mais peut selectionner
             2 à 3 joueurs si ex-eaquo.
          """
-
         list_winner1 = []
         list_winner2 = []
         list_winner3 = []
@@ -457,7 +479,6 @@ class DatabaseController:
         list_winner5 = []
         list_winner6 = []
         for sort_final_scores1 in sort_final_scores:
-            tournament_info = self.get_tournament_information()
             number_rounds = self.number_rounds_in_tournament_file(tournament_info)
             number_rounds = float(number_rounds)
             player_score = sort_final_scores1["score"]
@@ -581,6 +602,13 @@ class DatabaseController:
         directory = os.listdir(path)
         tournament_name = str(directory[0])
         with open(f"{data}/data/tournament/{tournament_name}/Tournament_Info.json", "r") as f:
+            tournament_info = json.load(f)
+            return tournament_info
+
+    def get_old_tournament_information(self, tournament_name):
+        """Méthode qui récupère toutes les informations du fichier tournament_information.json du tournoi précédent"""
+        data = os.getcwd()
+        with open(f"{data}/data/tournament_old/{tournament_name}/Tournament_Info.json", "r") as f:
             tournament_info = json.load(f)
             return tournament_info
 

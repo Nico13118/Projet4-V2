@@ -18,8 +18,8 @@ class ReportController:
             """Appel des autres méthodes pour afficher :
                 La liste des joueurs inscrits au tournoi 
                 Le tableau des équipes
-                Le round en cours
-                Le resultats
+                Les rounds en cours
+                Les classements des joueurs
              """
             self.current_player_report()
             self.match_in_progress()
@@ -130,3 +130,6 @@ class ReportController:
         list_scoreboard = self.get_scoreboard()
         numbers_in_scoreboard = len(list_scoreboard)
         return numbers_in_scoreboard
+
+    def show_previous_tournaments(self):
+        """Afficher les informations des tournois précédents"""
