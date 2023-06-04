@@ -225,24 +225,11 @@ class StartTournamentController:
                     self.view.message_end_tournament()
                     final_scores = self.controller.report_controller.get_scoreboard()
                     sort_final_scores = self.db.sort_player_list_score(final_scores)
-                    list_winner = self.db.get_winner_tournament(sort_final_scores)
+                    list_winner = self.db.get_winner_tournament(sort_final_scores, tournament_info)
                     """Afficher le joueur qui remporte le tournoi """
-                    info_list_winner = len(list_winner)
-                    if info_list_winner == 1:
-                        self.view.tournament_winner(list_winner)
-                        self.dm.move_tournament_directory()
-                        self.controller.menu_controller.run_tournament_menu()
-                    if info_list_winner == 2:
-                        self.view.two_winners_ex_aequo(list_winner)
-                        self.dm.move_tournament_directory()
-                        self.controller.menu_controller.run_tournament_menu()
-                    if info_list_winner == 3:
-                        self.view.two_winners_ex_aequo(list_winner)
-                        self.dm.move_tournament_directory()
-                        self.controller.menu_controller.run_tournament_menu()
-                    elif info_list_winner > 3:
-                        self.view.no_winner()
-                        self.controller.menu_controller.run_tournament_menu()
+                    nbrs_in_list_winner = len(list_winner)
+                    self.select_winner_player(nbrs_in_list_winner, list_winner)
+
                 else:
                     """Créer le match suivant"""
                     """ Obtenir List_Match"""
@@ -296,21 +283,10 @@ class StartTournamentController:
                     self.view.message_end_tournament()
                     final_scores = self.controller.report_controller.get_scoreboard()
                     sort_final_scores = self.db.sort_player_list_score(final_scores)
-                    list_winner = self.db.get_winner_tournament(sort_final_scores)
-                    """Afficher le joueur qui remporte le tournoi, """
-                    info_list_winner = len(list_winner)
-                    if info_list_winner == 1:
-                        self.view.tournament_winner(list_winner)
-                        self.dm.move_tournament_directory()
-                        self.controller.menu_controller.run_tournament_menu()
-                    if info_list_winner == 2:
-                        self.view.two_winners_ex_aequo(list_winner)
-                        self.dm.move_tournament_directory()
-                        self.controller.menu_controller.run_tournament_menu()
-                    if info_list_winner == 3:
-                        self.view.two_winners_ex_aequo(list_winner)
-                        self.dm.move_tournament_directory()
-                        self.controller.menu_controller.run_tournament_menu()
+                    list_winner = self.db.get_winner_tournament(sort_final_scores, tournament_info)
+                    """Afficher le ou les joueurs qui remporte le tournoi """
+                    nbrs_in_list_winner = len(list_winner)
+                    self.select_winner_player(nbrs_in_list_winner, list_winner)
 
                 else:
                     """Créer le match suivant"""
@@ -420,6 +396,31 @@ class StartTournamentController:
             self.view.message_show_team_table()
             self.controller.menu_controller.run_tournament_menu()
 
+    def select_winner_player(self, nbrs_in_list_winner, list_winner):
+        """Méthode qui permet de selectionner le ou les joueurs qui remport le tounoi
+            et envoi le résultat dans la vue
+        """
+        if nbrs_in_list_winner == 1:
+            self.view.tournament_winner(list_winner)
+            self.dm.move_tournament_directory()
+            self.controller.menu_controller.run_tournament_menu()
+        if nbrs_in_list_winner == 2:
+            self.view.two_winners_ex_aequo(list_winner)
+            self.dm.move_tournament_directory()
+            self.controller.menu_controller.run_tournament_menu()
+        if nbrs_in_list_winner == 3:
+            self.view.two_winners_ex_aequo(list_winner)
+            self.dm.move_tournament_directory()
+            self.controller.menu_controller.run_tournament_menu()
 
-
+    def select_winner_player_old(self, nbrs_in_list_winner, list_winner):
+        """Méthode qui permet de selectionner le ou les joueurs qui remport le tounoi
+            et envoi le résultat dans la vue
+        """
+        if nbrs_in_list_winner == 1:
+            self.view.tournament_winner(list_winner)
+        if nbrs_in_list_winner == 2:
+            self.view.two_winners_ex_aequo(list_winner)
+        if nbrs_in_list_winner == 3:
+            self.view.two_winners_ex_aequo(list_winner)
 
