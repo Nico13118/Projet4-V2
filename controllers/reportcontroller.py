@@ -125,6 +125,8 @@ class ReportController:
             list_scoreboard = json.load(f)
             return list_scoreboard
 
+
+
     def control_number_player_in_list_scoreboard(self):
         """Méthode qui permet de connaitre le nombre de joueurs dans le fichier scoreboard.json"""
         list_scoreboard = self.get_scoreboard()
@@ -133,3 +135,52 @@ class ReportController:
 
     def show_previous_tournaments(self):
         """Afficher les informations des tournois précédents"""
+        """Récupération du ou des noms des répertoires des tournois précedents"""
+        old_tournament = self.dm.get_old_tournaments()
+        """Boucle qui va afficher le nom du premier répertoire"""
+        """old_tournament1 = un nom de répertoire """
+        for old_tournament1 in old_tournament:
+            """Récupération des informations du tournoi concerné"""
+            tournament_info = self.db.get_old_tournament_information(old_tournament1)
+            """Message qui affiche 'Rapport des tournois précedents'"""
+            self.view.report_old_tournament()
+            """Affiche les informations du tournoi concerné"""
+            self.view.print_tournament_info(tournament_info)
+            """Récupération des données du fichier List_Players_Select.json"""
+            list_player_select = self.db.get_list_player_select_report(old_tournament1)
+            """Trier la liste par ordre alphabétique"""
+            player_sorted = self.db.sort_player_list_db(list_player_select)
+            """Afficher le message 'Liste des joueurs inscrits au tournoi' """
+            self.view.message_list_of_players_selected()
+            """Afficher la liste des joueurs"""
+            self.view.show_selected_players(player_sorted)
+
+            """Récupérer les informations de List_MatchX.json"""
+            nbrs_list_match_old = self.controller.player_list_controller.nbr_files_in_list_match_old(old_tournament1)
+            number_files1 = 1
+            while not number_files1 > nbrs_list_match_old:
+                match_list = self.db.get_match_list_old_tournament(old_tournament1, number_files1)
+                """Afficher le tableau des équipes de chaques Rounds"""
+                self.view.table_of_teams(match_list, number_files1)
+                """Affichage des résultats de chaques Rounds"""
+                round_list = self.db.get_round_list_old_tournament(old_tournament1, number_files1)
+                self.view.show_round_list(round_list, number_files1)
+                number_files1 += 1
+            list_scoreboard = self.get_scoreboard_old_tournament(old_tournament1)
+            list_winner = self.db.get_winner_tournament(list_scoreboard, tournament_info)
+            nbrs_in_list_winner = len(list_winner)
+            self.controller.start_tournament_controller.select_winner_player_old(nbrs_in_list_winner, list_winner)
+            if number_files1 > nbrs_list_match_old:
+                self.controller.menu_controller.run_menu_report()
+
+    def get_scoreboard_old_tournament(self, tournament_name):
+        """Méthode qui retourne les informations du fichier ScoreBoard.json des tournois précédents """
+        data = os.getcwd()
+        path = f"{data}/data/tournament_old/{tournament_name}"
+        with open(f"{path}/ScoreBoard/ScoreBoard.json", "r") as f:
+            list_scoreboard = json.load(f)
+            return list_scoreboard
+
+
+
+
