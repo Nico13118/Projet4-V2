@@ -93,8 +93,7 @@ class MenuController:
             """Rapport du tournoi en cours"""
             self.controller.report_controller.current_tournament_report()
         elif user_input == 2:
-            """Rapport des tournois précédents"""
-            pass
+            self.controller.report_controller.show_previous_tournaments()
         elif user_input == 3:
             """Retourner au menu principal"""
             self.run_menu()
