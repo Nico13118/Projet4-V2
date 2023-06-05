@@ -1,8 +1,8 @@
-from models import TournamentModel, PlayerModel
+from models.tournamentmodel import TournamentModel
+from models.playermodel import PlayerModel
 import time
 import os
 import json
-
 SCORE1 = 0.5
 SCORE2 = 1.0
 SCORE3 = 0.0
@@ -38,11 +38,10 @@ class DatabaseController:
             temporarylist.append(playerlist)
             with open(f"{path}/List_Registered_Players.json", "w") as f:
                 json.dump(temporarylist, f)
-
-            """Sinon si le fichier existe, alors extraire les données puis enregistre 
+        else:
+            """Sinon si le fichier existe, alors extraire les données puis enregistre
                 l'ensemble dans le même fichier
             """
-        else:
             player = player_model.player_registration(playermodel)
             with open(f"{path}/List_Registered_Players.json", "r") as f:
                 list_player = json.load(f)
@@ -421,7 +420,9 @@ class DatabaseController:
             return round_list
 
     def get_round_list_old_tournament(self, tournament_name, number_files1):
-        """Méthode qui permet de retourner les informations du fichier RoundX.json pour le rapport des tournois précédents"""
+        """Méthode qui permet de retourner les informations du fichier RoundX.json
+            pour le rapport des tournois précédents
+        """
         data = os.getcwd()
         path = f"{data}/data/tournament_old"
         with open(f"{path}/{tournament_name}/Rounds/Round{number_files1}.json", "r") as f:
