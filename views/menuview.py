@@ -19,15 +19,16 @@ class MenuView:
     def get_user_input_player_menu(self):
 
         print("\n|======= GESTIONNAIRE DES JOUEURS ==========|")
+        print("| 0 -Retourner au menu principal            |")
         print("| 1 -Inscription des joueurs                |")
         print("| 2 -Voir la liste des joueurs              |")
         print("| 3 -Supprimer un joueur de la liste        |")
-        print("| 4 -Retourner au menu principal            |")
         print("|===========================================|")
 
     def get_user_input_tournament_menu(self):
 
         print("\n|========= GESTIONNAIRE DE TOURNOI =========|")
+        print("| 0 -Retourner au menu principal            |")
         print("| 1 -Créer un tournoi.                      |")
         print("| 2 -Ajouter des joueurs au tournoi         |")
         print("| 3 -liste des joueurs inscrits au tournoi  |")
@@ -36,15 +37,16 @@ class MenuView:
         print("| 6 -Saisir les scores                      |")
         print("| 7 -Tableau des équipes                    |")
         print("| 8 -Supprimer un tournoi                   |")
-        print("| 9 -Retourner au menu principal            |")
         print("|===========================================|")
 
     def get_user_input4(self):
-        print("\n|=========== RAPPORT DE TOURNOI ============|")
-        print("| 1 -Rapport du tournoi en cours            |")
-        print("| 2 -Rapport des tournois précédents.       |")
-        print("| 3 -Retourner au menu principal            |")
-        print("|===========================================|")
+        print("\n|============== RAPPORT DE TOURNOI ================|")
+        print("| 0 -Retourner au menu principal                   |")
+        print("| 1 -Rapport du tournoi en cours                   |")
+        print("| 2 -Rapport des tournois précédents.              |")
+        print("| 3 -Rapport du tournoi en cours (format txt).     |")
+        print("| 4 -Rapport des tournois précédents (format txt). |")
+        print("|==================================================|")
 
     def error_message_menuview1(self):
         print("Choix invalide !!!")
