@@ -415,7 +415,7 @@ class StartTournamentController:
 
     def select_winner_player_old(self, nbrs_in_list_winner, list_winner):
         """Méthode qui permet de selectionner le ou les joueurs qui remport le tounoi
-            et envoi le résultat dans la vue
+            et envoi le résultat dans la vue (Rapport des tournois précédents)
         """
         if nbrs_in_list_winner == 1:
             self.view.tournament_winner(list_winner)
