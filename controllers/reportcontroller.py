@@ -233,10 +233,13 @@ class ReportController:
 
         """Récupération du ou des noms des répertoires des tournois précedents"""
         if choice_of_repport == 1:
+            counter1 = 0
             old_tournament1 = self.dm.get_old_tournaments()
+            number_tournament_file = len(old_tournament1)
             """Boucle qui va afficher le nom du premier répertoire"""
             """old_tournament1 = un nom de répertoire """
             for old_tournament2 in old_tournament1:
+                counter1 += 1
                 """Récupération des informations du tournoi concerné"""
                 tournament_info1 = self.db.get_old_tournament_information(old_tournament2)
                 """Message qui affiche 'Rapport des tournois précedents'"""
@@ -268,117 +271,122 @@ class ReportController:
                 list_winner = self.db.get_winner_tournament(list_scoreboard, tournament_info1)
                 nbrs_in_list_winner = len(list_winner)
                 self.controller.start_tournament_controller.select_winner_player_old(nbrs_in_list_winner, list_winner)
-                if number_files1 > nbrs_list_match_old:
+                if counter1 == number_tournament_file:
                     self.controller.menu_controller.run_menu_report()
 
         if choice_of_repport == 2:
+            counter2 = 0
             data = os.getcwd()
             path = f"{data}/data"
             old_tournament3 = self.dm.get_old_tournaments()
-            with open(f"{path}/Rapport_tournois_précédents.txt", "w") as f:
+            number_tournament_file2 = len(old_tournament3)
+            with open(f"{path}/Rapport_tournois_précédents.txt", "w") as a:
+                a.write("=====================================================================\n")
                 """Boucle qui va afficher le nom du premier répertoire"""
                 """old_tournament1 = un nom de répertoire """
-            with open(f"{path}/Rapport_tournois_précédents.txt", "a") as f:
+                a.close()
                 for old_tournament4 in old_tournament3:
-                    f.write("=====================================================================\n")
-                    f.write("===================Rapport des tournois précedents========================\n")
-                    f.write("=====================================================================\n\n")
-                    """Récupération des informations du tournoi concerné"""
-                    tournament_info2 = self.db.get_old_tournament_information(old_tournament4)
-                    """Affiche les informations du tournoi concerné"""
-                    for tournament_info3 in tournament_info2:
-                        name = tournament_info3["nom"]
-                        place = tournament_info3["lieu"]
-                        date1 = tournament_info3["date1"]
-                        date2 = tournament_info3["date2"]
-                        remark = tournament_info3["remarques"]
-                        rounds = tournament_info3["rounds"]
-                        f.write(f"Nom du tournoi : {name}\n")
-                        f.write(f"Lieu : {place}\n")
-                        f.write(f"Date de début : {date1}\n")
-                        f.write(f"Date de fin : {date2}\n")
-                        f.write(f"Remarques : {remark}\n")
-                        f.write(f"Nombre de Rounds : {rounds}\n")
+                    counter2 += 1
+                    with open(f"{path}/Rapport_tournois_précédents.txt", "a") as b:
+                        b.write("===================Rapport des tournois précedents========================\n")
+                        b.write("=====================================================================\n\n")
+                        """Récupération des informations du tournoi concerné"""
+                        tournament_info2 = self.db.get_old_tournament_information(old_tournament4)
+                        """Affiche les informations du tournoi concerné"""
+                        for tournament_info3 in tournament_info2:
+                            name = tournament_info3["nom"]
+                            place = tournament_info3["lieu"]
+                            date1 = tournament_info3["date1"]
+                            date2 = tournament_info3["date2"]
+                            remark = tournament_info3["remarques"]
+                            rounds = tournament_info3["rounds"]
+                            b.write(f"Nom du tournoi : {name}\n")
+                            b.write(f"Lieu : {place}\n")
+                            b.write(f"Date de début : {date1}\n")
+                            b.write(f"Date de fin : {date2}\n")
+                            b.write(f"Remarques : {remark}\n")
+                            b.write(f"Nombre de Rounds : {rounds}\n")
 
-                        """Afficher le message 'Liste des joueurs inscrits au tournoi' """
-                        f.write("================================================================\n")
-                        f.write("=============Liste des joueurs inscrits au tournoi================\n")
-                        f.write("================================================================\n\n")
+                            """Afficher le message 'Liste des joueurs inscrits au tournoi' """
+                            b.write("================================================================\n")
+                            b.write("=============Liste des joueurs inscrits au tournoi================\n")
+                            b.write("================================================================\n\n")
 
-                        """Récupération des données du fichier List_Players_Select.json"""
-                        list_player_select = self.db.get_list_player_select_report(old_tournament4)
-                        """Trier la liste par ordre alphabétique"""
-                        player_sorted = self.db.sort_player_list_db(list_player_select)
-                        """Afficher la liste des joueurs inscrits au tournoi"""
-                        for player_sorted1 in player_sorted:
-                            f.write(f"ID : {player_sorted1['identifiant']} Nom : {player_sorted1['nom']} "
-                                    f"{player_sorted1['prenom']}\n")
+                            """Récupération des données du fichier List_Players_Select.json"""
+                            list_player_select = self.db.get_list_player_select_report(old_tournament4)
+                            """Trier la liste par ordre alphabétique"""
+                            player_sorted = self.db.sort_player_list_db(list_player_select)
+                            """Afficher la liste des joueurs inscrits au tournoi"""
+                            for player_sorted1 in player_sorted:
+                                b.write(f"ID : {player_sorted1['identifiant']} Nom : {player_sorted1['nom']} "
+                                        f"{player_sorted1['prenom']}\n")
 
-            """Récupérer les informations de List_MatchX.json"""
-            nbrs_list_match_old = \
-                self.controller.player_list_controller.nbr_files_in_list_match_old(old_tournament4)
-            number_files1 = 1
+                        """Récupérer les informations de List_MatchX.json"""
+                        nbrs_list_match_old = \
+                            self.controller.player_list_controller.nbr_files_in_list_match_old(old_tournament4)
+                        number_files1 = 1
+                        b.close()
+                        while not number_files1 > nbrs_list_match_old:
+                            with open(f"{path}/Rapport_tournois_précédents.txt", "a") as c:
+                                match_list = self.db.get_match_list_old_tournament(old_tournament4, number_files1)
+                                """Afficher le tableau des équipes de chaques Rounds"""
+                                match_number = 1
+                                c.write("==========================================================================\n")
+                                c.write(f"============Tableau des équipes Round: {number_files1}============\n\n")
+                                for i in range(0, len(match_list), 2):
+                                    player1 = match_list[i]
+                                    player2 = match_list[i + 1]
+                                    c.write(f"Match {match_number}: Joueur {player1['joueur']} - "
+                                            f"{player1['nom']:<9} {player1['prenom']:<10} "
+                                            f"VS\t Joueur {player2['joueur']} - {player2['nom']} {player2['prenom']}\n")
+                                    match_number += 1
+                                """Affichage des résultats de chaques Rounds"""
+                                round_list = self.db.get_round_list_old_tournament(old_tournament4, number_files1)
+                                vs = "VS"
+                                c.write("==========================================================================\n")
+                                c.write(f"============Résultats Round: {number_files1}============\n\n")
+                                for i in range(0, len(round_list), 2):
+                                    player1 = round_list[i]
+                                    player2 = round_list[i + 1]
+                                    c.write(f"Date et heure de début : {player1['Date et heure de debut']}\n")
+                                    c.write(f"Joueur {player1['joueur']} - "
+                                            f"{player1['nom']} {player1['prenom']} Score {player1['score']:<5}"
+                                            f"{vs:<3} Joueur {player2['joueur']} - "
+                                            f"{player2['nom']} {player2['prenom']} Score {player2['score']}\n")
+                                    c.write(f"Date et heure de fin : {player2['Date et heure de fin']}\n")
+                                    c.write("======================================================================\n")
+                                number_files1 += 1
+                        c.close()
+                        list_scoreboard = self.get_scoreboard_old_tournament(old_tournament4)
+                        list_winner = self.db.get_winner_tournament(list_scoreboard, tournament_info2)
+                        nbrs_in_list_winner = len(list_winner)
 
-            while not number_files1 > nbrs_list_match_old:
-                with open(f"{path}/Rapport_tournois_précédents.txt", "a") as f:
-                    match_list = self.db.get_match_list_old_tournament(old_tournament4, number_files1)
-                    """Afficher le tableau des équipes de chaques Rounds"""
-                    match_number = 1
-                    f.write("==================================================================================\n")
-                    f.write(f"============Tableau des équipes Round: {number_files1}============\n\n")
-                    for i in range(0, len(match_list), 2):
-                        player1 = match_list[i]
-                        player2 = match_list[i + 1]
-                        f.write(f"Match {match_number}: Joueur {player1['joueur']} - "
-                                f"{player1['nom']:<9} {player1['prenom']:<10} "
-                                f"VS\t Joueur {player2['joueur']} - {player2['nom']} {player2['prenom']}\n")
-                        match_number += 1
-                    """Affichage des résultats de chaques Rounds"""
-                    round_list = self.db.get_round_list_old_tournament(old_tournament4, number_files1)
-                    vs = "VS"
-                    f.write("==================================================================================\n")
-                    f.write(f"============Résultats Round: {number_files1}============\n\n")
-                    for i in range(0, len(round_list), 2):
-                        player1 = round_list[i]
-                        player2 = round_list[i + 1]
-                        f.write(f"Date et heure de début : {player1['Date et heure de debut']}\n")
-                        f.write(f"Joueur {player1['joueur']} - "
-                                f"{player1['nom']} {player1['prenom']} Score {player1['score']:<5}"
-                                f"{vs:<3} Joueur {player2['joueur']} - "
-                                f"{player2['nom']} {player2['prenom']} Score {player2['score']}\n")
-                        f.write(f"Date et heure de fin : {player2['Date et heure de fin']}\n")
-                        f.write("==========================================================================\n")
-                    number_files1 += 1
-            list_scoreboard = self.get_scoreboard_old_tournament(old_tournament4)
-            list_winner = self.db.get_winner_tournament(list_scoreboard, tournament_info2)
-            nbrs_in_list_winner = len(list_winner)
+                    if nbrs_in_list_winner == 1:
+                        with open(f"{path}/Rapport_tournois_précédents.txt", "a") as d:
+                            d.write("======================Vainqueur du tournoi=========================\n")
+                            for list_winner1 in list_winner:
+                                d.write(f"Nom : {list_winner1['nom']} {list_winner1['prenom']} "
+                                        f"avec un score de : {list_winner1['score']}\n\n")
+                    if nbrs_in_list_winner == 2:
+                        with open(f"{path}/Rapport_tournois_précédents.txt", "a") as d:
+                            d.write("=====================Vainqueurs du tournoi par ex-aequo======================\n")
+                            for list_winner1 in list_winner:
+                                d.write(f"Nom : {list_winner1['nom']} {list_winner1['prenom']} "
+                                        f"avec un score de : {list_winner1['score']}\n\n")
+                    if nbrs_in_list_winner == 3:
+                        with open(f"{path}/Rapport_tournois_précédents.txt", "a") as d:
+                            d.write("=====================Vainqueurs du tournoi par ex-aequo======================\n")
+                            for list_winner1 in list_winner:
+                                d.write(f"Nom : {list_winner1['nom']} {list_winner1['prenom']} "
+                                        f"avec un score de : {list_winner1['score']}\n\n")
+                    if nbrs_in_list_winner >= 4:
+                        with open(f"{path}/Rapport_tournois_précédents.txt", "a") as d:
+                            d.write("========Plusieurs participants sont à égalité en tête du classement=========\n\n")
 
-            if nbrs_in_list_winner == 1:
-                with open(f"{path}/Rapport_tournois_précédents.txt", "a") as f:
-                    f.write("======================Vainqueur du tournoi=========================\n")
-                    for list_winner1 in list_winner:
-                        f.write(f"Nom : {list_winner1['nom']} {list_winner1['prenom']} "
-                                f"avec un score de : {list_winner1['score']}\n")
-            if nbrs_in_list_winner == 2:
-                with open(f"{path}/Rapport_tournois_précédents.txt", "a") as f:
-                    f.write("=====================Vainqueurs du tournoi par ex-aequo=======================\n")
-                    for list_winner1 in list_winner:
-                        f.write(f"Nom : {list_winner1['nom']} {list_winner1['prenom']} "
-                                f"avec un score de : {list_winner1['score']}\n")
-            if nbrs_in_list_winner == 3:
-                with open(f"{path}/Rapport_tournois_précédents.txt", "a") as f:
-                    f.write("=====================Vainqueurs du tournoi par ex-aequo=======================\n")
-                    for list_winner1 in list_winner:
-                        f.write(f"Nom : {list_winner1['nom']} {list_winner1['prenom']} "
-                                f"avec un score de : {list_winner1['score']}\n")
-            if nbrs_in_list_winner >= 4:
-                with open(f"{path}/Rapport_tournois_précédents.txt", "a") as f:
-                    f.write("============Plusieurs participants sont à égalité en tête du classement============\n")
-
-            if number_files1 > nbrs_list_match_old:
-                """Afficher l'emplacement du fichier à consulter"""
-                self.view.previous_tournaments_report_path(path)
-                self.controller.menu_controller.run_menu_report()
+                    if counter2 == number_tournament_file2:
+                        """Afficher l'emplacement du fichier à consulter"""
+                        self.view.previous_tournaments_report_path(path)
+                        self.controller.menu_controller.run_menu_report()
 
     def get_scoreboard_old_tournament(self, tournament_name):
         """Méthode qui retourne les informations du fichier ScoreBoard.json des tournois précédents """
