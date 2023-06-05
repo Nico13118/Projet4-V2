@@ -43,8 +43,8 @@ class ReportView:
 
     def show_selected_players(self, list_player_select):
         for list_player_select1 in list_player_select:
-            print(f"ID :", list_player_select1["identifiant"], "Nom :", list_player_select1["nom"],
-                  list_player_select1["prenom"])
+            print(f"ID : {list_player_select1['identifiant']} Nom : {list_player_select1['nom']} "
+                  f"{list_player_select1['prenom']}")
 
     def table_of_teams(self, match_list, number_files1):
         match_number = 1
@@ -66,10 +66,10 @@ class ReportView:
             player2 = round_list[i + 1]
             print(f"Date et heure de début : {player1['Date et heure de debut']}")
             print(f"Joueur {player1['joueur']} - {player1['nom']} {player1['prenom']} Score {player1['score']:<5}"
-                  f"{vs:<3} Joueur {player2['joueur']} - {player2['nom']} {player2['prenom']} Score {player2['score']}")
+                  f"{vs:<3} Joueur {player2['joueur']} - {player2['nom']} {player2['prenom']} "
+                  f"Score {player2['score']}")
             print(f"Date et heure de fin : {player2['Date et heure de fin']}")
             print("====================================================================================\n")
-
 
     def scoreboard_view(self, list_scoreboard):
         print("====================================================================================")
