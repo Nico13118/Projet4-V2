@@ -1,5 +1,5 @@
 from controllers.maincontroller import MainController
-from models import DirectoryModel
+from models.directorymodel import DirectoryModel
 
 
 def main():
