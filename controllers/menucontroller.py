@@ -27,7 +27,6 @@ class MenuController:
             """Quitter l'application"""
             quit()
 
-
     def run_menu_player(self):
         """Gestionnaire de joueurs"""
         self.view.club_name()
@@ -98,13 +97,16 @@ class MenuController:
             self.controller.report_controller.current_tournament_report(choice_of_repport)
         elif user_input == 2:
             """Rapport des tournois précédents."""
-            self.controller.report_controller.show_previous_tournaments()
+            choice_of_repport = 1
+            self.controller.report_controller.show_previous_tournaments(choice_of_repport)
         elif user_input == 3:
             """Rapport du tournoi en cours (format txt)."""
             choice_of_repport = 2
             self.controller.report_controller.current_tournament_report(choice_of_repport)
         elif user_input == 4:
             """Rapport des tournois précédents (format txt)."""
+            choice_of_repport = 2
+            self.controller.report_controller.show_previous_tournaments(choice_of_repport)
 
     def control_user_input(self, number):
         user_input2 = True
