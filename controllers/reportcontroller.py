@@ -18,7 +18,7 @@ class ReportController:
                 self.view.report_message()
                 self.view.print_tournament_info(tournament_info1)
                 """Appel des autres méthodes pour afficher :
-                    La liste des joueurs inscrits au tournoi 
+                    La liste des joueurs inscrits au tournoi
                     Le tableau des équipes
                     Les rounds en cours
                     Les classements des joueurs
@@ -42,7 +42,7 @@ class ReportController:
             list_player_select = self.current_player_report(choice_of_repport)
 
             with open(f"{path}/Rapport_tournoi_en_cours.txt", "w") as f:
-                f.write(f"=======Rapport du tournoi en cours=======\n\n")
+                f.write("=======Rapport du tournoi en cours=======\n\n")
                 for tournament_info3 in tournament_info2:
                     name = tournament_info3["nom"]
                     place = tournament_info3["lieu"]
@@ -96,7 +96,7 @@ class ReportController:
                                 f.write(f"Date et heure de fin : {player2['Date et heure de fin']}\n")
                                 f.write("\n========================================================================\n")
                             number_files1 += 1
-                        except:
+                        except ValueError:
                             f.write(f"\n=======Aucun résultat à afficher pour le Round {number_files1}=======\n")
                             break
                 with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
@@ -146,7 +146,7 @@ class ReportController:
                     round_list = self.db.get_round_list_for_report(number_files1)
                     self.view.show_round_list(round_list, number_files1)
                     number_files1 += 1
-                except:
+                except ValueError:
                     self.view.no_list_of_laps_to_display(number_files1)
                     break
         else:
