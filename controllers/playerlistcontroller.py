@@ -13,11 +13,15 @@ class PlayerListController:
     def print_player_list_controller(self):
         """Méthode qui permet d'afficher la liste List_Registered_Players.json dans l'ordre alphabétique"""
         """Si le fichier List_Registered_Players existe"""
-        if self.control_player_list_controller(): # Si la présence du fichier est True
-            list_player = self.db.get_player_list() # Extraire les données de la liste
-            player_sorted = self.db.sort_player_list_db(list_player) # Tries la liste des joueurs par ordre alphabétique
+        """"Si la présence du fichier est True"""
+        if self.control_player_list_controller():
+            """Extraire les données de la liste"""
+            list_player = self.db.get_player_list()
+            """Tries la liste des joueurs par ordre alphabétique"""
+            player_sorted = self.db.sort_player_list_db(list_player)
             self.view.message_list_view()
-            self.view.print_player_list_view(player_sorted) # Affiche la liste des joueurs
+            """Affiche la liste des joueurs"""
+            self.view.print_player_list_view(player_sorted)
             self.controller.menu_controller.run_menu_player()
         else:
             self.view.message_no_list()
@@ -125,7 +129,7 @@ class PlayerListController:
                             self.controller.menu_controller.run_menu_player()
                 else:
                     self.view.message_error_list_view4()
-            except:
+            except ValueError:
                 self.view.message_error_list_view4()
 
     def control_user_input_del_player_list_player_select(self, player_sorted):
@@ -148,7 +152,7 @@ class PlayerListController:
                             return user_input
                 else:
                     self.view.message_error_list_view4()
-            except:
+            except ValueError:
                 self.view.message_error_list_view4()
 
     def control_player_list_controller(self):
