@@ -1,5 +1,3 @@
-
-
 class MatchController:
     def __init__(self, controller, database):
         self.controller = controller
