@@ -1,7 +1,18 @@
-from controllers import MenuController, PlayerController, TournamentController, DatabaseController, \
-    PlayerListController, StartTournamentController, MatchController, ReportController
-from views import MenuView, TournamentView, PlayerView, PlayerListView, StartTournamentView, ReportView
-from models import DirectoryModel
+from controllers.menucontroller import MenuController
+from controllers.playercontroller import PlayerController
+from controllers.tournamentcontroller import TournamentController
+from controllers.databasecontroller import DatabaseController
+from controllers.playerlistcontroller import PlayerListController
+from controllers.starttournamentcontroller import StartTournamentController
+from controllers.matchcontroller import MatchController
+from controllers.reportcontroller import ReportController
+from views.menuview import MenuView
+from views.tournamentview import TournamentView
+from views.playerview import PlayerView
+from views.playerlistview import PlayerListView
+from views.starttournamentview import StartTournamentView
+from views.reportview import ReportView
+from models.directorymodel import DirectoryModel
 
 
 class MainController:
