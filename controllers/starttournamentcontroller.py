@@ -211,8 +211,8 @@ class StartTournamentController:
             self.db.add_score_to_players2(choice_score1, choice_player1, choice_player2=None)
 
             """Fonctionnalité qui controle le nombre de joueurs qui se trouve dans le fichier RoundX.json"""
-            numbers_players_in_list_round = self.controller.player_list_controller.control_number_player_in_list_round()
-            if numbers_players_in_list_round == 8:
+            numbers_players_list_round = self.controller.player_list_controller.control_number_player_in_list_round()
+            if numbers_players_list_round == 8:
                 self.view.end_of_game_message()
 
                 number_files_rounds = self.controller.player_list_controller.number_files_round()
@@ -269,8 +269,8 @@ class StartTournamentController:
             self.db.add_score_to_players2(choice_score1, choice_player1, choice_player2)
 
             """Fonctionnalité qui control le nombre de joueurs qui se trouve dans le fichier RoundX.json"""
-            numbers_players_in_list_round = self.controller.player_list_controller.control_number_player_in_list_round()
-            if numbers_players_in_list_round == 8:
+            numbers_players_list_round = self.controller.player_list_controller.control_number_player_in_list_round()
+            if numbers_players_list_round == 8:
                 self.view.end_of_game_message()
 
                 number_files_rounds = self.controller.player_list_controller.number_files_round()
@@ -328,7 +328,7 @@ class StartTournamentController:
                             return user_input
                 else:
                     self.view.incorrect_entry()
-            except:
+            except ValueError:
                 self.view.incorrect_entry()
 
     def user_input_control(self, list_match):
@@ -353,7 +353,7 @@ class StartTournamentController:
                             return user_input
                 else:
                     self.view.incorrect_entry()
-            except:
+            except ValueError:
                 self.view.incorrect_entry()
 
     def input_control_player_selection(self):
@@ -376,7 +376,7 @@ class StartTournamentController:
                             self.view.incorrect_entry()
                 else:
                     self.view.incorrect_entry()
-            except:
+            except ValueError:
                 self.view.incorrect_entry()
 
     def show_team_table_controller(self):
@@ -423,4 +423,3 @@ class StartTournamentController:
             self.view.two_winners_ex_aequo(list_winner)
         if nbrs_in_list_winner == 3:
             self.view.two_winners_ex_aequo(list_winner)
-
