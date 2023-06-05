@@ -15,6 +15,7 @@ class ReportView:
         print("================================================================")
         print("=============Liste des joueurs inscrits au tournoi================")
         print("================================================================")
+
     def report_message(self):
         print("=====================================================================")
         print("===================Rapport du tournoi en cours========================")
@@ -84,3 +85,7 @@ class ReportView:
     def no_list_of_laps_to_display(self, number_files1):
         print("====================================================================================")
         print(f"=======================Aucun résultat à afficher pour le Round {number_files1}=======================")
+
+    def current_tournament_report_path(self, path2):
+        print("Vous pouvez consulter le rapport du tournoi en cours à cet emplacement.")
+        print(f"{path2}/Rapport_tournoi_en_cours.txt")
