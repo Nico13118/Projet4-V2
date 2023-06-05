@@ -1,4 +1,4 @@
-from models import TournamentModel
+from models.tournamentmodel import TournamentModel
 from datetime import datetime
 import re
 DEFAULT_NUMBER_OF_ROUNDS = 4
@@ -115,7 +115,7 @@ class TournamentController:
                             self.view.incorrect_entry()
                 else:
                     self.view.incorrect_entry()
-            except:
+            except ValueError:
                 self.view.incorrect_entry()
 
     def input_control_player_in_tournament(self):
@@ -135,7 +135,7 @@ class TournamentController:
                             self.view.incorrect_entry()
                 else:
                     self.view.incorrect_entry()
-            except:
+            except ValueError:
                 self.view.incorrect_entry()
 
     def add_player_in_tournament_controller(self):
@@ -199,5 +199,5 @@ class TournamentController:
                             self.view.incorrect_entry()
                 else:
                     self.view.incorrect_entry()
-            except:
+            except ValueError:
                 self.view.incorrect_entry()
