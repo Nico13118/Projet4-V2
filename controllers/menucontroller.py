@@ -129,6 +129,5 @@ class MenuController:
 
                 else:
                     self.view.incorrect_entry()
-            except:
+            except ValueError:
                 self.view.incorrect_entry()
-
