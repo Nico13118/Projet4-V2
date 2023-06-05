@@ -1,5 +1,4 @@
 class MenuView:
-
     def club_name(self):
         print("\n*************** Club Provence Échecs *************** ")
 
@@ -17,7 +16,6 @@ class MenuView:
         print("|===========================================|")
 
     def get_user_input_player_menu(self):
-
         print("\n|======= GESTIONNAIRE DES JOUEURS ==========|")
         print("| 0 -Retourner au menu principal            |")
         print("| 1 -Inscription des joueurs                |")
@@ -26,7 +24,6 @@ class MenuView:
         print("|===========================================|")
 
     def get_user_input_tournament_menu(self):
-
         print("\n|========= GESTIONNAIRE DE TOURNOI =========|")
         print("| 0 -Retourner au menu principal            |")
         print("| 1 -Créer un tournoi.                      |")
