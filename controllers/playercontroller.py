@@ -1,4 +1,4 @@
-from models import PlayerModel
+from models.playermodel import PlayerModel
 from datetime import datetime
 import re
 
@@ -80,7 +80,7 @@ class PlayerController:
                             self.view.message_error()
                 else:
                     self.view.message_error()
-            except:
+            except ValueError:
                 self.view.message_error()
 
     def control_confirmation_message(self):
@@ -100,5 +100,5 @@ class PlayerController:
                             self.view.message_error()
                 else:
                     self.view.message_error()
-            except:
+            except ValueError:
                 self.view.message_error()
