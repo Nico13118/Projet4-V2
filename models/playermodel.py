@@ -19,4 +19,3 @@ class PlayerModel:
             "score": self.score
         }
         return player
-
