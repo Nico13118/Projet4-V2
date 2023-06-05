@@ -86,6 +86,10 @@ class ReportView:
         print("====================================================================================")
         print(f"=======================Aucun résultat à afficher pour le Round {number_files1}=======================")
 
-    def current_tournament_report_path(self, path2):
+    def current_tournament_report_path(self, path):
         print("Vous pouvez consulter le rapport du tournoi en cours à cet emplacement.")
-        print(f"{path2}/Rapport_tournoi_en_cours.txt")
+        print(f"{path}/Rapport_tournoi_en_cours.txt")
+
+    def previous_tournaments_report_path(self, path):
+        print("Vous pouvez consulter le rapport des tournois précédents à cet emplacement.")
+        print(f"{path}/Rapport_tournois_précdéents.txt")
