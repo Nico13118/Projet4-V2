@@ -23,7 +23,8 @@ class TournamentView:
         return directore_remark
 
     def tournament_number_rounds(self):
-        print("Saisissez le nombre de rounds ou laissez le champ vide, le champ vide correspond à 4 rounds par défaut.")
+        print("Saisissez le nombre de rounds ou laissez le champ vide, "
+              "le champ vide correspond à 4 rounds par défaut.")
         number_rounds = input("Quel est votre choix ?")
         return number_rounds
 
