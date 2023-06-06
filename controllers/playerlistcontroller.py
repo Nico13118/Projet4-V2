@@ -12,8 +12,18 @@ class PlayerListController:
 
     def print_player_list_controller(self):
         """Méthode qui permet d'afficher la liste List_Registered_Players.json dans l'ordre alphabétique"""
-        """Si le fichier List_Registered_Players existe"""
-        """"Si la présence du fichier est True"""
+        """Si le fichier List_Registered_Players n'existe pas"""
+        if not self.control_player_list_controller():
+            self.view.message_no_list()
+            self.controller.menu_controller.run_menu_player()
+        """ Si le fichier List_Registered_Players.json existe"""
+        if self.control_player_list_controller():
+            number_players_in_list = self.control_number_player_in_list_registered()
+            """Si la liste contient 0 joueur"""
+            if number_players_in_list == 0:
+                self.view.message_no_list()
+                self.controller.menu_controller.run_menu_player()
+
         if self.control_player_list_controller():
             """Extraire les données de la liste"""
             list_player = self.db.get_player_list()
@@ -22,9 +32,6 @@ class PlayerListController:
             self.view.message_list_view()
             """Affiche la liste des joueurs"""
             self.view.print_player_list_view(player_sorted)
-            self.controller.menu_controller.run_menu_player()
-        else:
-            self.view.message_no_list()
             self.controller.menu_controller.run_menu_player()
 
     def print_list_player_select(self):
@@ -51,35 +58,45 @@ class PlayerListController:
         """Méthode qui permet d'afficher la liste List_Registered_Players.json
             dans l'ordre et de supprimer un joueur de cette liste
             """
-        """# Si la présence du fichier est True"""
-        if self.control_player_list_controller():
-            """Demande à l'utilisateur s'il souhaite continuer"""
-            self.view.message_del_player()
-            self.control_user_input_del_player_in_list_controller()
-            """ Extraire les données de la liste"""
-            list_player = self.db.get_player_list()
-            """ Tries la liste des joueurs par ordre alphabétique"""
-            player_sorted = self.db.sort_player_list_db(list_player)
-            """# Affiche le message - Liste des joueurs enregistrés -"""
-            self.view.message_list_view()
-            """ Affiche la liste des joueurs triés par ordre alphabétique"""
-            self.view.print_player_list_view(player_sorted)
-            """ Demander à l'utilisateur le joueur à supprimer"""
-            self.view.message_del_player_in_list_view()
-            return_user_input = self.control_user_input_del_player_list_player_select(player_sorted)
-            """ Envoie le choix de l'utilisateur"""
-            self.db.del_player_in_list_db(return_user_input)
-            """ Message qui confirme la suppression"""
-            self.view.message_del_player_in_list_view2()
-            self.controller.menu_controller.run_menu_player()
-        else:
+        """ Si le fichier List_Registered_Players.json n'existe pas"""
+        if not self.control_player_list_controller():
             self.view.message_no_list()
             self.controller.menu_controller.run_menu_player()
+        """ Si le fichier List_Registered_Players.json existe"""
+        if self.control_player_list_controller():
+            number_players_in_list = self.control_number_player_in_list_registered()
+            """Si la liste contient 0 joueur"""
+            if number_players_in_list == 0:
+                self.view.message_no_list()
+                self.controller.menu_controller.run_menu_player()
+
+        """Demande à l'utilisateur s'il souhaite continuer"""
+        self.view.message_del_player()
+        self.control_user_input_del_player_in_list_controller()
+        """ Extraire les données de la liste"""
+        list_player = self.db.get_player_list()
+        """ Tries la liste des joueurs par ordre alphabétique"""
+        player_sorted = self.db.sort_player_list_db(list_player)
+        """# Affiche le message - Liste des joueurs enregistrés -"""
+        self.view.message_list_view()
+        """ Affiche la liste des joueurs triés par ordre alphabétique"""
+        self.view.print_player_list_view(player_sorted)
+        """ Demander à l'utilisateur le joueur à supprimer"""
+        self.view.message_del_player_in_list_view()
+        return_user_input = self.control_user_input_del_player_list_player_select(player_sorted)
+        """ Envoie le choix de l'utilisateur"""
+        self.db.del_player_in_list_db(return_user_input)
+        """ Message qui confirme la suppression"""
+        self.view.message_del_player_in_list_view2()
+        self.controller.menu_controller.run_menu_player()
 
     def del_player_in_list_player_select(self):
         """Méthode qui permet d'afficher la liste List_Players_Select.json
             dans l'ordre et de supprimer un joueur de cette liste
         """
+        if not self.dm.control_tournament_directory():
+            self.view.message_no_tournament_directory()
+            self.controller.menu_controller.run_tournament_menu()
         if not self.list_match_file_control():
             if not self.dm.control_tournament_directory():
                 self.view.message_no_tournament_directory()
@@ -192,6 +209,12 @@ class PlayerListController:
         """Permet de connaitre le nombre de joueurs dans la liste List_Players_Select.json"""
         list_player_select = self.db.get_list_player_select_db()
         numbers_players = len(list_player_select)
+        return numbers_players
+
+    def control_number_player_in_list_registered(self):
+        """Permet de connaitre le nombre de joueurs dans la liste List_Registerd_Players.json"""
+        list_registered_players = self.db.get_player_list()
+        numbers_players = len(list_registered_players)
         return numbers_players
 
     def round_file_control(self):
