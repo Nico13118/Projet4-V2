@@ -320,8 +320,8 @@ class DatabaseController:
         data = os.getcwd()
         path = f"{data}/data/players_list/"
         with open(f"{path}/List_Registered_Players.json", "r") as f:
-            list_player = json.load(f)
-            return list_player
+            list_registered_players = json.load(f)
+            return list_registered_players
 
     def get_list_registered_players_and_players_select(self):
         """Méthode qui permet d'afficher le restant des joueurs qui n'ont pas été selectionnés
