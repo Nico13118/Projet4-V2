@@ -81,6 +81,7 @@ class DirectoryModel:
             return False
 
     def control_tournament_old_directory(self):
+        """Méthode qui permet de controler la présence d'un répertoire dans tournament_old"""
         data = os.getcwd()
         path = f"{data}/data/tournament_old/"
         directory1 = os.listdir(path)
