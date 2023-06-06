@@ -2,6 +2,9 @@ class ReportView:
     def message_no_tournament_directory(self):
         print("Action impossible !! Aucun tournoi n'a été crée.")
 
+    def message_no_tournament_old_directory(self):
+        print("Action impossible !! Aucun tournoi n'a été crée.")
+
     def no_list_of_players_selected(self):
         print("Aucune information à afficher pour le moment.")
 
