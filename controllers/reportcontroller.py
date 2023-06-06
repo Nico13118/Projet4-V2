@@ -231,6 +231,9 @@ class ReportController:
     def show_previous_tournaments(self, choice_of_repport):
         """Afficher les informations des tournois précédents"""
 
+        if not self.dm.control_tournament_old_directory():
+            self.view.message_no_tournament_old_directory()
+            self.controller.menu_controller.run_menu_report()
         """Récupération du ou des noms des répertoires des tournois précedents"""
         if choice_of_repport == 1:
             counter1 = 0
