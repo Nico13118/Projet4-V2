@@ -95,38 +95,37 @@ class PlayerListController:
             dans l'ordre et de supprimer un joueur de cette liste
         """
         if not self.dm.control_tournament_directory():
+            """Affiche un message d'erreur si le répertoire concernant le nom du tournoi n'existe pas"""
             self.view.message_no_tournament_directory()
             self.controller.menu_controller.run_tournament_menu()
-        if not self.list_match_file_control():
-            if not self.dm.control_tournament_directory():
-                self.view.message_no_tournament_directory()
-                self.controller.menu_controller.run_tournament_menu()
+        if self.list_match_file_control():
+            """Affiche un message d'erreur si le fichier List_Match existe"""
+            self.view.tournament_already_launched()
+            self.controller.menu_controller.run_tournament_menu()
 
-            if self.control_player_select_controller():
-                number = self.control_number_player_in_list_players_select2()
-                if number >= 1:
-                    """ Récupération de la liste des joueurs inscrits"""
-                    list_player_select = self.db.get_list_player_select_db()
-                    """ Tries la liste des joueurs par ordre alphabétique"""
-                    player_sorted = self.db.sort_player_list_db(list_player_select)
-                    """ Affiche "Liste des joueurs inscrits au tournoi"""
-                    self.view.print_list_player_select()
-                    """ Affiche la liste des joueurs inscrits dans l'ordre alphabétique"""
-                    self.view.print_player_list_view(player_sorted)
-                    """ Demande à l'utilisateur de faire son choix"""
-                    self.view.message_del_player_in_list_view()
-                    return_user_input = self.control_user_input_del_player_list_player_select(player_sorted)
-                    self.db.del_player_in_list_player_select_db(return_user_input)
-                    self.view.message_del_player_in_list_view2()
-                    self.controller.menu_controller.run_tournament_menu()
-                else:
-                    self.view.message_error_list_view()
-                    self.controller.menu_controller.run_tournament_menu()
+        """Si le fichier list_players_select existe"""
+        if self.control_player_select_controller():
+            number = self.control_number_player_in_list_players_select2()
+            if number >= 1:
+                """ Récupération de la liste des joueurs inscrits"""
+                list_player_select = self.db.get_list_player_select_db()
+                """ Tries la liste des joueurs par ordre alphabétique"""
+                player_sorted = self.db.sort_player_list_db(list_player_select)
+                """ Affiche "Liste des joueurs inscrits au tournoi"""
+                self.view.print_list_player_select()
+                """ Affiche la liste des joueurs inscrits dans l'ordre alphabétique"""
+                self.view.print_player_list_view(player_sorted)
+                """ Demande à l'utilisateur de faire son choix"""
+                self.view.message_del_player_in_list_view()
+                return_user_input = self.control_user_input_del_player_list_player_select(player_sorted)
+                self.db.del_player_in_list_player_select_db(return_user_input)
+                self.view.message_del_player_in_list_view2()
+                self.controller.menu_controller.run_tournament_menu()
             else:
                 self.view.message_error_list_view()
                 self.controller.menu_controller.run_tournament_menu()
         else:
-            self.view.tournament_already_launched()
+            self.view.message_error_list_view()
             self.controller.menu_controller.run_tournament_menu()
 
     def control_user_input_del_player_in_list_controller(self):
