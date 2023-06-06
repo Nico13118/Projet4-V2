@@ -80,6 +80,15 @@ class DirectoryModel:
         else:
             return False
 
+    def control_tournament_old_directory(self):
+        data = os.getcwd()
+        path = f"{data}/data/tournament_old/"
+        directory1 = os.listdir(path)
+        if directory1:
+            return True
+        else:
+            return False
+
     def get_old_tournaments(self):
         """Méthode qui permet de retourner le ou les noms des répertoires des anciens tournois"""
         data = os.getcwd()
