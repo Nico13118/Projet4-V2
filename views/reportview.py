@@ -42,7 +42,7 @@ class ReportView:
             print(f"Remarques : {remark}")
             print(f"Nombre de Rounds : {rounds}")
             print("=====================================================================\n")
-            
+
     def show_selected_players(self, list_player_select):
         for list_player_select1 in list_player_select:
             print(f"ID : {list_player_select1['identifiant']} Nom : {list_player_select1['nom']} "
@@ -80,7 +80,6 @@ class ReportView:
     def no_round_list(self):
         print("========================== Résultats Round ==========================")
         print("============= Aucun résultat à afficher pour le moment ============\n")
-
 
     def scoreboard_view(self, list_scoreboard):
         print("=====================================================================")
