@@ -108,9 +108,9 @@ class TournamentController:
                         if user_input == "Y" or user_input == "y" or user_input == "O" \
                                 or user_input == "o" or user_input == "oui":
                             return True
-                        elif user_input == "N" or user_input == "n" or user_input == "No" \
+                        if user_input == "N" or user_input == "n" or user_input == "No" \
                                 or user_input == "no" or user_input == "non":
-                            self.controller.menu_controller.run_menu_tournament()
+                            self.controller.menu_controller.run_tournament_menu()
                         else:
                             self.view.incorrect_entry()
                 else:
@@ -164,18 +164,26 @@ class TournamentController:
             """Ajouter un premier joueur dans le tournoi """
             """ Si le fichier List_Registered_Players.json existe """
             if self.controller.player_list_controller.control_player_list_controller():
-                self.view.message_select_player1_tournamentview()
-                """ Extraire les données de la liste List_Registered_Players.json"""
-                list_player = self.db.get_player_list()
-                """ Tries la liste des joueurs par ordre alphabétique"""
-                player_sorted = self.db.sort_player_list_db(list_player)
-                """ Affiche la liste des joueurs par ordre alphabétique"""
-                self.view.print_player_list_tournamentview(player_sorted)
-                """ Demande à l'utilisateur de saisir le joueur à ajouter au tournoi"""
-                self.view.message_select_player2_tournamentview()
-                user_input = self.user_input_control(player_sorted)
-                self.db.add_player_in_tournament_db(user_input)
-                self.input_control_player_in_tournament()
+                nbrs_players = self.controller.player_list_controller.control_number_player_in_list_registered()
+                if nbrs_players >= 1:
+                    self.view.message_select_player1_tournamentview()
+                    """ Extraire les données de la liste List_Registered_Players.json"""
+                    list_player = self.db.get_player_list()
+                    """ Tries la liste des joueurs par ordre alphabétique"""
+                    player_sorted = self.db.sort_player_list_db(list_player)
+                    """ Affiche la liste des joueurs par ordre alphabétique"""
+                    self.view.print_player_list_tournamentview(player_sorted)
+                    """ Demande à l'utilisateur de saisir le joueur à ajouter au tournoi"""
+                    self.view.message_select_player2_tournamentview()
+                    user_input = self.user_input_control(player_sorted)
+                    self.db.add_player_in_tournament_db(user_input)
+                    self.input_control_player_in_tournament()
+                else:
+                    self.view.message_no_players_in_list_registered()
+                    self.controller.menu_controller.run_tournament_menu()
+            else:
+                self.view.message_no_players_in_list_registered()
+                self.controller.menu_controller.run_tournament_menu()
 
     def user_input_control(self, list_match):
         """Controle de la saisie utilisateur
