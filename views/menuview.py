@@ -27,7 +27,7 @@ class MenuView:
         print("\n|========= GESTIONNAIRE DE TOURNOI ==========|")
         print("| 0 - Retourner au menu principal            |")
         print("| 1 - Créer un tournoi                       |")
-        print("| 2 - Inscrir des joueurs au tournoi         |")
+        print("| 2 - Inscrire des joueurs au tournoi        |")
         print("| 3 - lister les joueurs inscrits au tournoi |")
         print("| 4 - Retirer un joueurs du tournoi          |")
         print("| 5 - Lancer le tournoi                      |")
