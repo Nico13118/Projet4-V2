@@ -11,9 +11,9 @@ class ReportController:
 
     def current_tournament_report(self, choice_of_repport):
         """Pour afficher les informations du tournoi en cours"""
-        if choice_of_repport == 1:
-            """Affichage terminal"""
-            if self.dm.control_tournament_directory():
+        if self.dm.control_tournament_directory():
+            if choice_of_repport == 1:
+                """Affichage terminal"""
                 tournament_info1 = self.db.get_tournament_information()
                 self.view.report_message()
                 self.view.print_tournament_info(tournament_info1)
@@ -27,113 +27,158 @@ class ReportController:
                 self.match_in_progress()
                 self.score_in_progress(choice_of_repport)
                 self.controller.menu_controller.run_menu_report()
-            else:
-                self.view.message_no_tournament_directory()
-                self.controller.menu_controller.run_menu_report()
-        if choice_of_repport == 2:
-            """Enregistrement des données dans un fichier TXT"""
-            self.current_tournament_text_format(choice_of_repport)
-
-    def current_tournament_text_format(self, choice_of_repport):
-        data = os.getcwd()
-        path = f"{data}/data"
-        if self.dm.control_tournament_directory():
-            tournament_info2 = self.db.get_tournament_information()
-            list_player_select = self.current_player_report(choice_of_repport)
-
-            with open(f"{path}/Rapport_tournoi_en_cours.txt", "w") as f:
-                f.write("=======Rapport du tournoi en cours=======\n\n")
-                for tournament_info3 in tournament_info2:
-                    name = tournament_info3["nom"]
-                    place = tournament_info3["lieu"]
-                    date1 = tournament_info3["date1"]
-                    date2 = tournament_info3["date2"]
-                    remark = tournament_info3["remarques"]
-                    rounds = tournament_info3["rounds"]
-                    f.write(f"Nom du tournoi : {name}\n")
-                    f.write(f"Lieu : {place}\n")
-                    f.write(f"Date de début : {date1}\n")
-                    f.write(f"Date de fin : {date2}\n")
-                    f.write(f"Remarques : {remark}\n")
-                    f.write(f"Nombre de Rounds : {rounds}\n")
-
-            with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
-                f.write("\n=======Liste des joueurs inscrits au tournoi=======\n\n")
-                for list_player_select1 in list_player_select:
-                    f.write(f"ID : {list_player_select1['identifiant']} Nom : {list_player_select1['nom']}"
-                            f"  {list_player_select1['prenom']:}\n")
-
-            if self.controller.player_list_controller.list_match_file_control():
-                number_files_in_list_match = self.controller.player_list_controller.number_files_in_list_match()
-                number_files1 = 1
-
-                while not number_files1 > number_files_in_list_match:
-                    with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
-                        """Affichage du tableau des équipes """
-                        match_list = self.db.get_match_list_for_report(number_files1)
-                        f.write(f"\n=======Tableau des équipes Round: {number_files1}=======\n\n")
-                        match_number = 1
-                        for i in range(0, len(match_list), 2):
-                            player1 = match_list[i]
-                            player2 = match_list[i + 1]
-                            f.write(f"Match {match_number}: Joueur {player1['joueur']} - {player1['nom']:<9} "
-                                    f"{player1['prenom']:<10} VS\t Joueur {player2['joueur']} - {player2['nom']} "
-                                    f"{player2['prenom']}\n")
-                            match_number += 1
-                        """Affichage des résultats des Rounds"""
-                        try:
-                            vs = "VS"
-                            round_list = self.db.get_round_list_for_report(number_files1)
-                            f.write(f"\n=======Résultats Round: {number_files1}=======\n\n")
-                            for i in range(0, len(round_list), 2):
-                                player1 = round_list[i]
-                                player2 = round_list[i + 1]
-                                f.write(f"Date et heure de début : {player1['Date et heure de debut']}\n")
-                                f.write(f"Joueur {player1['joueur']} - "
-                                        f"{player1['nom']} {player1['prenom']} Score {player1['score']:<5} "
-                                        f"{vs:<3} Joueur {player2['joueur']} - "
-                                        f"{player2['nom']} {player2['prenom']} Score {player2['score']}\n")
-                                f.write(f"Date et heure de fin : {player2['Date et heure de fin']}\n")
-                                f.write("\n========================================================================\n")
-                            number_files1 += 1
-                        except ValueError:
-                            f.write(f"\n=======Aucun résultat à afficher pour le Round {number_files1}=======\n")
-                            break
-                with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
-                    f.write("==================================================================================\n")
-                    f.write("=======Classement des joueurs=======\n\n")
-                """Affichage du classement des joueurs"""
-                list_score_sorted = self.score_in_progress(choice_of_repport)
-                for list_score_sorted1 in list_score_sorted:
-                    with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
-                        f.write(f"Joueur {list_score_sorted1['joueur']}: {list_score_sorted1['nom']:<9} "
-                                f"{list_score_sorted1['prenom']:<9} Score :{list_score_sorted1['score']}\n")
-
-                self.view.current_tournament_report_path(path)
-                self.controller.menu_controller.run_menu_report()
-
+            if choice_of_repport == 2:
+                """Enregistrement des données dans un fichier TXT"""
+                self.current_tournament_text_format(choice_of_repport)
         else:
             self.view.message_no_tournament_directory()
             self.controller.menu_controller.run_menu_report()
 
+    def current_tournament_text_format(self, choice_of_repport):
+        """Méthode qui enregistre les données du tournoi en cours dans un fichier texte"""
+        data = os.getcwd()
+        path = f"{data}/data"
+        tournament_info2 = self.db.get_tournament_information()
+        with open(f"{path}/Rapport_tournoi_en_cours.txt", "w") as f:
+            f.write("======= Rapport du tournoi en cours =======\n\n")
+            for tournament_info3 in tournament_info2:
+                name = tournament_info3["nom"]
+                place = tournament_info3["lieu"]
+                date1 = tournament_info3["date1"]
+                date2 = tournament_info3["date2"]
+                remark = tournament_info3["remarques"]
+                rounds = tournament_info3["rounds"]
+                f.write(f"Nom du tournoi : {name}\n")
+                f.write(f"Lieu : {place}\n")
+                f.write(f"Date de début : {date1}\n")
+                f.write(f"Date de fin : {date2}\n")
+                f.write(f"Remarques : {remark}\n")
+                f.write(f"Nombre de Rounds : {rounds}\n")
+        self.list_players_selected_in_text_format(choice_of_repport)
+
+    def list_players_selected_in_text_format(self, choice_of_repport):
+        """Méthode qui permet d'enregistrer la liste des joueurs selectionnées dans un fichier texte"""
+        data = os.getcwd()
+        path = f"{data}/data"
+        if self.controller.player_list_controller.control_player_select_controller():
+            nbrs_player = self.controller.player_list_controller.control_number_player_in_list_players_select()
+            if nbrs_player == 0:
+                with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
+                    f.write("\n==== Liste des joueurs inscrits au tournoi ====")
+                    f.write("\n==== Aucune liste à afficher pour le moment ====\n\n")
+                    f.close()
+                self.list_table_teams_in_text_format(choice_of_repport)
+            else:
+                list_player_select = self.current_player_report(choice_of_repport)
+                with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
+                    f.write("\n======= Liste des joueurs inscrits au tournoi =======\n\n")
+                    for list_player_select1 in list_player_select:
+                        f.write(f"ID : {list_player_select1['identifiant']} Nom : {list_player_select1['nom']}"
+                                f"  {list_player_select1['prenom']:}\n")
+                self.list_table_teams_in_text_format(choice_of_repport)
+        else:
+            with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
+                f.write("\n==== Liste des joueurs inscrits au tournoi ====")
+                f.write("\n==== Aucune liste à afficher pour le moment ====\n\n")
+                f.close()
+            self.list_table_teams_in_text_format(choice_of_repport)
+
+    def list_table_teams_in_text_format(self, choice_of_repport):
+        """Méthode qui enregistre la liste des équipes et le résultat des rounds dans un fichier texte"""
+        data = os.getcwd()
+        path = f"{data}/data"
+        if self.controller.player_list_controller.list_match_file_control():
+            number_files_in_list_match = self.controller.player_list_controller.number_files_in_list_match()
+            number_files1 = 1
+            while not number_files1 > number_files_in_list_match:
+                with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
+                    """Affichage du tableau des équipes """
+                    match_list = self.db.get_match_list_for_report(number_files1)
+                    f.write(f"\n======= Tableau des équipes Round: {number_files1} =======\n\n")
+                    match_number = 1
+                    for i in range(0, len(match_list), 2):
+                        player1 = match_list[i]
+                        player2 = match_list[i + 1]
+                        f.write(f"Match {match_number}: Joueur {player1['joueur']} - {player1['nom']:<9} "
+                                f"{player1['prenom']:<10} VS\t Joueur {player2['joueur']} - {player2['nom']} "
+                                f"{player2['prenom']}\n")
+                        match_number += 1
+
+                    """Affichage des résultats des Rounds"""
+                    try:
+                        vs = "VS"
+                        round_list = self.db.get_round_list_for_report(number_files1)
+                        f.write(f"\n======= Résultats Round: {number_files1} =======\n\n")
+                        for i in range(0, len(round_list), 2):
+                            player1 = round_list[i]
+                            player2 = round_list[i + 1]
+                            f.write(f"Date et heure de début : {player1['Date et heure de debut']}\n")
+                            f.write(f"Joueur {player1['joueur']} - "
+                                    f"{player1['nom']} {player1['prenom']} Score {player1['score']:<5} "
+                                    f"{vs:<3} Joueur {player2['joueur']} - "
+                                    f"{player2['nom']} {player2['prenom']} Score {player2['score']}\n")
+                            f.write(f"Date et heure de fin : {player2['Date et heure de fin']}\n")
+                            f.write("\n========================================================================\n")
+                        number_files1 += 1
+                    except ValueError:
+                        f.write(f"\n======= Aucun résultat à afficher pour le Round {number_files1} =======\n")
+                        break
+            self.list_scoreboard_in_text_format(choice_of_repport)
+
+        else:
+            with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
+                f.write("============ Tableau des équipes ============\n")
+                f.write("==== Aucune équipe à afficher pour le moment ====\n\n")
+                f.write("============ Résultats du Round ============\n")
+                f.write("=== Aucun résultat à afficher pour le moment ===\n\n")
+                f.close()
+                self.list_scoreboard_in_text_format(choice_of_repport)
+
+    def list_scoreboard_in_text_format(self, choice_of_repport):
+        data = os.getcwd()
+        path = f"{data}/data"
+        if self.controller.player_list_controller.list_scoreboard_file_control():
+            with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
+                f.write("==================================================================================\n")
+                f.write("======= Classement des joueurs =======\n\n")
+            """Affichage du classement des joueurs"""
+            list_score_sorted = self.score_in_progress(choice_of_repport)
+            for list_score_sorted1 in list_score_sorted:
+                with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
+                    f.write(f"Joueur {list_score_sorted1['joueur']}: {list_score_sorted1['nom']:<9} "
+                            f"{list_score_sorted1['prenom']:<9} Score :{list_score_sorted1['score']}\n")
+                self.view.current_tournament_report_path()
+        else:
+            with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
+                f.write("============ Classement des joueurs ============\n")
+                f.write("==== Aucun classement à afficher pour le moment ====\n")
+                f.close()
+                self.view.current_tournament_report_path(path)
+                self.controller.menu_controller.run_menu_report()
+
     def current_player_report(self, choice_of_repport):
         """Pour afficher la liste des joueurs inscrits au tournoi"""
-        if choice_of_repport == 1:
-            if self.controller.player_list_controller.control_player_select_controller():
-                list_player_select = self.db.get_list_player_select_db()
-                list_player_select = self.db.sort_player_list_db(list_player_select)
-                self.view.message_list_of_players_selected()
-                self.view.show_selected_players(list_player_select)
+        if self.controller.player_list_controller.control_player_select_controller():
+            nbrs_players = self.controller.player_list_controller.control_number_player_in_list_players_select2()
+            if nbrs_players >= 1:
+                if choice_of_repport == 1:
+                    if self.controller.player_list_controller.control_player_select_controller():
+                        list_player_select = self.db.get_list_player_select_db()
+                        list_player_select = self.db.sort_player_list_db(list_player_select)
+                        self.view.message_list_of_players_selected()
+                        self.view.show_selected_players(list_player_select)
+                if choice_of_repport == 2:
+                    list_player_select = self.db.get_list_player_select_db()
+                    list_player_select = self.db.sort_player_list_db(list_player_select)
+                    return list_player_select
             else:
-                self.view.no_list_of_players_selected()
-                self.controller.menu_controller.run_menu_report()
-        if choice_of_repport == 2:
-            list_player_select = self.db.get_list_player_select_db()
-            list_player_select = self.db.sort_player_list_db(list_player_select)
-            return list_player_select
+                self.view.message_no_list_player_selected()
+
+        else:
+            self.view.message_no_list_player_selected()
 
     def match_in_progress(self):
-        """Pour afficher le tableau des équipes """
+        """Pour afficher le tableau des équipes dans le terminal"""
         if self.controller.player_list_controller.list_match_file_control():
             number_files_in_list_match = self.controller.player_list_controller.number_files_in_list_match()
             number_files1 = 1
@@ -150,20 +195,23 @@ class ReportController:
                     self.view.no_list_of_laps_to_display(number_files1)
                     break
         else:
-            self.view.no_match_list_to_display()
+            self.view.message_no_table_of_teams()
 
     def score_in_progress(self, choice_of_repport):
         """
-            Pour afficher le classement des joueurs par score
+            Pour afficher le classement des joueurs par score dans le terminal
         """
-        if choice_of_repport == 1:
-            players_score = self.get_scoreboard()
-            list_score_sorted = self.db.sort_player_list_score(players_score)
-            self.view.scoreboard_view(list_score_sorted)
-        if choice_of_repport == 2:
-            players_score = self.get_scoreboard()
-            list_score_sorted = self.db.sort_player_list_score(players_score)
-            return list_score_sorted
+        if self.controller.player_list_controller.list_scoreboard_file_control():
+            if choice_of_repport == 1:
+                players_score = self.get_scoreboard()
+                list_score_sorted = self.db.sort_player_list_score(players_score)
+                self.view.scoreboard_view(list_score_sorted)
+            if choice_of_repport == 2:
+                players_score = self.get_scoreboard()
+                list_score_sorted = self.db.sort_player_list_score(players_score)
+                return list_score_sorted
+        else:
+            self.view.no_scoreboard_view()
 
     def add_players_in_file_scoreboard(self, player_list):
         """Méthode qui permet d'enregistrer les données dans le fichier scoreboard.json """
@@ -341,7 +389,8 @@ class ReportController:
                                     player2 = match_list[i + 1]
                                     c.write(f"Match {match_number}: Joueur {player1['joueur']} - "
                                             f"{player1['nom']:<9} {player1['prenom']:<10} "
-                                            f"VS\t Joueur {player2['joueur']} - {player2['nom']} {player2['prenom']}\n")
+                                            f"VS\t Joueur {player2['joueur']} - {player2['nom']} "
+                                            f"{player2['prenom']}\n")
                                     match_number += 1
                                 """Affichage des résultats de chaques Rounds"""
                                 round_list = self.db.get_round_list_old_tournament(old_tournament4, number_files1)
