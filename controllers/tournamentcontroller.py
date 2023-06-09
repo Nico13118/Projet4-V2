@@ -139,51 +139,58 @@ class TournamentController:
                 self.view.incorrect_entry()
 
     def add_player_in_tournament_controller(self):
+        """Méthode qui permet d'inscrire des joueurs dans le tournoi"""
         if not self.dm.control_tournament_directory():
+            """Controle la présence d'un répertoire dans le répertoire tournament"""
             self.view.del_tournament_message_view4()
             self.controller.menu_controller.run_tournament_menu()
-        """Ajouter un joueur supplémentaire dans le tournoi """
-        """ Si le fichier List_Players_Select.json existe"""
-        if self.controller.player_list_controller.control_player_select_controller():
-            """ Si le fichier List_Players_Select contient 8 joueurs"""
-            if self.controller.player_list_controller.control_number_player_in_list_players_select():
-                self.view.message_select_player4_tournamentview()
-                self.controller.menu_controller.run_tournament_menu()
-
-            """ Si le fichier List_Players_Select ne contient pas 8 joueurs"""
-            list_registered_players = self.db.get_list_registered_players_and_players_select()
-            """ Affichage de la liste list_registered_players"""
-            self.view.print_player_list_tournamentview(list_registered_players)
-            """ Demande à l'utilisateur de saisir le joueur à ajouter au tournoi"""
-            self.view.message_select_player2_tournamentview()
-            user_input = self.user_input_control(list_registered_players)
-            self.db.add_player_in_tournament_db2(user_input)
-            self.input_control_player_in_tournament()
+        if self.controller.player_list_controller.list_match_file_control():
+            """Controle si le fichier List_MatchX.json existe"""
+            self.view.tournament_started_message()
+            self.controller.menu_controller.run_tournament_menu()
 
         else:
-            """Ajouter un premier joueur dans le tournoi """
-            """ Si le fichier List_Registered_Players.json existe """
-            if self.controller.player_list_controller.control_player_list_controller():
-                nbrs_players = self.controller.player_list_controller.control_number_player_in_list_registered()
-                if nbrs_players >= 1:
-                    self.view.message_select_player1_tournamentview()
-                    """ Extraire les données de la liste List_Registered_Players.json"""
-                    list_player = self.db.get_player_list()
-                    """ Tries la liste des joueurs par ordre alphabétique"""
-                    player_sorted = self.db.sort_player_list_db(list_player)
-                    """ Affiche la liste des joueurs par ordre alphabétique"""
-                    self.view.print_player_list_tournamentview(player_sorted)
-                    """ Demande à l'utilisateur de saisir le joueur à ajouter au tournoi"""
-                    self.view.message_select_player2_tournamentview()
-                    user_input = self.user_input_control(player_sorted)
-                    self.db.add_player_in_tournament_db(user_input)
-                    self.input_control_player_in_tournament()
+            """Ajouter un joueur supplémentaire dans le tournoi """
+            """ Si le fichier List_Players_Select.json existe et contient 8 joueurs"""
+            if self.controller.player_list_controller.control_player_select_controller():
+                if self.controller.player_list_controller.control_number_player_in_list_players_select():
+                    self.view.message_select_player4_tournamentview()
+                    self.controller.menu_controller.run_tournament_menu()
+
+                """ Si le fichier List_Players_Select ne contient pas 8 joueurs"""
+                list_registered_players = self.db.get_list_registered_players_and_players_select()
+                """ Affichage de la liste list_registered_players"""
+                self.view.print_player_list_tournamentview(list_registered_players)
+                """ Demande à l'utilisateur de saisir le joueur à ajouter au tournoi"""
+                self.view.message_select_player2_tournamentview()
+                user_input = self.user_input_control(list_registered_players)
+                self.db.add_player_in_tournament_db2(user_input)
+                self.input_control_player_in_tournament()
+
+            else:
+                """Ajouter un premier joueur dans le tournoi """
+                """ Si le fichier List_Registered_Players.json existe """
+                if self.controller.player_list_controller.control_player_list_controller():
+                    nbrs_players = self.controller.player_list_controller.control_number_player_in_list_registered()
+                    if nbrs_players >= 1:
+                        self.view.message_select_player1_tournamentview()
+                        """ Extraire les données de la liste List_Registered_Players.json"""
+                        list_player = self.db.get_player_list()
+                        """ Tries la liste des joueurs par ordre alphabétique"""
+                        player_sorted = self.db.sort_player_list_db(list_player)
+                        """ Affiche la liste des joueurs par ordre alphabétique"""
+                        self.view.print_player_list_tournamentview(player_sorted)
+                        """ Demande à l'utilisateur de saisir le joueur à ajouter au tournoi"""
+                        self.view.message_select_player2_tournamentview()
+                        user_input = self.user_input_control(player_sorted)
+                        self.db.add_player_in_tournament_db(user_input)
+                        self.input_control_player_in_tournament()
+                    else:
+                        self.view.message_no_players_in_list_registered()
+                        self.controller.menu_controller.run_tournament_menu()
                 else:
                     self.view.message_no_players_in_list_registered()
                     self.controller.menu_controller.run_tournament_menu()
-            else:
-                self.view.message_no_players_in_list_registered()
-                self.controller.menu_controller.run_tournament_menu()
 
     def user_input_control(self, list_match):
         """Controle de la saisie utilisateur
