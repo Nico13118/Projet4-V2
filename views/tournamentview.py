@@ -89,3 +89,6 @@ class TournamentView:
 
     def message_no_players_in_list_registered(self):
         print("Action impossible !! vous devez enregistrer des joueurs depuis le menu Gestionnaire de joueurs.")
+
+    def tournament_started_message(self):
+        print("Action impossible !! Tournoi déjà lancé, Vous ne pouvez plus inscrire de joueurs.")
