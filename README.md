@@ -64,91 +64,94 @@ Installez la dernière version de Python, pour cela, cliquez sur le lien ci-dess
 
 <https://fr.wikihow.com/installer-Python>
 
-### Installation sous Windows.
+## Installation sous Windows.
 - Suivre les indications **"Méthode 1"**.
 
-### Installation sous Mac / Linux.
+## Installation sous Mac / Linux.
 - Suivre les indications **"Méthode 2"**.
 
-### Cration d'un répertoire sur le bureau.
-Ouvrir PowerShell puis saisir les lignes de commandes suivantes :  
+## Cration d'un répertoire sur le bureau.
+Saisir les lignes de commandes suivantes :  
+
+### Ouvrir PowerShell Sous Windows :
 ```sh
 cd desktop   
    ```
-
 ```sh
 mkdir ChessTournament   
    ```
 ```sh
 cd ChessTournament   
    ```
-  
+### Ouvrir Terminal Sous Mac \ Linux :
+```sh
+cd ~/Desktop   
+   ```
+```sh
+mkdir ChessTournament   
+   ```
+```sh
+cd ChessTournament   
+   ```
 
-Garder PowerShell ouvert.
+**Garder PowerShell ou Terminal ouvert.**
 
-### Téléchargement et décompression du Script.  
+## Téléchargement et décompression du Script.  
 Cliquer sur le lien ci-dessous pour télécharger le programme.  
 <https://github.com/Nico13118/Projet4-V2/archive/refs/heads/master.zip>
 
 Une fois téléchargé, placer le fichier zip dans le répertoire **ChessTournament**, vous allez devoir ensuite  
 le décompresser.
 
-### Pour décompresser un fichier zip sous Windows.  
+## Pour décompresser un fichier zip sous Windows.  
 - Faites un clic droit sur le fichier .zip puis sélectionner **"Extraire tout..."**, puis **"Extraire**.
 
 
-### Pour décompresser un fichier zip sous Mac \ Linux.  
+## Pour décompresser un fichier zip sous Mac \ Linux.  
 - Cliquez deux fois sur le fichier .zip, l’élément décompressé apparaît dans le même dossier que le fichier .zip.
 
 
-### Création d'un environnement virtuel
+## Création d'un environnement virtuel.
+Saisir la commande suivante :
 
-Depuis PowerShell, saisir la commande suivante.  
-
-### Sous Windows :
+### Depuis PowerShell sous Windows :
 ```sh
 python -m venv env   
    ```
-  
 
-### Sous Mac \ Linux :
+### Depuis Terminal Sous Mac \ Linux :
 ```sh
 python3 -m venv env   
    ```
 
-### Activation de l'environnement virtuel
+## Activation de l'environnement virtuel.
+Saisir la commande suivante :
 
-Depuis PowerShell, saisir la commande suivante :
-
-### Sous Windows :  
+### Depuis PowerShell Sous Windows :  
 
 ```sh
 env\Scripts\activate.ps1 ou env\Scripts\activate.bat
    ```
-### Sous Mac \ Linux :
+
+### Depuis Terminal sous Mac \ Linux :
 ```sh
 env/bin/activate
    ```
 
-### Installation des packages Python.
+## Installation des packages Python.
+Saisir la commande suivante :
 
-Depuis PowerShell, saisir la commande suivante :
+### Depuis PowerShell ou Terminal (Windows, Mac \ Linux) :  
 ```sh
 pip install -r requirements.txt
    ```
 
 ### Exécution du Script.
+Saisir la commande suivante :
 
-Depuis PowerShell, saisir la commande suivante :  
-
-### Sous Windows :
+### Depuis PowerShell ou Terminal (Windows, Mac \ Linux) :
 ```sh
 python main.py   
-   ```
-
-### Sous Mac \ Linux :
-```sh
-python main.py
    ```
 
 ## Utilisation
@@ -185,9 +188,10 @@ Dans le menu **"RAPPORT DE TOURNOI"**, vous aurez la possibilité :
 
 ### Choix 4 : Quitter l'application
 
-## Création d'un rapport flake8
+## Création d'un rapport flake8.
+Saisir les commandes suivantes :
 
-Ouvrir PowerShell puis saisir les commandes suivantes :
+### Ouvrir PowerShell sous Windows : 
 ```sh
 cd desktop    
    ```
@@ -198,6 +202,19 @@ cd ChessTournament
 ```sh
 flake8 --format=html --htmldir=flake8_rapport   
    ```
+
+### Ouvrir Terminal sous Mac \ Linux :
+```sh
+cd ~/Desktop 
+   ```
+```sh
+cd ChessTournament
+   ```
+
+```sh
+flake8 --format=html --htmldir=flake8_rapport   
+   ```
+
 Une fois terminé, vous aurez dans le répertoire **ChessTournament** un répertoire nommé **flake8_rapport**  
 qui permettra d'indiquer que le code est conforme aux directives PEP 8.  
 Pour consulter le résultat, ouvrir le répertoire flake8_rapport et cliquer sur **index.html**.
