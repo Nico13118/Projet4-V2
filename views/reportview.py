@@ -93,7 +93,7 @@ class ReportView:
         print("============= Aucun classement à afficher pour le moment ============\n")
 
     def no_list_of_laps_to_display(self, number_files1):
-        print("=====================================================================")
+        print(f"================ Résultats Round {number_files1} ===================")
         print(f"===== Aucun résultat à afficher pour le Round {number_files1} =====\n")
 
     def current_tournament_report_path(self, path):
