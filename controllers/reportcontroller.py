@@ -106,21 +106,26 @@ class ReportController:
                         match_number += 1
 
                     """Affichage des résultats des Rounds"""
-                    if number_files_in_list_match == number_files_rounds:
-                        vs = "VS"
-                        round_list = self.db.get_round_list_for_report(number_files1)
-                        f.write(f"\n======= Résultats Round: {number_files1} =======\n\n")
-                        for i in range(0, len(round_list), 2):
-                            player1 = round_list[i]
-                            player2 = round_list[i + 1]
-                            f.write(f"Date et heure de début : {player1['Date et heure de debut']}\n")
-                            f.write(f"Joueur {player1['joueur']} - "
-                                    f"{player1['nom']} {player1['prenom']} Score {player1['score']:<5} "
-                                    f"{vs:<3} Joueur {player2['joueur']} - "
-                                    f"{player2['nom']} {player2['prenom']} Score {player2['score']}\n")
-                            f.write(f"Date et heure de fin : {player2['Date et heure de fin']}\n")
-                            f.write("\n========================================================================\n")
-                        number_files1 += 1
+                    if self.controller.player_list_controller.round_file_control():
+                        if number_files1 > number_files_rounds:
+                            f.write(f"\n================ Résultats Round: {number_files1} ===================")
+                            f.write(f"\n======= Aucun résultat à afficher pour le moment =======\n\n")
+                            break
+                        else:
+                            vs = "VS"
+                            round_list = self.db.get_round_list_for_report(number_files1)
+                            f.write(f"\n======= Résultats Round: {number_files1} =======\n\n")
+                            for i in range(0, len(round_list), 2):
+                                player1 = round_list[i]
+                                player2 = round_list[i + 1]
+                                f.write(f"Date et heure de début : {player1['Date et heure de debut']}\n")
+                                f.write(f"Joueur {player1['joueur']} - "
+                                        f"{player1['nom']} {player1['prenom']} Score {player1['score']:<5} "
+                                        f"{vs:<3} Joueur {player2['joueur']} - "
+                                        f"{player2['nom']} {player2['prenom']} Score {player2['score']}\n")
+                                f.write(f"Date et heure de fin : {player2['Date et heure de fin']}\n")
+                                f.write("\n========================================================================\n")
+                            number_files1 += 1
                     else:
                         f.write(f"\n================ Résultats Round: {number_files1} ===================")
                         f.write(f"\n======= Aucun résultat à afficher pour le moment =======\n\n")
@@ -145,11 +150,13 @@ class ReportController:
                 f.write("======= Classement des joueurs =======\n\n")
             """Affichage du classement des joueurs"""
             list_score_sorted = self.score_in_progress(choice_of_repport)
-            for list_score_sorted1 in list_score_sorted:
-                with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
+            with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
+                for list_score_sorted1 in list_score_sorted:
                     f.write(f"Joueur {list_score_sorted1['joueur']}: {list_score_sorted1['nom']:<9} "
                             f"{list_score_sorted1['prenom']:<9} Score :{list_score_sorted1['score']}\n")
-                self.view.current_tournament_report_path()
+                f.close()
+                self.view.current_tournament_report_path(path)
+                self.controller.menu_controller.run_menu_report()
         else:
             with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
                 f.write("============ Classement des joueurs ============\n")
@@ -190,10 +197,14 @@ class ReportController:
                 match_list = self.db.get_match_list_for_report(number_files1)
                 self.view.table_of_teams(match_list, number_files1)
                 """Affichage des résultats des Rounds"""
-                if number_files_in_list_match == number_files_rounds:
-                    round_list = self.db.get_round_list_for_report(number_files1)
-                    self.view.show_round_list(round_list, number_files1)
-                    number_files1 += 1
+                if self.controller.player_list_controller.round_file_control():
+                    if number_files1 > number_files_rounds:
+                        self.view.no_list_of_laps_to_display(number_files1)
+                        break
+                    else:
+                        round_list = self.db.get_round_list_for_report(number_files1)
+                        self.view.show_round_list(round_list, number_files1)
+                        number_files1 += 1
                 else:
                     self.view.no_round_list()
                     break
