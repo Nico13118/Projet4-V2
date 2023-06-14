@@ -89,6 +89,7 @@ class ReportController:
         path = f"{data}/data"
         if self.controller.player_list_controller.list_match_file_control():
             number_files_in_list_match = self.controller.player_list_controller.number_files_in_list_match()
+            number_files_rounds = self.controller.player_list_controller.number_files_round()
             number_files1 = 1
             while not number_files1 > number_files_in_list_match:
                 with open(f"{path}/Rapport_tournoi_en_cours.txt", "a") as f:
@@ -105,7 +106,7 @@ class ReportController:
                         match_number += 1
 
                     """Affichage des résultats des Rounds"""
-                    try:
+                    if number_files_in_list_match == number_files_rounds:
                         vs = "VS"
                         round_list = self.db.get_round_list_for_report(number_files1)
                         f.write(f"\n======= Résultats Round: {number_files1} =======\n\n")
@@ -120,8 +121,9 @@ class ReportController:
                             f.write(f"Date et heure de fin : {player2['Date et heure de fin']}\n")
                             f.write("\n========================================================================\n")
                         number_files1 += 1
-                    except ValueError:
-                        f.write(f"\n======= Aucun résultat à afficher pour le Round {number_files1} =======\n")
+                    else:
+                        f.write(f"\n================ Résultats Round: {number_files1} ===================")
+                        f.write(f"\n======= Aucun résultat à afficher pour le moment =======\n\n")
                         break
             self.list_scoreboard_in_text_format(choice_of_repport)
 
@@ -181,18 +183,19 @@ class ReportController:
         """Pour afficher le tableau des équipes dans le terminal"""
         if self.controller.player_list_controller.list_match_file_control():
             number_files_in_list_match = self.controller.player_list_controller.number_files_in_list_match()
+            number_files_rounds = self.controller.player_list_controller.number_files_round()
             number_files1 = 1
             while not number_files1 > number_files_in_list_match:
                 """Affichage du tableau des équipes """
                 match_list = self.db.get_match_list_for_report(number_files1)
                 self.view.table_of_teams(match_list, number_files1)
                 """Affichage des résultats des Rounds"""
-                try:
+                if number_files_in_list_match == number_files_rounds:
                     round_list = self.db.get_round_list_for_report(number_files1)
                     self.view.show_round_list(round_list, number_files1)
                     number_files1 += 1
-                except ValueError:
-                    self.view.no_list_of_laps_to_display(number_files1)
+                else:
+                    self.view.no_round_list()
                     break
         else:
             self.view.message_no_table_of_teams()
