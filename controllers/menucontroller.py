@@ -144,10 +144,9 @@ class MenuController:
                         user_input = int(user_input)
                         if user_input > number:
                             self.view.error_message_menuview1()
-                        if user_input == 0:
-                            self.view.error_message_menuview1()
-                        if user_input <= number:
-                            return user_input
+                        if user_input > 0:
+                            if user_input <= number:
+                                return user_input
                         else:
                             self.view.incorrect_entry()
                     else:
