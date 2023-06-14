@@ -13,7 +13,7 @@ class MenuController:
         self.view.club_name()
         number = 4
         self.view.get_user_input_main_menu()
-        user_input = self.control_user_input(number)
+        user_input = self.control_user_input_run_menu(number)
         if user_input == 1:
             """Gestionnaire des joueurs"""
             self.run_menu_player()
@@ -127,6 +127,31 @@ class MenuController:
                     else:
                         self.view.incorrect_entry()
 
+                else:
+                    self.view.incorrect_entry()
+            except ValueError:
+                self.view.incorrect_entry()
+
+    def control_user_input_run_menu(self, number):
+        user_input2 = True
+        while user_input2:
+            try:
+                user_input = self.view.repeat_message()
+                if re.match(r'^[a-zA-Z0-9]+$', user_input):
+                    if str(user_input).isalpha():
+                        self.view.error_message_menuview1()
+                    if not str(user_input).isalpha():
+                        user_input = int(user_input)
+                        if user_input > number:
+                            self.view.error_message_menuview1()
+                        if user_input == 0:
+                            self.view.error_message_menuview1()
+                        if user_input <= number:
+                            return user_input
+                        else:
+                            self.view.incorrect_entry()
+                    else:
+                        self.view.incorrect_entry()
                 else:
                     self.view.incorrect_entry()
             except ValueError:
