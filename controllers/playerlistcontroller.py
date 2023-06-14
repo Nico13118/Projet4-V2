@@ -137,12 +137,12 @@ class PlayerListController:
                     if user_input.isdigit():
                         self.view.message_error_list_view2()
                     if not user_input.isdigit():
-                        if user_input != "y" or user_input == "yes" or user_input == "oui" or user_input == "o":
-                            self.view.message_error_list_view4()
                         if user_input == "Y" or user_input == "y" or user_input == "O" or user_input == "o":
                             user_input2 = False
                         if user_input == "N" or user_input == "n" or user_input == "No" or user_input == "no":
                             self.controller.menu_controller.run_menu_player()
+                        else:
+                            self.view.message_error_list_view4()
                 else:
                     self.view.message_error_list_view4()
             except ValueError:
