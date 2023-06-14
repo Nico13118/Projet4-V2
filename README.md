@@ -143,7 +143,7 @@ Saisir la commande suivante :
 ### Depuis PowerShell Sous Windows :  
 
 ```sh
-env\Scripts\activate.ps1 ou env\Scripts\activate.bat
+env\Scripts\activate.ps1
    ```
 
 ### Depuis le Terminal sous Mac \ Linux :
